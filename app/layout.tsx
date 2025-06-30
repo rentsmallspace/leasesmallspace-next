@@ -3,8 +3,11 @@ import type { Metadata } from "next"
 import "./globals.css"
 import { Navigation } from "@/components/navigation/navigation"
 import { Footer } from "@/components/footer/footer"
-import { InactivityPopup } from "@/components/lead-capture/inactivity-popup"
 
+// ---------- NEW: client-only popup wrapper ----------
+import ConditionalPopupClient from "./conditional-popup-client"
+
+// ---------- Metadata (unchanged) ----------
 export const metadata: Metadata = {
   title: "LeaseSmallSpace.com | Colorado's Premier Small Commercial Properties",
   description:
@@ -37,6 +40,9 @@ export const metadata: Metadata = {
   },
 }
 
+// Paths on which the inactivity popup should appear
+const popupEnabledPaths = ["/questionnaire", "/nnn-lease-guide", "/why-rent-small-space", "/faq"]
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -50,7 +56,9 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
         </div>
-        <InactivityPopup />
+
+        {/* Render the client-only popup wrapper */}
+        <ConditionalPopupClient enabledPaths={popupEnabledPaths} />
       </body>
     </html>
   )
