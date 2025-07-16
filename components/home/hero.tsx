@@ -119,7 +119,7 @@ export default function Hero() {
     }, 4000) // Change every 4 seconds
 
     return () => clearInterval(interval)
-  }, [currentWordIndex])
+  }, [currentWordIndex, spaceTypes.length])
 
   // City flip board animation
   useEffect(() => {
@@ -462,7 +462,7 @@ export default function Hero() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 hover:shadow-sm transition-all duration-200 text-sm px-4 py-2 h-auto font-medium group"
+                        className="border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 hover:shadow-sm transition-all duration-200 text-sm px-4 py-2 h-auto font-medium group bg-transparent"
                       >
                         <Lightbulb className="mr-2 h-4 w-4 text-green-600 group-hover:text-green-700 transition-colors duration-200" />
                         Why Use Lease Small Space
@@ -473,7 +473,7 @@ export default function Hero() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 hover:shadow-sm transition-all duration-200 text-sm px-4 py-2 h-auto font-medium group"
+                        className="border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 hover:shadow-sm transition-all duration-200 text-sm px-4 py-2 h-auto font-medium group bg-transparent"
                       >
                         <FileText className="mr-2 h-4 w-4 text-green-600 group-hover:text-green-700 transition-colors duration-200" />
                         NNN Lease Guide
@@ -517,19 +517,31 @@ export default function Hero() {
 
                       {/* Property highlight overlay */}
                       <div className="absolute bottom-6 left-6 right-6">
-                        <div className="bg-white/95 backdrop-blur-sm rounded-lg p-4">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h3 className="font-bold text-lg">{property.title}</h3>
-                              <p className="text-gray-600">{property.location}</p>
-                              {property.amenities && <p className="text-sm text-gray-700 mt-1">{property.amenities}</p>}
-                              <p className="text-blue-600 font-bold text-xl mt-2">{property.price}</p>
-                            </div>
-                            <div className="bg-green-500 text-white text-sm font-bold px-3 py-1 rounded-full">
-                              Available
+                        <Link
+                          href={property.id === 3 ? "/property/lakewood-warehouse" : "#"}
+                          className={
+                            property.id === 3 ? "block hover:scale-105 transition-transform duration-200" : "block"
+                          }
+                        >
+                          <div className="bg-white/95 backdrop-blur-sm rounded-lg p-4 hover:bg-white transition-colors duration-200">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <h3 className="font-bold text-lg">{property.title}</h3>
+                                <p className="text-gray-600">{property.location}</p>
+                                {property.amenities && (
+                                  <p className="text-sm text-gray-700 mt-1">{property.amenities}</p>
+                                )}
+                                <p className="text-blue-600 font-bold text-xl mt-2">{property.price}</p>
+                                {property.id === 3 && (
+                                  <p className="text-sm text-blue-600 font-medium mt-1">Click to view details →</p>
+                                )}
+                              </div>
+                              <div className="bg-green-500 text-white text-sm font-bold px-3 py-1 rounded-full">
+                                Available
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        </Link>
                       </div>
                     </div>
                   ))}

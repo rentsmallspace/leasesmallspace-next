@@ -147,6 +147,9 @@ export default function QuestionnaireWizardWithDatabase() {
 
       console.log("Questionnaire submission successful:", result)
 
+      // Log success message
+      console.log("Questionnaire submitted successfully, redirecting to thank you page...")
+
       // Track successful submission
       track("lead_generated", {
         source: "questionnaire",
@@ -312,11 +315,13 @@ export default function QuestionnaireWizardWithDatabase() {
         </div>
       </div>
 
-      {/* Inactivity popup - only shows in questionnaire when stuck on a question */}
-      <InactivityPopup
-        inactivityDelay={30000} // 30 seconds
-        exitIntentEnabled={true}
-      />
+      {/* Inactivity popup - only shows when not on the final step */}
+      {step < totalSteps && (
+        <InactivityPopup
+          inactivityDelay={30000} // 30 seconds
+          exitIntentEnabled={true}
+        />
+      )}
     </>
   )
 }

@@ -1,89 +1,161 @@
+import { Resend } from "resend"
+
+const resend = new Resend(process.env.RESEND_API_KEY)
+
+/* -------------------------------------------------------------------------- */
+/*  Types                                                                     */
+/* -------------------------------------------------------------------------- */
+
 export interface EmailData {
   to: string | string[]
   subject: string
+  template?: keyof typeof emailTemplates
   html?: string
-  template?: string
-  data?: any
+  data?: Record<string, any>
   from?: string
 }
 
-// Stub email function - just logs to console
-export function sendEmail(emailData: EmailData) {
-  console.log("Email sending disabled - would have sent email:", {
-    to: emailData.to,
-    subject: emailData.subject,
-  })
+/* -------------------------------------------------------------------------- */
+/*  Templates                                                                 */
+/* -------------------------------------------------------------------------- */
 
-  return { success: false, message: "Email service not configured" }
-}
+/**
+ * A catalogue of all HTML email templates.
+ * Each template is a function that accepts dynamic `data` and returns an HTML string.
+ */
+export const emailTemplates = {
+  "welcome-lead": (data: any = {}) => `
+    <!DOCTYPE html>
+    <html>
+      <head><meta charset="utf-8" /></head>
+      <body style="font-family: Arial, sans-serif">
+        <h1 style="color:#2563eb">Welcome to LeaseSmallSpace, ${data.name ?? "there"}!</h1>
+        <p>Thank you for your interest in our industrial properties.</p>
+        <p>We'll be in touch shortly to match you with the perfect space.</p>
+      </body>
+    </html>
+  `,
 
-// Email template generator (for future use)
-function getEmailTemplate(template: string, data: any): string {
-  switch (template) {
-    case "welcome-lead":
-      return `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <div style="text-align: center; padding: 40px 20px;">
-            <h1 style="color: #2563eb; margin-bottom: 10px;">Welcome to LeaseSmallSpace!</h1>
-            <p style="color: #64748b; font-size: 18px;">Thank you for your interest, ${data.name}!</p>
-          </div>
-          
-          <div style="background: #f8fafc; padding: 30px; border-radius: 8px; margin: 20px 0;">
-            <h2 style="color: #1e293b; margin-bottom: 20px;">What's Next?</h2>
-            <ul style="color: #475569; line-height: 1.6;">
-              <li>Our expert team is reviewing your requirements</li>
-              <li>We'll match you with suitable properties</li>
-              <li>Expect a call within 24 hours at ${data.phone}</li>
-              <li>Schedule property viewings that fit your timeline</li>
-            </ul>
-          </div>
+  "questionnaire-completion": (data: any = {}) => `
+    <!DOCTYPE html>
+    <html>
+      <head><meta charset="utf-8" /></head>
+      <body style="font-family: Arial, sans-serif">
+        <h1 style="color:#15803d">Questionnaire Received</h1>
+        <p>Hi ${data.name ?? "there"}, thank you for submitting your requirements.</p>
+        <p>Our team is reviewing them and will reach out within 24 hours.</p>
+      </body>
+    </html>
+  `,
 
-          <div style="text-align: center; padding: 30px 20px;">
-            <a href="https://leasesmallspace.com/faq" 
-               style="background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
-              View FAQ
-            </a>
-          </div>
+  "new-lead-notification": (data: any = {}) => `
+    <!DOCTYPE html>
+    <html>
+      <head><meta charset="utf-8" /></head>
+      <body style="font-family: Arial, sans-serif">
+        <h2>🚨 New Lead Alert</h2>
+        <ul>
+          <li><strong>Name:</strong> ${data.name}</li>
+          <li><strong>Email:</strong> ${data.email}</li>
+          <li><strong>Phone:</strong> ${data.phone ?? "N/A"}</li>
+        </ul>
+      </body>
+    </html>
+  `,
+} satisfies Record<string, (data?: any) => string>
 
-          <div style="border-top: 1px solid #e2e8f0; padding: 20px; text-align: center; color: #64748b; font-size: 14px;">
-            <p>Questions? Reply to this email or call us at (303) 555-0123</p>
-            <p>LeaseSmallSpace.com | Colorado's Premier Commercial Real Estate Platform</p>
-          </div>
-        </div>
-      `
+/* -------------------------------------------------------------------------- */
+/*  Generic Send                                                              */
+/* -------------------------------------------------------------------------- */
 
-    case "new-lead-notification":
-      return `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #2563eb;">🎯 New Lead from LeaseSmallSpace</h2>
-          <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3>Contact Information</h3>
-            <p><strong>Name:</strong> ${data.name}</p>
-            <p><strong>Email:</strong> ${data.email}</p>
-            <p><strong>Phone:</strong> ${data.phone}</p>
-            <p><strong>Source:</strong> ${data.source}</p>
-            <p><strong>Page:</strong> ${data.page}</p>
-            <p><strong>Time:</strong> ${data.timestamp}</p>
-          </div>
-          <div style="text-align: center; padding: 20px;">
-            <a href="tel:${data.phone}" style="background: #16a34a; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin: 5px;">
-              Call Now
-            </a>
-            <a href="mailto:${data.email}" style="background: #2563eb; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin: 5px;">
-              Send Email
-            </a>
-          </div>
-        </div>
-      `
+/**
+ * Low-level email sender that all helper functions delegate to.
+ */
+export async function sendEmail({
+  to,
+  subject,
+  template,
+  html,
+  data = {},
+  from = "LeaseSmallSpace <noreply@leasesmallspace.com>",
+}: EmailData) {
+  if (!process.env.RESEND_API_KEY) {
+    console.error("RESEND_API_KEY missing – cannot send email")
+    return { success: false, message: "Email service not configured" }
+  }
 
-    default:
-      return `<p>Thank you for contacting LeaseSmallSpace!</p>`
+  // Resolve HTML
+  const resolvedHtml = html ?? (template ? emailTemplates[template]?.(data) : "<p>No content supplied.</p>")
+
+  try {
+    const result = await resend.emails.send({
+      from,
+      to: Array.isArray(to) ? to : [to],
+      subject,
+      html: resolvedHtml,
+    })
+    console.log("Email sent:", result)
+    return { success: true, id: result.data?.id }
+  } catch (error) {
+    console.error("Failed to send email:", error)
+    return { success: false, error }
   }
 }
 
-// Export empty email templates for backward compatibility
-export const emailTemplates = {
-  leadNotification: (leadData: any) => `<p>Lead notification for ${leadData.name}</p>`,
-  welcomeEmail: (userData: any) => `<p>Welcome ${userData.name}!</p>`,
-  propertyAlert: (properties: any[], userData: any) => `<p>Property alert for ${userData.name}</p>`,
+/* -------------------------------------------------------------------------- */
+/*  Helper Wrappers                                                           */
+/* -------------------------------------------------------------------------- */
+
+export function sendWelcomeEmail(user: { email: string; name: string }) {
+  return sendEmail({
+    to: user.email,
+    subject: "Welcome to LeaseSmallSpace – Let’s find your perfect space!",
+    template: "welcome-lead",
+    data: user,
+  })
+}
+
+export function sendQuestionnaireConfirmation(user: { email: string; name: string }, responses: Record<string, any>) {
+  return sendEmail({
+    to: user.email,
+    subject: "We’ve received your questionnaire – Next steps inside",
+    template: "questionnaire-completion",
+    data: { ...user, ...responses },
+  })
+}
+
+export function sendLeadNotification(lead: {
+  name: string
+  email: string
+  phone?: string
+}) {
+  return sendEmail({
+    to: "admin@leasesmallspace.com",
+    subject: `New Lead – ${lead.name}`,
+    template: "new-lead-notification",
+    data: lead,
+  })
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Manual test helper                                                        */
+/* -------------------------------------------------------------------------- */
+
+export async function sendTestEmail(
+  email: string,
+  name = "Friend",
+  type: "welcome" | "questionnaire" | "plain" = "plain",
+) {
+  switch (type) {
+    case "welcome":
+      return sendWelcomeEmail({ email, name })
+    case "questionnaire":
+      return sendQuestionnaireConfirmation({ email, name }, {})
+    default:
+      return sendEmail({
+        to: email,
+        subject: "Test Email from LeaseSmallSpace",
+        html: `<p>Hello ${name}! This is a plain test email.</p>`,
+      })
+  }
 }

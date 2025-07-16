@@ -1,10 +1,20 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase"
+import { sendQuestionnaireConfirmation, sendLeadNotification } from "@/lib/email"
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { responses, userInfo } = body
+
+    // More thorough validation
+    if (!responses || !userInfo) {
+      return NextResponse.json({ error: "Invalid request format" }, { status: 400 })
+    }
+
+    if (!responses.spaceType || !responses.location) {
+      return NextResponse.json({ error: "Missing required questionnaire fields" }, { status: 400 })
+    }
 
     console.log("Questionnaire submission received:", { responses, userInfo })
 
@@ -132,6 +142,28 @@ export async function POST(request: NextRequest) {
       console.log("Analytics event tracked successfully")
     } catch (analyticsError) {
       console.error("Analytics tracking failed (non-critical):", analyticsError)
+    }
+
+    // Send questionnaire confirmation email
+    try {
+      await sendQuestionnaireConfirmation(userInfo, responses)
+      console.log("Questionnaire confirmation email sent to:", userInfo.email)
+    } catch (emailError) {
+      console.error("Failed to send questionnaire confirmation:", emailError)
+    }
+
+    // Send notification email to admin
+    try {
+      await sendLeadNotification({
+        ...userInfo,
+        source: "questionnaire",
+        page: "/questionnaire",
+        timestamp: new Date().toISOString(),
+        responses,
+      })
+      console.log("Admin questionnaire notification sent")
+    } catch (emailError) {
+      console.error("Failed to send admin notification:", emailError)
     }
 
     console.log("Questionnaire submission completed successfully!")

@@ -13,11 +13,9 @@ export function ConditionalPopup({ enabledPaths }: ConditionalPopupProps) {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    // This ensures that pathname is accessed only on the client side after hydration
     setMounted(true)
-  }, [])
+  }, [pathname])
 
-  // Only proceed if mounted and pathname is available
   if (!mounted) {
     return null
   }

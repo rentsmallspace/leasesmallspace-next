@@ -1,55 +1,76 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase"
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs"
+import { cookies } from "next/headers"
+import type { Database } from "@/lib/supabase"
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password } = await request.json()
+    const { email, fullName, password } = await request.json()
 
-    if (!email || !password) {
-      return NextResponse.json({ error: "Email and password are required" }, { status: 400 })
+    if (!email || !fullName || !password) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
     }
 
-    console.log("Creating admin user:", email)
+    const supabase = createRouteHandlerClient<Database>({ cookies })
 
-    // Create user in Supabase Auth using admin client
+    // Check if the current user is an admin
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const { data: currentAdmin } = await supabase
+      .from("admin_users")
+      .select("role")
+      .eq("user_id", session.user.id)
+      .single()
+
+    if (!currentAdmin) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    // Create user in Supabase Auth
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
-      email_confirm: true, // Auto-confirm email
+      email_confirm: true,
     })
 
     if (authError) {
       console.error("Auth error:", authError)
-      return NextResponse.json({ error: authError.message }, { status: 400 })
+      return NextResponse.json({ error: "Failed to create user account" }, { status: 500 })
     }
 
-    console.log("User created in auth:", authData.user?.id)
+    // Add user to users table
+    const { data: userData, error: userError } = await supabaseAdmin
+      .from("users")
+      .insert([
+        {
+          id: authData.user.id,
+          email,
+          full_name: fullName,
+        },
+      ])
+      .select()
 
-    // Add user to admin_users table
-    if (authData.user) {
-      const { error: dbError } = await supabaseAdmin.from("admin_users").insert({
-        user_id: authData.user.id,
-        email: authData.user.email!,
-      })
-
-      if (dbError) {
-        console.error("Database error:", dbError)
-        // Continue even if admin_users insert fails
-      } else {
-        console.log("User added to admin_users table")
-      }
+    if (userError) {
+      console.error("User table error:", userError)
+      // Clean up auth user if database insert fails
+      await supabaseAdmin.auth.admin.deleteUser(authData.user.id)
+      return NextResponse.json({ error: "Failed to create user profile" }, { status: 500 })
     }
 
     return NextResponse.json({
       success: true,
       message: "Admin user created successfully",
-      user: {
-        id: authData.user?.id,
-        email: authData.user?.email,
-      },
+      user: userData[0],
     })
   } catch (error) {
-    console.error("Unexpected error:", error)
+    console.error("Create user error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
@@ -73,28 +94,32 @@ export async function GET() {
 
     console.log("User created in auth:", authData.user?.id)
 
-    // Add user to admin_users table
+    // Add user to users table
     if (authData.user) {
-      const { error: dbError } = await supabaseAdmin.from("admin_users").insert({
-        user_id: authData.user.id,
-        email: authData.user.email!,
-      })
+      const { data: userData, error: dbError } = await supabaseAdmin
+        .from("users")
+        .insert([
+          {
+            id: authData.user.id,
+            email: authData.user.email,
+            full_name: "Nate",
+          },
+        ])
+        .select()
 
       if (dbError) {
         console.error("Database error:", dbError)
-        // Continue even if admin_users insert fails
+        // Clean up auth user if database insert fails
+        await supabaseAdmin.auth.admin.deleteUser(authData.user.id)
       } else {
-        console.log("User added to admin_users table")
+        console.log("User added to users table")
       }
     }
 
     return NextResponse.json({
       success: true,
       message: "Nate's admin user created successfully",
-      user: {
-        id: authData.user?.id,
-        email: authData.user?.email,
-      },
+      user: authData.user,
     })
   } catch (error) {
     console.error("Unexpected error:", error)

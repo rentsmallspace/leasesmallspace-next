@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { supabase } from "@/lib/supabase"
+import { sendWelcomeEmail, sendLeadNotification } from "@/lib/email"
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,6 +34,37 @@ export async function POST(request: NextRequest) {
     }
 
     console.log("Lead saved successfully:", data[0])
+
+    // Send welcome email to the lead
+    try {
+      await sendWelcomeEmail({
+        name,
+        email,
+        phone,
+        source,
+        page,
+        timestamp: timestamp || new Date().toISOString(),
+      })
+      console.log("Welcome email sent to:", email)
+    } catch (emailError) {
+      console.error("Failed to send welcome email:", emailError)
+      // Don't fail the lead capture if email fails
+    }
+
+    // Send notification email to admin
+    try {
+      await sendLeadNotification({
+        name,
+        email,
+        phone,
+        source,
+        page,
+        timestamp: timestamp || new Date().toISOString(),
+      })
+      console.log("Admin notification sent")
+    } catch (emailError) {
+      console.error("Failed to send admin notification:", emailError)
+    }
 
     // Email and notification services disabled for now
     console.log("Email notifications disabled - would have sent welcome email to:", email)

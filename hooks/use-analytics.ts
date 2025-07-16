@@ -33,10 +33,14 @@ export function useAnalytics() {
       if (!response.ok) {
         const errorData = await response.json()
         console.warn("Analytics tracking failed:", errorData.error)
+        return false
       }
+
+      return true
     } catch (error) {
       // Gracefully handle errors without breaking the app
       console.warn("Analytics tracking failed:", error)
+      return false
     }
   }
 
