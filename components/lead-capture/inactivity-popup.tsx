@@ -2,12 +2,13 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Phone, Mail, User, MessageSquare, X } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { createInquiry } from "@/lib/leads"
 
 interface InactivityPopupProps {
   inactivityDelay?: number // milliseconds
@@ -92,38 +93,33 @@ export function InactivityPopup({
     setIsSubmitting(true)
 
     try {
-      const response = await fetch("/api/lead-capture", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          source: "inactivity_popup",
-          timestamp: new Date().toISOString(),
-          page: window.location.pathname,
-        }),
+      // Use the leads lib to create the inquiry
+      await createInquiry({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        inquiry_type: "inactivity_popup",
+        source: "inactivity_popup",
+        page_captured: window.location.pathname,
+        message: "Lead captured from inactivity popup",
       })
 
-      if (response.ok) {
-        toast({
-          title: "Thank you!",
-          description: "Our expert will contact you within 24 hours.",
-        })
-        setIsOpen(false)
+      toast({
+        title: "Thank you!",
+        description: "Our expert will contact you within 24 hours.",
+      })
+      setIsOpen(false)
 
-        // Track conversion
-        if (typeof window !== "undefined" && window.gtag) {
-          window.gtag("event", "lead_capture", {
-            event_category: "engagement",
-            event_label: "inactivity_popup",
-            value: 1,
-          })
-        }
-      } else {
-        throw new Error("Failed to submit")
+      // Track conversion
+      if (typeof window !== "undefined" && (window as any).gtag) {
+        (window as any).gtag("event", "lead_capture", {
+          event_category: "engagement",
+          event_label: "inactivity_popup",
+          value: 1,
+        })
       }
     } catch (error) {
+      console.error("Error submitting form:", error)
       toast({
         title: "Oops!",
         description: "Something went wrong. Please try again.",
@@ -146,7 +142,7 @@ export function InactivityPopup({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-lg bg-white border border-gray-200 shadow-2xl" hideCloseButton>
+      <DialogContent className="sm:max-w-lg bg-white border border-gray-200 shadow-2xl">
         <button
           onClick={handleClose}
           className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"

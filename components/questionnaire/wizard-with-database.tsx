@@ -14,6 +14,7 @@ import ContactStep from "./step-contact"
 import { ArrowLeft, ArrowRight, CheckCircle } from "lucide-react"
 import { useAnalytics } from "@/hooks/use-analytics"
 import { InactivityPopup } from "@/components/lead-capture/inactivity-popup"
+import { saveQuestionnaireResponse } from "@/lib/questionnaire"
 
 export type QuestionnaireData = {
   leaseOrBuy: string
@@ -115,35 +116,23 @@ export default function QuestionnaireWizardWithDatabase() {
     try {
       console.log("Starting questionnaire submission with data:", data)
 
-      // Submit to our API endpoint
-      const response = await fetch("/api/questionnaire-submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      // Use the questionnaire.ts lib to save the response
+      const result = await saveQuestionnaireResponse({
+        responses: {
+          leaseOrBuy: data.leaseOrBuy,
+          spaceType: data.spaceType,
+          size: data.size,
+          location: data.location,
+          budget: data.budget,
+          timeline: data.timeline,
         },
-        body: JSON.stringify({
-          responses: {
-            leaseOrBuy: data.leaseOrBuy,
-            spaceType: data.spaceType,
-            size: data.size,
-            location: data.location,
-            budget: data.budget,
-            timeline: data.timeline,
-          },
-          userInfo: {
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            smsConsent: data.smsConsent,
-          },
-        }),
+        userInfo: {
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          smsConsent: data.smsConsent,
+        },
       })
-
-      const result = await response.json()
-
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to submit questionnaire")
-      }
 
       console.log("Questionnaire submission successful:", result)
 
@@ -153,8 +142,8 @@ export default function QuestionnaireWizardWithDatabase() {
       // Track successful submission
       track("lead_generated", {
         source: "questionnaire",
-        user_id: result.userId,
-        inquiry_id: result.inquiryId,
+        user_id: result.user.id,
+        inquiry_id: result.inquiry.id,
         conversion_type: "questionnaire_completion",
       })
 

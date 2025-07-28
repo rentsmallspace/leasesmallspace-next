@@ -21,20 +21,38 @@ import {
   Eye,
   ArrowRight,
 } from "lucide-react"
+import { createInquiry } from "@/lib/leads"
 
 export default function NNNLeaseGuideView() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [formSubmitted, setFormSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In a real implementation, this would send the form data to a server
-    setFormSubmitted(true)
-    // Close the modal after 3 seconds
-    setTimeout(() => {
-      setIsModalOpen(false)
-      setFormSubmitted(false)
-    }, 3000)
+    
+    try {
+      const formData = new FormData(e.currentTarget as HTMLFormElement)
+      
+      await createInquiry({
+        name: formData.get("name") as string,
+        email: formData.get("email") as string,
+        phone: formData.get("phone") as string,
+        message: formData.get("message") as string,
+        inquiry_type: "nnn_lease_guide",
+        source: "nnn_lease_guide",
+        page_captured: window.location.pathname,
+      })
+      
+      setFormSubmitted(true)
+      // Close the modal after 3 seconds
+      setTimeout(() => {
+        setIsModalOpen(false)
+        setFormSubmitted(false)
+      }, 3000)
+    } catch (error) {
+      console.error("Error submitting NNN lease guide form:", error)
+      // You could add error handling here if needed
+    }
   }
 
   return (

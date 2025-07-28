@@ -1,0 +1,14 @@
+-- ADMIN AUTHENTICATION
+-- 
+-- We're using the existing Supabase auth system (auth.users table) 
+-- instead of creating separate admin tables. This allows us to:
+-- 
+-- 1. Use the same admin portal for both applications
+-- 2. Leverage Supabase's built-in authentication features
+-- 3. Avoid duplicate user management
+-- 4. Use existing admin users from the other application
+-- 
+-- The admin dashboard will use Supabase auth for authentication
+-- and the lss_* tables for data management.
+-- 
+-- No additional tables needed for admin functionality. 

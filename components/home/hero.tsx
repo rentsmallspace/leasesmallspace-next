@@ -5,38 +5,8 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, MapPin, CheckCircle, Building, Lightbulb, FileText } from "lucide-react"
 import { RealTimeCounter } from "@/components/ui/real-time-counter"
 import Link from "next/link"
-
-const properties = [
-  {
-    id: 1,
-    image: "/images/11450-n-cherokee-st-northglenn.jpg",
-    alt: "Modern flex space units with ample parking at 11450 N Cherokee St in Northglenn, Colorado",
-    title: "1,200 sq ft Flex Space Units",
-    location: "Northglenn, Colorado • Available Now",
-    price: "$2,850/month",
-    available: true,
-  },
-  {
-    id: 2,
-    image: "/images/boulder-aerial-facility.jpg",
-    alt: "Aerial view of modern flex facility available for lease in Boulder, Colorado",
-    title: "4,800 sq ft Flex Facility",
-    location: "Boulder, Colorado • Available Now",
-    price: "$4,500/month",
-    amenities: "12 ft driving door • Heavy power • Kitchenette",
-    available: true,
-  },
-  {
-    id: 3,
-    image: "/images/lakewood-warehouse.jpg",
-    alt: "Industrial warehouse space available for lease in Lakewood, Colorado",
-    title: "1,850 sq ft Warehouse",
-    location: "Lakewood, Colorado • Available Now",
-    price: "$3,000/month",
-    amenities: "Driving door • 200 amps 3p power • Outdoor storage",
-    available: true,
-  },
-]
+import { getFeaturedProperties, type Property } from "@/lib/properties"
+import { CloudinaryImage } from "@/components/ui/cloudinary-image"
 
 const coloradoCities = [
   "DENVER",
@@ -79,6 +49,8 @@ const cityGroups = [
 
 export default function Hero() {
   const router = useRouter()
+  const [properties, setProperties] = useState<Property[]>([])
+  const [loading, setLoading] = useState(true)
   const [currentPropertyIndex, setCurrentPropertyIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const [isScrollPaused, setIsScrollPaused] = useState(false)
@@ -91,19 +63,39 @@ export default function Hero() {
   const [cityIndices, setCityIndices] = useState([0, 0, 0, 0])
   const [cityFlipping, setCityFlipping] = useState([false, false, false, false])
 
+  // Fetch properties on component mount
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        console.log("Fetching featured properties...")
+        const data = await getFeaturedProperties(3) // Get 3 properties for carousel
+        console.log("Fetched properties:", data)
+        setProperties(data)
+      } catch (error) {
+        console.error("Error fetching properties:", error)
+        // Fallback to empty array if fetch fails
+        setProperties([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProperties()
+  }, [])
+
   const handleGetStarted = () => {
     router.push("/questionnaire")
   }
 
   useEffect(() => {
-    if (!isPaused) {
+    if (!isPaused && properties.length > 0) {
       const intervalId = setInterval(() => {
         setCurrentPropertyIndex((prevIndex) => (prevIndex + 1) % properties.length)
       }, 5000)
 
       return () => clearInterval(intervalId)
     }
-  }, [isPaused])
+  }, [isPaused, properties.length])
 
   // Clean flip animation - rebuild the entire word each time
   useEffect(() => {
@@ -159,16 +151,8 @@ export default function Hero() {
   const currentProperty = properties[currentPropertyIndex]
 
   const getImagePositioning = (propertyId: number) => {
-    switch (propertyId) {
-      case 1: // Northglenn - show the building and parking area
-        return "center 40%"
-      case 2: // Boulder - centralized and higher
-        return "center 20%"
-      case 3: // Lakewood - show all loading doors above text
-        return "center 0%" // Moved to the very top to ensure building is fully visible
-      default:
-        return "center 25%"
-    }
+    // Default positioning for all properties
+    return "center 25%"
   }
 
   return (
@@ -489,52 +473,42 @@ export default function Hero() {
               <div className="relative">
                 {/* Main property image carousel */}
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl h-96">
-                  {properties.map((property, index) => (
+                  {properties.length > 0 ? (
+                    properties.map((property, index) => (
                     <div
                       key={property.id}
-                      className={`absolute inset-0 transition-transform duration-700 ease-in-out ${
-                        index === currentPropertyIndex
-                          ? "translate-x-0"
-                          : index < currentPropertyIndex
-                            ? "-translate-x-full"
-                            : "translate-x-full"
+                      className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                        index === currentPropertyIndex ? "opacity-100" : "opacity-0"
                       }`}
                     >
-                      <img
-                        src={property.image || "/placeholder.svg"}
-                        alt={property.alt}
+                      <CloudinaryImage
+                        src={property.primary_image || property.images?.[0] || "/placeholder.svg"}
+                        alt={property.title}
+                        width={800}
+                        height={600}
                         className="w-full h-full object-cover"
-                        style={{
-                          objectPosition: getImagePositioning(property.id),
-                          imageRendering: "high-quality",
-                          backfaceVisibility: "hidden",
-                          transform: "translateZ(0)",
-                        }}
-                        loading="eager"
-                        decoding="async"
+                        quality={85}
+                        format="webp"
+                        priority={true}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
 
                       {/* Property highlight overlay */}
                       <div className="absolute bottom-6 left-6 right-6">
                         <Link
-                          href={property.id === 3 ? "/property/lakewood-warehouse" : "#"}
-                          className={
-                            property.id === 3 ? "block hover:scale-105 transition-transform duration-200" : "block"
-                          }
+                          href={`/property/${property.id}`}
+                          className="block hover:scale-105 transition-transform duration-200"
                         >
                           <div className="bg-white/95 backdrop-blur-sm rounded-lg p-4 hover:bg-white transition-colors duration-200">
                             <div className="flex justify-between items-start">
                               <div>
                                 <h3 className="font-bold text-lg">{property.title}</h3>
-                                <p className="text-gray-600">{property.location}</p>
-                                {property.amenities && (
-                                  <p className="text-sm text-gray-700 mt-1">{property.amenities}</p>
+                                <p className="text-gray-600">{property.city}, {property.state} • Available Now</p>
+                                {property.features && property.features.length > 0 && (
+                                  <p className="text-sm text-gray-700 mt-1">{property.features.slice(0, 3).join(" • ")}</p>
                                 )}
-                                <p className="text-blue-600 font-bold text-xl mt-2">{property.price}</p>
-                                {property.id === 3 && (
-                                  <p className="text-sm text-blue-600 font-medium mt-1">Click to view details →</p>
-                                )}
+                                <p className="text-blue-600 font-bold text-xl mt-2">${property.price_monthly.toLocaleString()}/month</p>
+                                <p className="text-sm text-blue-600 font-medium mt-1">Click to view details →</p>
                               </div>
                               <div className="bg-green-500 text-white text-sm font-bold px-3 py-1 rounded-full">
                                 Available
@@ -544,7 +518,16 @@ export default function Hero() {
                         </Link>
                       </div>
                     </div>
-                  ))}
+                  ))
+                  ) : (
+                    // Fallback when no properties are available
+                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-600 to-blue-800">
+                      <div className="text-center text-white">
+                        <h2 className="text-2xl font-bold mb-2">Loading Properties...</h2>
+                        <p className="text-blue-100">Please wait while we load our latest listings</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Floating testimonial - rotates with properties */}
@@ -577,8 +560,9 @@ export default function Hero() {
                 </div>
 
                 {/* Carousel Indicators */}
-                <div className="absolute bottom-2 left-0 right-0 flex justify-center space-x-2">
-                  {properties.map((_, index) => (
+                {properties.length > 0 && (
+                  <div className="absolute bottom-2 left-0 right-0 flex justify-center space-x-2">
+                    {properties.map((_, index) => (
                     <button
                       key={index}
                       className={`h-2 w-2 rounded-full transition-colors duration-200 ${
@@ -588,7 +572,8 @@ export default function Hero() {
                       aria-label={`Go to property ${index + 1}`}
                     />
                   ))}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

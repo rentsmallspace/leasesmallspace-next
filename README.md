@@ -28,3 +28,12 @@ Continue building your app on:
 2. Deploy your chats from the v0 interface
 3. Changes are automatically pushed to this repository
 4. Vercel deploys the latest version from this repository
+
+## Future Enhancements
+
+### Image Management
+- **Cloudinary Integration**: Replace local static images with Cloudinary for better performance and scalability
+  - Free tier: 25 GB storage, 25 GB bandwidth/month
+  - Automatic image optimization and responsive images
+  - CDN delivery for faster loading worldwide
+  - Easy upload and URL generation APIs

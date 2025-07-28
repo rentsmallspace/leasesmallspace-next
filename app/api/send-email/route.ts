@@ -1,56 +1,34 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { sendEmail, emailTemplates } from "@/lib/email"
-import { sendSlackNotification, triggerZapierWebhook, createHubSpotContact } from "@/lib/integrations"
+import { sendEmail } from "@/lib/email"
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { type, data } = body
+    const { to, subject, template, html, data, from } = body
 
-    switch (type) {
-      case "lead_notification":
-        // Send email to team
-        await sendEmail({
-          to: ["leads@leasesmallspace.com"],
-          subject: `New Lead: ${data.name} - ${data.spaceType}`,
-          html: emailTemplates.leadNotification(data),
-        })
-
-        // Send welcome email to user
-        await sendEmail({
-          to: [data.email],
-          subject: "Welcome to LeaseSmallSpace - We're Finding Your Perfect Space!",
-          html: emailTemplates.welcomeEmail(data),
-        })
-
-        // Send Slack notification
-        await sendSlackNotification(
-          `🏢 New Lead: ${data.name} looking for ${data.size} sq ft ${data.spaceType} in ${data.location}`,
-        )
-
-        // Trigger Zapier webhook
-        await triggerZapierWebhook(data)
-
-        // Create HubSpot contact
-        await createHubSpotContact(data)
-
-        break
-
-      case "property_alert":
-        await sendEmail({
-          to: [data.userEmail],
-          subject: `New Properties Available - ${data.properties.length} Matches Found!`,
-          html: emailTemplates.propertyAlert(data.properties, data.user),
-        })
-        break
-
-      default:
-        return NextResponse.json({ error: "Invalid email type" }, { status: 400 })
+    if (!to || !subject) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
     }
 
-    return NextResponse.json({ success: true })
+    const result = await sendEmail({
+      to,
+      subject,
+      template,
+      html,
+      data,
+      from,
+    })
+
+    if (result.success) {
+      return NextResponse.json({ success: true, id: result.id })
+    } else {
+      return NextResponse.json({ error: result.message || "Failed to send email" }, { status: 500 })
+    }
   } catch (error) {
     console.error("Email API error:", error)
-    return NextResponse.json({ error: "Failed to send email" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    )
   }
 }

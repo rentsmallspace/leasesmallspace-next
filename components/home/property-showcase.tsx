@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -15,44 +15,13 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog"
-
-const featuredProperties = [
-  {
-    id: 1,
-    title: "Retail Storefront",
-    location: "Centennial, CO",
-    size: 2200,
-    price: 3900,
-    type: "Retail",
-    availability: "Available Now",
-    image: "/images/retail-centennial.jpg",
-    features: ["Street visibility", "Foot traffic", "Parking"],
-  },
-  {
-    id: 2,
-    title: "Industrial Unit",
-    location: "Brighton, CO",
-    size: 1800,
-    price: 2200,
-    type: "Industrial",
-    availability: "Available Now",
-    image: "/images/brighton-flex-space.jpg",
-    features: ["Front office", "Warehouse back", "Parking"],
-  },
-  {
-    id: 3,
-    title: "Flex Space",
-    location: "Broomfield, CO",
-    size: 5500,
-    price: 6500,
-    type: "Flex Space",
-    availability: "August 1st",
-    image: "/images/broomfield-flex-space.jpg",
-    features: ["Ample Parking", "Drive-In (2x)", "Heavy Power"],
-  },
-]
+import { getFeaturedProperties, type Property } from "@/lib/properties"
+import { createInquiry } from "@/lib/leads"
+import { CloudinaryImage } from "@/components/ui/cloudinary-image"
 
 export default function PropertyShowcase() {
+  const [properties, setProperties] = useState<Property[]>([])
+  const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [selectedProperty, setSelectedProperty] = useState<string>("")
@@ -62,16 +31,50 @@ export default function PropertyShowcase() {
     phone: "",
   })
 
+  // Fetch featured properties on component mount
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        console.log("Fetching featured properties for showcase...")
+        const data = await getFeaturedProperties(6) // Get 6 properties for showcase
+        console.log("Fetched showcase properties:", data)
+        setProperties(data)
+      } catch (error) {
+        console.error("Error fetching showcase properties:", error)
+        setProperties([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProperties()
+  }, [])
+
   const handleGetInfo = (propertyTitle: string, propertyLocation: string) => {
     setSelectedProperty(`${propertyTitle} - ${propertyLocation}`)
     setModalOpen(true)
     setSubmitted(false)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In a real implementation, this would submit the lead data
-    setSubmitted(true)
+    
+    try {
+      await createInquiry({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        inquiry_type: "property_inquiry",
+        source: "property_showcase",
+        page_captured: window.location.pathname,
+        message: `Property inquiry for: ${selectedProperty}`,
+      })
+      
+      setSubmitted(true)
+    } catch (error) {
+      console.error("Error submitting property inquiry:", error)
+      // You could add error handling here if needed
+    }
   }
 
   const handleInputChange = (field: string, value: string) => {
@@ -90,32 +93,47 @@ export default function PropertyShowcase() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProperties.map((property) => (
+            {loading ? (
+              // Loading skeleton
+              Array.from({ length: 6 }).map((_, index) => (
+                <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg animate-pulse">
+                  <div className="h-48 bg-gray-200"></div>
+                  <div className="p-6">
+                    <div className="h-6 bg-gray-200 rounded mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="h-4 bg-gray-200 rounded"></div>
+                      <div className="h-4 bg-gray-200 rounded"></div>
+                    </div>
+                    <div className="h-10 bg-gray-200 rounded"></div>
+                  </div>
+                </div>
+              ))
+            ) : properties.length > 0 ? (
+              properties.map((property: Property) => (
               <div
                 key={property.id}
                 className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
               >
                 <div className="relative">
-                  <img
-                    src={property.image || "/placeholder.svg"}
+                  <CloudinaryImage
+                    src={property.primary_image || property.images?.[0] || "/placeholder.svg"}
                     alt={property.title}
+                    width={400}
+                    height={300}
                     className="w-full h-48 object-cover"
-                    style={{
-                      imageRendering: "crisp-edges",
-                      backfaceVisibility: "hidden",
-                      transform: "translateZ(0)",
-                    }}
-                    loading="lazy"
-                    decoding="async"
+                    quality={80}
+                    format="webp"
+                    priority={false}
                   />
                   <div className="absolute top-4 left-4">
                     <span className="bg-green-500 text-white text-sm font-bold px-3 py-1 rounded-full">
-                      {property.availability}
+                      Available Now
                     </span>
                   </div>
                   <div className="absolute top-4 right-4">
                     <span className="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full">
-                      {property.type}
+                      {property.property_type}
                     </span>
                   </div>
                 </div>
@@ -125,23 +143,23 @@ export default function PropertyShowcase() {
 
                   <div className="flex items-center text-gray-600 mb-4">
                     <MapPin className="h-4 w-4 mr-1" />
-                    <span>{property.location}</span>
+                    <span>{property.city}, {property.state}</span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div className="flex items-center">
                       <Square className="h-4 w-4 mr-2 text-gray-500" />
-                      <span className="text-sm">{property.size.toLocaleString()} sq ft</span>
+                      <span className="text-sm">{property.size_sqft.toLocaleString()} sq ft</span>
                     </div>
                     <div className="flex items-center">
                       <DollarSign className="h-4 w-4 mr-2 text-gray-500" />
-                      <span className="text-sm font-bold">${property.price.toLocaleString()}/mo</span>
+                      <span className="text-sm font-bold">${property.price_monthly.toLocaleString()}/mo</span>
                     </div>
                   </div>
 
                   <div className="mb-4">
                     <div className="flex flex-wrap gap-2">
-                      {property.features.map((feature, index) => (
+                      {property.features && property.features.map((feature: string, index: number) => (
                         <span key={index} className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">
                           {feature}
                         </span>
@@ -150,14 +168,23 @@ export default function PropertyShowcase() {
                   </div>
 
                   <Button
-                    onClick={() => handleGetInfo(property.title, property.location)}
+                    onClick={() => handleGetInfo(property.title, `${property.city}, ${property.state}`)}
                     className="w-full bg-blue-600 hover:bg-blue-700"
                   >
                     Get More Info
                   </Button>
                 </div>
               </div>
-            ))}
+            ))
+            ) : (
+              // No properties available
+              <div className="col-span-full text-center py-12">
+                <div className="bg-white rounded-lg p-8 shadow-lg">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">No Properties Available</h3>
+                  <p className="text-gray-600">Check back soon for new listings!</p>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="text-center mt-12">

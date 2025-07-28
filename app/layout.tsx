@@ -7,22 +7,36 @@ import { ConditionalPopup } from "@/components/layout/conditional-popup"
 
 // This metadata remains unchanged and is correctly exported from a Server Component
 export const metadata: Metadata = {
-  title: "LeaseSmallSpace.com | Colorado's Premier Small Commercial Properties",
+  title: "RentSmallSpace.com | Colorado's Premier Small Commercial Properties",
   description:
     "Find your perfect small commercial space in Colorado. Warehouses, shops, and flex spaces available now. Quick approval, flexible terms.",
-  generator: "LeaseSmallSpace.com",
+  generator: "RentSmallSpace.com",
   keywords: "commercial real estate, warehouse rental, office space, flex space, Colorado commercial property",
-  authors: [{ name: "LeaseSmallSpace Team" }],
+  authors: [{ name: "RentSmallSpace Team" }],
+  icons: {
+    icon: [
+      {
+        url: "/favicon.ico",
+        type: "image/x-icon",
+      },
+      {
+        url: "/favicon.png",
+        type: "image/png",
+      },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/favicon.png",
+  },
   openGraph: {
-    title: "LeaseSmallSpace.com | Colorado Commercial Properties",
+    title: "RentSmallSpace.com | Colorado Commercial Properties",
     description: "Find your perfect small commercial space in Colorado",
-    url: "https://leasesmallspace.com",
-    siteName: "LeaseSmallSpace",
+    url: "https://rentsmallspace.com",
+    siteName: "RentSmallSpace",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "LeaseSmallSpace.com | Colorado Commercial Properties",
+    title: "RentSmallSpace.com | Colorado Commercial Properties",
     description: "Find your perfect small commercial space in Colorado",
   },
   robots: {

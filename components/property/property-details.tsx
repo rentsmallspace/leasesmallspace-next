@@ -31,6 +31,8 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { CloudinaryImage } from "@/components/ui/cloudinary-image"
+import { getPropertyImage } from "@/lib/cloudinary"
 
 const propertyData = {
   id: "lakewood-warehouse-001",
@@ -44,22 +46,22 @@ const propertyData = {
 
   images: [
     {
-      url: "/images/lakewood-warehouse.jpg",
+      url: getPropertyImage('lakewood-warehouse'),
       alt: "Main warehouse interior with high ceilings and concrete floors",
       caption: "Spacious warehouse interior with 16-foot ceilings",
     },
     {
-      url: "/images/lakewood-warehouse.jpg",
+      url: getPropertyImage('lakewood-warehouse'),
       alt: "Loading dock with drive-in door access",
       caption: "Grade-level loading dock with 12x14 overhead door",
     },
     {
-      url: "/images/lakewood-warehouse.jpg",
+      url: getPropertyImage('lakewood-warehouse'),
       alt: "Outdoor storage and parking area",
       caption: "Dedicated outdoor storage and parking area",
     },
     {
-      url: "/images/lakewood-warehouse.jpg",
+      url: getPropertyImage('lakewood-warehouse'),
       alt: "Office area within warehouse space",
       caption: "Built-in office space with HVAC",
     },
@@ -223,12 +225,15 @@ export default function PropertyDetails() {
               <CardContent className="p-0">
                 <div className="relative">
                   <div className="aspect-video relative overflow-hidden rounded-t-lg">
-                    <Image
+                    <CloudinaryImage
                       src={propertyData.images[currentImageIndex].url || "/placeholder.svg"}
                       alt={propertyData.images[currentImageIndex].alt}
-                      fill
-                      className="object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                      className="object-cover cursor-pointer hover:scale-105 transition-transform duration-300 w-full h-full"
                       onClick={() => handleImageClick(currentImageIndex)}
+                      width={800}
+                      height={600}
+                      quality={85}
+                      format="webp"
                     />
                     <div className="absolute top-4 right-4">
                       <Button
@@ -261,7 +266,15 @@ export default function PropertyDetails() {
                               : "border-gray-200 hover:border-gray-300"
                           }`}
                         >
-                          <Image src={image.url || "/placeholder.svg"} alt={image.alt} fill className="object-cover" />
+                          <CloudinaryImage 
+                            src={image.url || "/placeholder.svg"} 
+                            alt={image.alt} 
+                            width={200}
+                            height={150}
+                            className="object-cover w-full h-full"
+                            quality={70}
+                            format="webp"
+                          />
                           {index === 0 && (
                             <div className="absolute top-1 left-1">
                               <Badge className="text-xs bg-blue-600">Main</Badge>

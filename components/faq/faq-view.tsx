@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowRight, Phone } from "lucide-react"
+import { createInquiry } from "@/lib/leads"
 
 const faqData = [
   {
@@ -72,16 +73,30 @@ export default function FAQView() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission here
-    console.log("Form submitted:", formData)
-    setIsSubmitted(true)
-    setTimeout(() => {
-      setIsOpen(false)
-      setIsSubmitted(false)
-      setFormData({ fullName: "", email: "", phone: "" })
-    }, 2000)
+    
+    try {
+      await createInquiry({
+        name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        inquiry_type: "faq_contact",
+        source: "faq_page",
+        page_captured: window.location.pathname,
+        message: "Contact form submission from FAQ page",
+      })
+      
+      setIsSubmitted(true)
+      setTimeout(() => {
+        setIsOpen(false)
+        setIsSubmitted(false)
+        setFormData({ fullName: "", email: "", phone: "" })
+      }, 2000)
+    } catch (error) {
+      console.error("Error submitting FAQ contact form:", error)
+      // You could add error handling here if needed
+    }
   }
 
   const handleInputChange = (field: string, value: string) => {
