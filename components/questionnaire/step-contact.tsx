@@ -25,6 +25,8 @@ export default function ContactStep({
   onPhoneChange: (value: string) => void
   onSmsConsentChange: (value: boolean) => void
 }) {
+  // OAuth handlers - Hidden until OAuth is implemented
+  /*
   const handleOAuthGoogle = () => {
     // In a real implementation, this would authenticate with Google
     // For now, we'll just simulate a successful auth
@@ -40,6 +42,7 @@ export default function ContactStep({
     onNameChange("Apple User")
     onPhoneChange("555-987-6543")
   }
+  */
 
   return (
     <div className="max-w-lg mx-auto">
@@ -71,8 +74,8 @@ export default function ContactStep({
       </div>
 
       <div className="space-y-6">
-        {/* OAuth buttons */}
-        <div className="space-y-3">
+        {/* OAuth buttons - Hidden until OAuth is implemented */}
+        {/* <div className="space-y-3">
           <Button
             type="button"
             variant="outline"
@@ -120,7 +123,7 @@ export default function ContactStep({
           <div className="relative flex justify-center text-sm">
             <span className="px-2 bg-white text-gray-500">or</span>
           </div>
-        </div>
+        </div> */}
 
         <div className="space-y-2">
           <Label htmlFor="name">Full Name</Label>
