@@ -1,6 +1,7 @@
 "use client"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { PhoneInput } from "@/components/ui/phone-input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import { Mail, Shield, Clock, CheckCircle } from "lucide-react"
@@ -153,12 +154,10 @@ export default function ContactStep({
           <Label htmlFor="phone" className="flex items-center">
             Phone <span className="text-red-500 ml-1">*</span>
           </Label>
-          <Input
+          <PhoneInput
             id="phone"
-            type="tel"
-            placeholder="(303) 555-1234"
             value={phone}
-            onChange={(e) => onPhoneChange(e.target.value)}
+            onChange={onPhoneChange}
             required
             autoComplete="tel"
           />

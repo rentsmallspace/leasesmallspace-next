@@ -8,6 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { PhoneInput } from "@/components/ui/phone-input"
 import { ArrowRight, Phone } from "lucide-react"
 import { createInquiry } from "@/lib/leads"
 
@@ -159,12 +160,11 @@ export default function FAQView() {
 
                   <div>
                     <Label htmlFor="phone">Phone Number *</Label>
-                    <Input
+                    <PhoneInput
                       id="phone"
-                      type="tel"
                       required
                       value={formData.phone}
-                      onChange={(e) => handleInputChange("phone", e.target.value)}
+                      onChange={(value) => handleInputChange("phone", value)}
                       className="mt-1"
                     />
                   </div>

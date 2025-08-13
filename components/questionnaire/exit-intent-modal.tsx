@@ -4,6 +4,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { PhoneInput } from "@/components/ui/phone-input"
 import {
   Dialog,
   DialogContent,
@@ -116,13 +117,12 @@ export function ExitIntentModal() {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <Input
+            <PhoneInput
               id="exit-phone"
-              type="tel"
               placeholder="Your phone number"
               required
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={setPhone}
             />
           </div>
 

@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { PhoneInput } from "@/components/ui/phone-input"
 import { Phone, Mail, User, MessageSquare, X } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { createInquiry } from "@/lib/leads"
@@ -206,12 +207,11 @@ export function InactivityPopup({
             </Label>
             <div className="relative">
               <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <Input
+              <PhoneInput
                 id="popup-phone"
-                type="tel"
                 placeholder="(555) 123-4567"
                 value={formData.phone}
-                onChange={(e) => handleInputChange("phone", e.target.value)}
+                onChange={(value) => handleInputChange("phone", value)}
                 className="pl-12 h-12 border-gray-300 focus:border-green-500 focus:ring-green-500 text-base"
                 required
               />

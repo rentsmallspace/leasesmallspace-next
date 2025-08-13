@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { PhoneInput } from "@/components/ui/phone-input"
 import { MapPin, Square, DollarSign, ArrowRight, Lock, CheckCircle, Search, Filter } from "lucide-react"
 import {
   Dialog,
@@ -349,13 +350,11 @@ export default function PropertiesList() {
 
                 <div className="space-y-2">
                   <Label htmlFor="phone">Phone</Label>
-                  <Input
+                  <PhoneInput
                     id="phone"
-                    type="tel"
-                    placeholder="(303) 555-1234"
                     required
                     value={formData.phone}
-                    onChange={(e) => handleInputChange("phone", e.target.value)}
+                    onChange={(value) => handleInputChange("phone", value)}
                     className="focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
