@@ -330,11 +330,7 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
                         View Full Size
                       </Button>
                     </div>
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <div className="bg-black/70 text-white p-3 rounded-lg">
-                        <p className="text-sm">{propertyData.images[currentImageIndex].caption}</p>
-                      </div>
-                    </div>
+
                   </div>
 
                   {/* Thumbnail Navigation */}
