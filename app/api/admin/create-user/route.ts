@@ -4,8 +4,17 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
 import type { Database } from "@/lib/supabase"
 
+// Check if admin client is available
+if (!supabaseAdmin) {
+  console.error("SUPABASE_SERVICE_ROLE_KEY is not configured")
+}
+
 export async function POST(request: NextRequest) {
   try {
+    if (!supabaseAdmin) {
+      return NextResponse.json({ error: "Admin functionality not configured" }, { status: 500 })
+    }
+
     const { email, fullName, password } = await request.json()
 
     if (!email || !fullName || !password) {
@@ -78,6 +87,10 @@ export async function POST(request: NextRequest) {
 // GET endpoint to create your specific user
 export async function GET() {
   try {
+    if (!supabaseAdmin) {
+      return NextResponse.json({ error: "Admin functionality not configured" }, { status: 500 })
+    }
+
     console.log("Creating Nate's admin user...")
 
     // Create user in Supabase Auth using admin client
