@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { PhoneInput } from "@/components/ui/phone-input"
 import { Separator } from "@/components/ui/separator"
 import {
   MapPin,
@@ -647,8 +648,7 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Phone</label>
-                  <input
-                    type="tel"
+                  <PhoneInput
                     className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter your phone number"
                   />
