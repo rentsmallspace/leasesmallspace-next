@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -28,104 +28,79 @@ import {
   Clock,
   Users,
   Star,
+  Loader2,
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { CloudinaryImage } from "@/components/ui/cloudinary-image"
 import { getPropertyImage } from "@/lib/cloudinary"
+import { getPropertyById, type Property } from "@/lib/properties"
 
-const propertyData = {
-  id: "lakewood-warehouse-001",
-  title: "Premium Industrial Warehouse Space",
-  address: "1234 Industrial Blvd, Lakewood, CO 80215",
-  price: 3000,
-  size: 1850,
-  type: "Industrial Warehouse",
-  availability: "Available Now",
-  dealScore: "great" as const,
-
-  images: [
-    {
-      url: getPropertyImage('lakewood-warehouse'),
-      alt: "Main warehouse interior with high ceilings and concrete floors",
-      caption: "Spacious warehouse interior with 16-foot ceilings",
-    },
-    {
-      url: getPropertyImage('lakewood-warehouse'),
-      alt: "Loading dock with drive-in door access",
-      caption: "Grade-level loading dock with 12x14 overhead door",
-    },
-    {
-      url: getPropertyImage('lakewood-warehouse'),
-      alt: "Outdoor storage and parking area",
-      caption: "Dedicated outdoor storage and parking area",
-    },
-    {
-      url: getPropertyImage('lakewood-warehouse'),
-      alt: "Office area within warehouse space",
-      caption: "Built-in office space with HVAC",
-    },
-  ],
-
-  keyFeatures: [
-    "Grade-level loading dock",
-    "12x14 overhead door",
-    "200 amp 3-phase power",
-    "16-foot clear height",
-    "Concrete floors",
-    "LED lighting",
-    "Outdoor storage area",
-    "Dedicated parking",
-    "Built-in office space",
-    "HVAC in office area",
-  ],
-
-  specifications: {
-    totalSize: "1,850 sq ft",
-    warehouseSize: "1,650 sq ft",
-    officeSize: "200 sq ft",
-    clearHeight: "16 feet",
-    loadingDoors: "1 - 12x14 overhead door",
-    power: "200 amp, 3-phase",
-    flooring: "Sealed concrete",
-    lighting: "LED throughout",
-    hvac: "Office area only",
-    parking: "4 dedicated spaces",
-    outdoorStorage: "500 sq ft fenced area",
-  },
-
-  location: {
-    neighborhood: "West Lakewood Industrial District",
-    coordinates: { lat: 39.7047, lng: -105.1178 },
-    nearbyHighways: ["US-6", "C-470", "I-70"],
-    distanceToDowntown: "12 miles to downtown Denver",
-    publicTransit: "RTD bus route nearby",
-  },
-
-  lease: {
-    rate: "$1.62/sq ft/month",
-    term: "3-5 year terms available",
-    type: "Triple Net (NNN)",
-    deposit: "First month + security deposit",
-    utilities: "Tenant responsible",
-    maintenance: "Tenant responsible for interior",
-    insurance: "Required - $1M general liability",
-  },
-
-  amenities: [
-    { icon: Truck, label: "Loading Dock", description: "Grade-level access" },
-    { icon: Zap, label: "Heavy Power", description: "200A 3-phase electrical" },
-    { icon: Car, label: "Parking", description: "4 dedicated spaces" },
-    { icon: Shield, label: "Security", description: "Fenced outdoor area" },
-    { icon: Wifi, label: "Internet Ready", description: "Fiber available" },
-    { icon: Thermometer, label: "Climate Control", description: "Office HVAC" },
-  ],
+// Helper functions for default location values
+function getDefaultHighways(city: string): string[] {
+  const highwayMap: { [key: string]: string[] } = {
+    'Denver': ['I-25', 'I-70', 'US-6'],
+    'Lakewood': ['US-6', 'C-470', 'I-70'],
+    'Boulder': ['US-36', 'I-25', 'CO-119'],
+    'Broomfield': ['US-36', 'I-25', 'C-470'],
+    'Westminster': ['US-36', 'I-25', 'C-470'],
+    'Arvada': ['I-70', 'C-470', 'US-36'],
+    'Centennial': ['I-25', 'C-470', 'US-85'],
+    'Aurora': ['I-25', 'I-70', 'E-470'],
+    'Brighton': ['I-76', 'I-25', 'US-85'],
+    'Northglenn': ['I-25', 'US-36', 'E-470'],
+  }
+  return highwayMap[city] || ['I-25', 'I-70', 'US-6']
 }
 
-export default function PropertyDetails() {
+function getDefaultDistance(city: string): string {
+  const distanceMap: { [key: string]: string } = {
+    'Denver': 'Downtown Denver',
+    'Lakewood': '8 miles to downtown Denver',
+    'Boulder': '30 miles to downtown Denver',
+    'Broomfield': '15 miles to downtown Denver',
+    'Westminster': '12 miles to downtown Denver',
+    'Arvada': '10 miles to downtown Denver',
+    'Centennial': '18 miles to downtown Denver',
+    'Aurora': '10 miles to downtown Denver',
+    'Brighton': '25 miles to downtown Denver',
+    'Northglenn': '12 miles to downtown Denver',
+  }
+  return distanceMap[city] || 'Contact for distance details'
+}
+
+interface PropertyDetailsProps {
+  propertyId: string
+}
+
+export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
+  const [property, setProperty] = useState<Property | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [showContactForm, setShowContactForm] = useState(false)
   const [isImageModalOpen, setIsImageModalOpen] = useState(false)
+
+  useEffect(() => {
+    const fetchProperty = async () => {
+      try {
+        setLoading(true)
+        const propertyData = await getPropertyById(propertyId)
+        if (propertyData) {
+          setProperty(propertyData)
+        } else {
+          setError("Property not found")
+        }
+      } catch (err) {
+        setError("Failed to load property")
+        console.error("Error fetching property:", err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProperty()
+  }, [propertyId])
 
   const handleScheduleTour = () => {
     setShowContactForm(true)
@@ -134,6 +109,114 @@ export default function PropertyDetails() {
   const handleImageClick = (index: number) => {
     setCurrentImageIndex(index)
     setIsImageModalOpen(true)
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-blue-600" />
+          <p className="text-gray-600">Loading property details...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !property) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Property Not Found</h1>
+          <p className="text-gray-600 mb-4">{error || "The requested property could not be found."}</p>
+          <Link href="/" className="text-blue-600 hover:text-blue-700">
+            ← Back to Home
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+  // Transform database property to component format
+  const propertyData = {
+    id: property.id,
+    title: property.title,
+    address: `${property.address}, ${property.city}, ${property.state} ${property.zip_code}`,
+    price: property.price_monthly,
+    size: property.size_sqft,
+    type: property.property_type,
+    availability: property.available_date ? "Available Now" : "Contact for Availability",
+    dealScore: property.deal_score || "good" as const,
+
+    images: property.images && property.images.length > 0 
+      ? property.images.map((image, index) => ({
+          url: image,
+          alt: `${property.title} - Image ${index + 1}`,
+          caption: `${property.title} - ${index === 0 ? 'Main view' : `View ${index + 1}`}`,
+        }))
+      : [{
+          url: getPropertyImage('lakewood-warehouse'), // fallback image
+          alt: property.title,
+          caption: property.title,
+        }],
+
+    keyFeatures: property.features || [
+      "Professional space",
+      "Prime location",
+      "Competitive pricing",
+    ],
+
+    specifications: {
+      totalSize: `${property.size_sqft.toLocaleString()} sq ft`,
+      warehouseSize: `${Math.floor(property.size_sqft * 0.9).toLocaleString()} sq ft`,
+      officeSize: `${Math.floor(property.size_sqft * 0.1).toLocaleString()} sq ft`,
+      clearHeight: property.clear_height || "Not specified",
+      loadingDoors: property.loading_doors || "Not specified",
+      power: property.power_service || "Not specified",
+      flooring: property.flooring_type || "Not specified",
+      lighting: property.lighting_type || "Not specified",
+      hvac: property.hvac_type || "Not specified",
+      parking: property.parking_spaces ? `${property.parking_spaces} dedicated spaces` : "Not specified",
+      outdoorStorage: property.outdoor_storage || "Not specified",
+    },
+
+    location: {
+      neighborhood: property.neighborhood || `${property.city} Area`,
+      coordinates: property.latitude && property.longitude 
+        ? { lat: property.latitude, lng: property.longitude }
+        : { lat: 39.7047, lng: -105.1178 }, // Default to Denver area
+      nearbyHighways: property.nearby_highways || getDefaultHighways(property.city),
+      distanceToDowntown: property.distance_to_downtown || getDefaultDistance(property.city),
+      publicTransit: property.public_transit || "RTD bus routes available",
+    },
+
+    lease: {
+      rate: `$${(property.price_monthly / property.size_sqft).toFixed(2)}/sq ft/month`,
+      term: property.lease_term || "Flexible terms available",
+      type: property.lease_type || "NNN (Triple Net)",
+      deposit: property.deposit_requirements || "First month + security deposit",
+      utilities: property.utilities_responsibility || "Tenant responsible",
+      maintenance: property.maintenance_responsibility || "Tenant responsible for interior",
+      insurance: property.insurance_requirements || "General liability required",
+    },
+
+    amenities: property.amenities && property.amenities.length > 0
+      ? property.amenities.map(amenity => {
+          // Map icon strings to actual icon components
+          const iconMap: { [key: string]: any } = {
+            Truck, Zap, Car, Shield, Wifi, Thermometer, Building, Clock, Users, Star
+          }
+          const IconComponent = iconMap[amenity.icon] || Truck
+          return {
+            icon: IconComponent,
+            label: amenity.label,
+            description: amenity.description
+          }
+        })
+      : [
+          { icon: Truck, label: "Professional Space", description: "Quality commercial property" },
+          { icon: Shield, label: "Secure Location", description: "Safe business environment" },
+          { icon: Car, label: "Parking Available", description: "Contact for parking details" },
+        ],
   }
 
   return (
@@ -429,7 +512,7 @@ export default function PropertyDetails() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Contact Card */}
-            <Card className="sticky top-24">
+            <Card>
               <CardContent className="p-6">
                 <div className="text-center mb-6">
                   <div className="text-3xl font-bold text-blue-600 mb-1">${propertyData.price.toLocaleString()}/mo</div>

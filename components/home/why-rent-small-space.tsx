@@ -1,5 +1,6 @@
 import { MapPin, Building, Zap, Award, Clock, DollarSign, Users, CheckCircle, XCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 const benefits = [
   {
@@ -209,12 +210,14 @@ export default function WhyRentSmallSpace() {
             Join 500+ Colorado businesses who found their perfect space with Lease Small Space. Your ideal warehouse,
             shop, or flex space is waiting.
           </p>
-          <Button
-            size="lg"
-            className="bg-white text-blue-600 hover:bg-gray-100 px-10 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-          >
-            Find My Space Now
-          </Button>
+          <Link href="/questionnaire">
+            <Button
+              size="lg"
+              className="bg-white text-blue-600 hover:bg-gray-100 px-10 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            >
+              Find My Space Now
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

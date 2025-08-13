@@ -38,11 +38,6 @@ export function Footer() {
                   Privacy
                 </Link>
               </li>
-              <li>
-                <Link href="/admin/login" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
-                  Admin
-                </Link>
-              </li>
             </ul>
           </div>
         </div>

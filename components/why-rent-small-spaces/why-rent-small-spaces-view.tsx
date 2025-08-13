@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { PhoneInput } from "@/components/ui/phone-input"
 import {
   Calendar,
   CheckCircle,
@@ -19,6 +20,7 @@ import {
   ArrowRight,
 } from "lucide-react"
 import { createInquiry } from "@/lib/leads"
+import Link from "next/link"
 
 export default function WhyRentSmallSpacesView() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -170,9 +172,11 @@ export default function WhyRentSmallSpacesView() {
                 </div>
               </div>
               <div className="mt-6">
-                <Button onClick={() => setIsModalOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white">
-                  Find My Perfect Space <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <Link href="/questionnaire">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                    Find My Perfect Space <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
@@ -377,9 +381,11 @@ export default function WhyRentSmallSpacesView() {
               </div>
 
               <div className="mt-8">
-                <Button onClick={() => setIsModalOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white">
-                  Find My Perfect Space <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <Link href="/questionnaire">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                    Find My Perfect Space <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
@@ -490,13 +496,14 @@ export default function WhyRentSmallSpacesView() {
           </p>
 
           <div className="text-center">
-            <Button
-              onClick={() => setIsModalOpen(true)}
-              size="lg"
-              className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4 h-auto"
-            >
-              Find the Perfect Space
-            </Button>
+            <Link href="/questionnaire">
+              <Button
+                size="lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4 h-auto"
+              >
+                Find the Perfect Space
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -524,28 +531,28 @@ export default function WhyRentSmallSpacesView() {
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                   Full Name
                 </label>
-                <Input id="name" placeholder="Your name" required />
+                <Input id="name" name="name" placeholder="Your name" required />
               </div>
 
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                   Email Address
                 </label>
-                <Input id="email" type="email" placeholder="you@example.com" required />
+                <Input id="email" name="email" type="email" placeholder="you@example.com" required />
               </div>
 
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
                   Phone Number
                 </label>
-                <Input id="phone" type="tel" placeholder="(303) 555-1234" required />
+                <PhoneInput id="phone" name="phone" required />
               </div>
 
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
                   Message (Optional)
                 </label>
-                <Textarea id="message" placeholder="Tell us about your space needs..." />
+                <Textarea id="message" name="message" placeholder="Tell us about your space needs..." />
               </div>
 
               <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">

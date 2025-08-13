@@ -146,6 +146,11 @@ export async function createInquiry(inquiryData: {
   try {
     console.log("Creating inquiry with data:", inquiryData)
 
+    // Validate required fields
+    if (!inquiryData.name || !inquiryData.email || !inquiryData.phone) {
+      throw new Error(`Missing required fields: name=${!!inquiryData.name}, email=${!!inquiryData.email}, phone=${!!inquiryData.phone}`)
+    }
+
     // 1. Create or update user record
     const user = await createOrUpdateUser({
       email: inquiryData.email,
@@ -154,6 +159,8 @@ export async function createInquiry(inquiryData: {
       company_name: inquiryData.company,
       lead_source: inquiryData.source || inquiryData.inquiry_type,
     })
+
+    console.log("User created/updated:", user)
 
     // 2. Create inquiry record
     const { data: inquiry, error: inquiryError } = await supabase
@@ -204,7 +211,7 @@ export async function createInquiry(inquiryData: {
     return { user, inquiry }
   } catch (error) {
     console.error("Failed to create inquiry:", error)
-    throw new Error("Database connection failed. Please check your Supabase configuration.")
+    throw new Error(`Database connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 

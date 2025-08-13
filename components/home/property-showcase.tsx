@@ -15,9 +15,10 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog"
-import { getFeaturedProperties, type Property } from "@/lib/properties"
+import { getProperties, type Property } from "@/lib/properties"
 import { createInquiry } from "@/lib/leads"
 import { CloudinaryImage } from "@/components/ui/cloudinary-image"
+import Link from "next/link"
 
 export default function PropertyShowcase() {
   const [properties, setProperties] = useState<Property[]>([])
@@ -31,14 +32,14 @@ export default function PropertyShowcase() {
     phone: "",
   })
 
-  // Fetch featured properties on component mount
+  // Fetch properties on component mount
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        console.log("Fetching featured properties for showcase...")
-        const data = await getFeaturedProperties(6) // Get 6 properties for showcase
+        console.log("Fetching properties for showcase...")
+        const data = await getProperties() // Get all active properties
         console.log("Fetched showcase properties:", data)
-        setProperties(data)
+        setProperties(data.slice(0, 6)) // Take first 6 properties
       } catch (error) {
         console.error("Error fetching showcase properties:", error)
         setProperties([])
@@ -50,17 +51,36 @@ export default function PropertyShowcase() {
     fetchProperties()
   }, [])
 
-  const handleGetInfo = (propertyTitle: string, propertyLocation: string) => {
+  const handleGetInfo = (propertyTitle: string, propertyLocation: string, propertyId: string) => {
     setSelectedProperty(`${propertyTitle} - ${propertyLocation}`)
     setModalOpen(true)
     setSubmitted(false)
+    // Reset form data when opening modal
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+    })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
+    // Validate form data before submission
+    if (!formData.name || !formData.email || !formData.phone) {
+      alert("Please fill in all required fields.")
+      return
+    }
+    
     try {
-      await createInquiry({
+      console.log("Submitting inquiry with data:", {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        property: selectedProperty
+      })
+
+      const result = await createInquiry({
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
@@ -70,10 +90,12 @@ export default function PropertyShowcase() {
         message: `Property inquiry for: ${selectedProperty}`,
       })
       
+      console.log("Inquiry submitted successfully:", result)
       setSubmitted(true)
     } catch (error) {
       console.error("Error submitting property inquiry:", error)
-      // You could add error handling here if needed
+      // Show error to user
+      alert("Sorry, there was an error submitting your inquiry. Please try again or contact us directly.")
     }
   }
 
@@ -86,7 +108,7 @@ export default function PropertyShowcase() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Featured Available Properties</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Available Properties</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Move-in ready spaces across Colorado. These won't last long.
             </p>
@@ -167,12 +189,20 @@ export default function PropertyShowcase() {
                     </div>
                   </div>
 
-                  <Button
-                    onClick={() => handleGetInfo(property.title, `${property.city}, ${property.state}`)}
-                    className="w-full bg-blue-600 hover:bg-blue-700"
-                  >
-                    Get More Info
-                  </Button>
+                  <div className="space-y-2">
+                    <Link href={`/property/${property.id}`}>
+                      <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                        View Property <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                    <Button
+                      onClick={() => handleGetInfo(property.title, `${property.city}, ${property.state}`, property.id)}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      Get More Info
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))
@@ -188,9 +218,11 @@ export default function PropertyShowcase() {
           </div>
 
           <div className="text-center mt-12">
-            <Button size="lg" variant="outline" className="mr-4">
-              View All Properties
-            </Button>
+            <Link href="/properties">
+              <Button size="lg" variant="outline" className="mr-4">
+                View All Properties
+              </Button>
+            </Link>
             <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
               Find My Perfect Space <ArrowRight className="ml-2 h-5 w-5" />
             </Button>

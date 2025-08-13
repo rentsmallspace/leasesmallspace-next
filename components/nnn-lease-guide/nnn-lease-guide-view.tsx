@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { PhoneInput } from "@/components/ui/phone-input"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import {
   DollarSign,
@@ -405,28 +406,28 @@ export default function NNNLeaseGuideView() {
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                   Full Name
                 </label>
-                <Input id="name" placeholder="Your name" required />
+                <Input id="name" name="name" placeholder="Your name" required />
               </div>
 
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                   Email Address
                 </label>
-                <Input id="email" type="email" placeholder="you@example.com" required />
+                <Input id="email" name="email" type="email" placeholder="you@example.com" required />
               </div>
 
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
                   Phone Number
                 </label>
-                <Input id="phone" type="tel" placeholder="(303) 555-1234" required />
+                <PhoneInput id="phone" name="phone" required />
               </div>
 
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
                   Message (Optional)
                 </label>
-                <Textarea id="message" placeholder="Questions about NNN leases..." />
+                <Textarea id="message" name="message" placeholder="Questions about NNN leases..." />
               </div>
 
               <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
