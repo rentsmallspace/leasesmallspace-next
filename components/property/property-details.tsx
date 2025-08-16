@@ -35,7 +35,8 @@ import Link from "next/link"
 import Image from "next/image"
 import { CloudinaryImage } from "@/components/ui/cloudinary-image"
 import { getPropertyImage } from "@/lib/cloudinary"
-import { getPropertyById, type Property } from "@/lib/properties"
+import { getPropertyById, getProperties, type Property } from "@/lib/properties"
+import { useToast } from "@/hooks/use-toast"
 
 // Helper functions for default location values
 function getDefaultHighways(city: string): string[] {
@@ -75,12 +76,14 @@ interface PropertyDetailsProps {
 }
 
 export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
+  const { toast } = useToast()
   const [property, setProperty] = useState<Property | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [showContactForm, setShowContactForm] = useState(false)
   const [isImageModalOpen, setIsImageModalOpen] = useState(false)
+  const [similarProperties, setSimilarProperties] = useState<Property[]>([])
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -89,6 +92,8 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
         const propertyData = await getPropertyById(propertyId)
         if (propertyData) {
           setProperty(propertyData)
+          // Fetch similar properties
+          await fetchSimilarProperties(propertyData)
         } else {
           setError("Property not found")
         }
@@ -103,6 +108,71 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
     fetchProperty()
   }, [propertyId])
 
+  const fetchSimilarProperties = async (currentProperty: Property) => {
+    try {
+      // Get all properties and filter for similar ones
+      const allProperties = await getProperties({ is_active: true })
+      
+      // Filter out current property and find similar ones
+      const similar = allProperties
+        .filter(p => p.id !== currentProperty.id)
+        .map(p => {
+          // Calculate similarity score based on multiple factors
+          let score = 0
+          
+          // Property type match (highest weight)
+          if (p.property_type === currentProperty.property_type) {
+            score += 50
+          } else if (p.property_type.includes('Warehouse') && currentProperty.property_type.includes('Warehouse')) {
+            score += 30
+          } else if (p.property_type.includes('Flex') && currentProperty.property_type.includes('Flex')) {
+            score += 30
+          }
+          
+          // City match (high weight)
+          if (p.city?.trim() === currentProperty.city?.trim()) {
+            score += 25
+          }
+          
+          // Size similarity (±25% gets full points, ±50% gets partial points)
+          const sizeDiff = Math.abs(p.size_sqft - currentProperty.size_sqft)
+          const sizePercentDiff = sizeDiff / currentProperty.size_sqft
+          if (sizePercentDiff <= 0.25) {
+            score += 20
+          } else if (sizePercentDiff <= 0.5) {
+            score += 10
+          }
+          
+          // Price similarity (±30% gets points)
+          const priceDiff = Math.abs(p.price_monthly - currentProperty.price_monthly)
+          const pricePercentDiff = priceDiff / currentProperty.price_monthly
+          if (pricePercentDiff <= 0.3) {
+            score += 15
+          }
+          
+          // Deal score bonus (prefer similar deal scores)
+          if (p.deal_score === currentProperty.deal_score) {
+            score += 10
+          }
+          
+          // Featured property bonus
+          if (p.is_featured) {
+            score += 5
+          }
+          
+          return { property: p, score }
+        })
+        .filter(item => item.score > 0) // Only include properties with some similarity
+        .sort((a, b) => b.score - a.score) // Sort by score descending
+        .slice(0, 3) // Take top 3 most similar
+        .map(item => item.property) // Extract just the property objects
+      
+      setSimilarProperties(similar)
+    } catch (error) {
+      console.error("Failed to fetch similar properties:", error)
+    }
+  }
+
   const handleScheduleTour = () => {
     setShowContactForm(true)
   }
@@ -110,6 +180,53 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
   const handleImageClick = (index: number) => {
     setCurrentImageIndex(index)
     setIsImageModalOpen(true)
+  }
+
+  const handleCallClick = () => {
+    window.location.href = "tel:+17205756611"
+  }
+
+  const handleEmailClick = () => {
+    const subject = encodeURIComponent(`Inquiry about ${property?.title || 'Property'}`)
+    const body = encodeURIComponent(`Hi,\n\nI'm interested in learning more about the property: ${property?.title || 'Property'} located at ${property?.address || ''}.\n\nPlease contact me to schedule a viewing or discuss details.\n\nThank you!`)
+    window.location.href = `mailto:hello@rentsmallspace.com?subject=${subject}&body=${body}`
+  }
+
+  const handleShareClick = () => {
+    // Use the correct domain for sharing
+    const currentUrl = window.location.href.replace('rentsmallspace.com', 'leasesmallspace.com')
+    
+    // Simple clipboard copy with fallback
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(currentUrl).then(() => {
+        toast({
+          title: "Link copied!",
+          description: "Property link has been copied to your clipboard.",
+          duration: 3000,
+        })
+      }).catch(() => {
+        // Fallback for older browsers
+        copyToClipboardFallback(currentUrl)
+      })
+    } else {
+      // Fallback for older browsers
+      copyToClipboardFallback(currentUrl)
+    }
+  }
+
+  const copyToClipboardFallback = (text: string) => {
+    const textArea = document.createElement('textarea')
+    textArea.value = text
+    document.body.appendChild(textArea)
+    textArea.select()
+    document.execCommand('copy')
+    document.body.removeChild(textArea)
+    
+    toast({
+      title: "Link copied!",
+      description: "Property link has been copied to your clipboard.",
+      duration: 3000,
+    })
   }
 
   if (loading) {
@@ -232,17 +349,13 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
             </Link>
 
             <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={handleShareClick}
+              >
                 <Share2 className="h-4 w-4 mr-2" />
                 Share
-              </Button>
-              <Button variant="outline" size="sm">
-                <Heart className="h-4 w-4 mr-2" />
-                Save
-              </Button>
-              <Button variant="outline" size="sm">
-                <Download className="h-4 w-4 mr-2" />
-                Brochure
               </Button>
             </div>
           </div>
@@ -330,7 +443,11 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
                         View Full Size
                       </Button>
                     </div>
-
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <div className="bg-black/70 text-white p-3 rounded-lg">
+                        <p className="text-sm">{propertyData.images[currentImageIndex].caption}</p>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Thumbnail Navigation */}
@@ -523,11 +640,19 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
                   </Button>
 
                   <div className="grid grid-cols-2 gap-2">
-                    <Button variant="outline" className="flex items-center justify-center bg-transparent">
+                    <Button 
+                      variant="outline" 
+                      className="flex items-center justify-center bg-transparent"
+                      onClick={handleCallClick}
+                    >
                       <Phone className="h-4 w-4 mr-2" />
                       Call
                     </Button>
-                    <Button variant="outline" className="flex items-center justify-center bg-transparent">
+                    <Button 
+                      variant="outline" 
+                      className="flex items-center justify-center bg-transparent"
+                      onClick={handleEmailClick}
+                    >
                       <Mail className="h-4 w-4 mr-2" />
                       Email
                     </Button>
@@ -596,22 +721,95 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
               <CardContent className="p-6">
                 <h3 className="font-semibold text-lg mb-4">Similar Properties</h3>
                 <div className="space-y-4">
-                  <div className="border rounded-lg p-3 hover:bg-gray-50 cursor-pointer">
-                    <div className="font-medium text-sm">2,200 sq ft Warehouse</div>
-                    <div className="text-xs text-gray-600">Westminster, CO</div>
-                    <div className="text-sm font-bold text-blue-600 mt-1">$3,400/mo</div>
-                  </div>
-                  <div className="border rounded-lg p-3 hover:bg-gray-50 cursor-pointer">
-                    <div className="font-medium text-sm">1,650 sq ft Flex Space</div>
-                    <div className="text-xs text-gray-600">Arvada, CO</div>
-                    <div className="text-sm font-bold text-blue-600 mt-1">$2,750/mo</div>
-                  </div>
+                  {similarProperties.length > 0 ? (
+                    similarProperties.map((similarProperty) => (
+                      <Link key={similarProperty.id} href={`/property/${similarProperty.id}`}>
+                        <div className="border rounded-lg p-3 hover:bg-gray-50 cursor-pointer transition-colors">
+                          <div className="font-medium text-sm">{similarProperty.title}</div>
+                          <div className="text-xs text-gray-600">{similarProperty.size_sqft.toLocaleString()} sq ft • {similarProperty.city}, {similarProperty.state}</div>
+                          <div className="text-sm font-bold text-blue-600 mt-1">${similarProperty.price_monthly.toLocaleString()}/mo</div>
+                          <div className="flex items-center justify-between mt-2">
+                            {similarProperty.deal_score && (
+                              <Badge variant="outline" className="text-xs capitalize border-green-200 text-green-700">
+                                {similarProperty.deal_score} deal
+                              </Badge>
+                            )}
+                            {similarProperty.is_featured && (
+                              <Badge variant="outline" className="text-xs border-blue-200 text-blue-700">
+                                Featured
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="text-sm text-gray-500 text-center py-4">
+                      No similar properties found
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
       </div>
+
+      {/* Image Modal */}
+      {isImageModalOpen && (
+        <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
+          <div className="relative max-w-7xl max-h-[90vh] w-full">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsImageModalOpen(false)}
+              className="absolute top-4 right-4 z-10 bg-black/50 text-white hover:bg-black/70"
+            >
+              ×
+            </Button>
+            <div className="relative w-full h-full flex items-center justify-center">
+              <CloudinaryImage
+                src={propertyData.images[currentImageIndex].url || "/placeholder.svg"}
+                alt={propertyData.images[currentImageIndex].alt}
+                className="object-contain max-w-full max-h-full rounded-lg"
+                width={1200}
+                height={800}
+                quality={95}
+                format="webp"
+              />
+            </div>
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+              <div className="bg-black/70 text-white px-4 py-2 rounded-lg">
+                <p className="text-sm">{propertyData.images[currentImageIndex].caption}</p>
+                <p className="text-xs text-gray-300 mt-1">
+                  {currentImageIndex + 1} of {propertyData.images.length}
+                </p>
+              </div>
+            </div>
+            {/* Navigation arrows */}
+            {propertyData.images.length > 1 && (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setCurrentImageIndex(prev => prev > 0 ? prev - 1 : propertyData.images.length - 1)}
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white hover:bg-black/70"
+                >
+                  ←
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setCurrentImageIndex(prev => prev < propertyData.images.length - 1 ? prev + 1 : 0)}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white hover:bg-black/70"
+                >
+                  →
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Contact Form Modal */}
       {showContactForm && (

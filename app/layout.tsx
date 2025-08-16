@@ -4,6 +4,7 @@ import "./globals.css"
 import { Navigation } from "@/components/navigation/navigation"
 import { Footer } from "@/components/footer/footer"
 import { ConditionalPopup } from "@/components/layout/conditional-popup"
+import { Toaster } from "@/components/ui/toaster"
 
 // This metadata remains unchanged and is correctly exported from a Server Component
 export const metadata: Metadata = {
@@ -71,6 +72,7 @@ export default function RootLayout({
         </div>
         {/* Use the new client component here, passing the enabled paths */}
         <ConditionalPopup enabledPaths={popupEnabledPaths} />
+        <Toaster />
       </body>
     </html>
   )
