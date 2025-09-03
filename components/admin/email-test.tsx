@@ -88,7 +88,7 @@ export function EmailTest() {
                 id="phone"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                placeholder="(303) 555-0123"
+                placeholder="(720) 989-8838"
               />
             </div>
             <div className="space-y-2">

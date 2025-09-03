@@ -18,13 +18,13 @@ export default function CTA() {
             </Button>
           </Link>
 
-          <a href="tel:+13035551234">
+          <a href="tel:+17209898838">
             <Button
               size="lg"
               className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-4"
             >
               <Phone className="mr-2 h-5 w-5" />
-              Call (303) 555-1234
+              Call (720) 989-8838
             </Button>
           </a>
         </div>

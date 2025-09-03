@@ -16,7 +16,7 @@ export const generateStructuredData = (type: "Organization" | "LocalBusiness" | 
         description: "Colorado's premier small commercial real estate platform",
         contactPoint: {
           "@type": "ContactPoint",
-          telephone: "+1-303-555-0123",
+          telephone: "+1-720-989-8838",
           contactType: "customer service",
         },
       }
@@ -37,7 +37,7 @@ export const generateStructuredData = (type: "Organization" | "LocalBusiness" | 
           longitude: -104.9903,
         },
         openingHours: "Mo-Fr 08:00-18:00",
-        telephone: "+1-303-555-0123",
+        telephone: "+1-720-989-8838",
       }
 
     default:

@@ -94,11 +94,11 @@ Thank you!`)
           <h3 className="font-bold text-lg mb-4">Need to reach us immediately?</h3>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="tel:+13035551234"
+              href="tel:+17209898838"
               className="flex items-center justify-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
             >
               <Phone className="h-5 w-5 mr-2" />
-              Call (303) 555-1234
+              Call (720) 989-8838
             </a>
             <button
               onClick={handleEmailClick}

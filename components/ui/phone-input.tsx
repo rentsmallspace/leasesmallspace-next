@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
-import type { InputProps } from "@/components/ui/input"
 
-interface PhoneInputProps extends Omit<InputProps, 'onChange'> {
+interface PhoneInputProps {
   onChange?: (value: string) => void
   value?: string
+  placeholder?: string
 }
 
 export function PhoneInput({ onChange, value, ...props }: PhoneInputProps) {
@@ -51,7 +51,7 @@ export function PhoneInput({ onChange, value, ...props }: PhoneInputProps) {
       type="tel"
       value={displayValue}
       onChange={handleChange}
-      placeholder={props.placeholder || "(303) 555-1234"}
+      placeholder={props.placeholder || "(720) 989-8838"}
     />
   )
 }

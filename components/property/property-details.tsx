@@ -698,20 +698,6 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
                     </div>
                     <span className="font-medium">47</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <Heart className="h-4 w-4 text-gray-500 mr-2" />
-                      <span className="text-sm text-gray-600">Times saved</span>
-                    </div>
-                    <span className="font-medium">12</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <Calendar className="h-4 w-4 text-gray-500 mr-2" />
-                      <span className="text-sm text-gray-600">Days on market</span>
-                    </div>
-                    <span className="font-medium">8</span>
-                  </div>
                 </div>
               </CardContent>
             </Card>
