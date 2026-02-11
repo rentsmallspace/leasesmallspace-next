@@ -87,16 +87,10 @@ export default function TermsPage() {
           <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">10. Contact Information</h2>
           <p className="text-gray-700 mb-4">For questions about these Terms of Use, please contact us at:</p>
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-            <p className="text-gray-700 mb-2">
+            <p className="text-gray-700 mb-0">
               <strong>Email:</strong>{" "}
               <a href="mailto:legal@rentsmallspace.com" className="text-blue-600 hover:text-blue-800">
                 legal@rentsmallspace.com
-              </a>
-            </p>
-            <p className="text-gray-700 mb-0">
-              <strong>Phone:</strong>{" "}
-              <a href="tel:+17205756611" className="text-blue-600 hover:text-blue-800">
-                (720) 575-6611
               </a>
             </p>
           </div>
