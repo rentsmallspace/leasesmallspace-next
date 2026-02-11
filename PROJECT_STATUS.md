@@ -38,15 +38,14 @@
 
 ## 🚧 **NEXT PRIORITIES**
 
-### 1. **Image Management & Cloudinary** (HIGH PRIORITY)
-- [x] Set up Cloudinary account and API keys
-- [x] Create Cloudinary integration service (`lib/cloudinary.ts`)
-- [x] Replace static images with Cloudinary URLs
-- [x] Implement image optimization and responsive images
-- [x] Update property images to use Cloudinary
-- [x] Implement lazy loading for better performance
-- [ ] Add image upload functionality for admin interface
-- [ ] Upload actual images to Cloudinary
+### 1. **Image Management & Supabase Storage** (HIGH PRIORITY)
+- [x] Use Supabase Storage for property images (replaced Cloudinary)
+- [x] Storage helpers (`lib/storage.ts`) and `StorageImage` component (`components/ui/storage-image.tsx`)
+- [x] Property images resolved from bucket `property-images` via public URLs
+- [x] Lazy loading via Next.js Image
+- [ ] Create bucket `property-images` in Supabase Dashboard (see `sql/11_storage_bucket_property_images.sql`)
+- [ ] Upload property images to bucket (paths: e.g. `lakewood-warehouse.jpg`, `retail-centennial.jpg`)
+- [ ] Add image upload in admin interface (optional)
 
 ### 2. **Admin Interface** (HIGH PRIORITY)
 - [ ] Create separate admin application (React/Next.js)
@@ -147,10 +146,10 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 # Email (Resend)
 RESEND_API_KEY=your_resend_api_key
 
-# Cloudinary (to be added)
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
+# Supabase (required for Storage image URLs)
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+# Storage: create a public bucket "property-images" in Dashboard and upload images
 ```
 
 ### **Database Tables Status**
@@ -172,7 +171,7 @@ CLOUDINARY_API_SECRET=your_api_secret
 - ✅ Basic branding implemented
 
 ### **Next Milestones**
-1. **Cloudinary Integration** - Replace static images
+1. **Image hosting** - Supabase Storage (replaced Cloudinary)
 2. **Admin Interface** - Manage all data
 3. **UI Polish** - Better user experience
 4. **Email Refinement** - Professional templates
@@ -182,7 +181,7 @@ CLOUDINARY_API_SECRET=your_api_secret
 
 ## 📞 **QUICK START FOR TOMORROW**
 
-1. **Start with Cloudinary setup** - This will improve performance and scalability
+1. **Create Supabase Storage bucket** - See sql/11_storage_bucket_property_images.sql and upload property images
 2. **Begin admin interface** - This will make data management much easier
 3. **Test email flows** - Ensure all notifications are working properly
 4. **Polish UI/UX** - Improve user experience

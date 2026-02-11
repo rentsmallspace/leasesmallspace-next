@@ -32,8 +32,7 @@ Continue building your app on:
 ## Future Enhancements
 
 ### Image Management
-- **Cloudinary Integration**: Replace local static images with Cloudinary for better performance and scalability
-  - Free tier: 25 GB storage, 25 GB bandwidth/month
-  - Automatic image optimization and responsive images
-  - CDN delivery for faster loading worldwide
-  - Easy upload and URL generation APIs
+- **Supabase Storage**: Property images are served from Supabase Storage (bucket `property-images`)
+  - Single vendor with auth and database
+  - Public URLs for listing images; use `lib/storage.ts` and `StorageImage` component
+  - Create the bucket in Supabase Dashboard and upload images (see `sql/11_storage_bucket_property_images.sql`)

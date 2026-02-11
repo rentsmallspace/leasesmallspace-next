@@ -1,5 +1,16 @@
--- Insert sample properties (Supabase Storage image paths).
--- For truncate + full reseed, use 12_truncate_and_reseed_properties.sql instead.
+-- Truncate lss_properties and re-populate with sample data using Supabase Storage image paths.
+-- lss_active_properties is a VIEW (no truncate); it will show the new data automatically.
+-- Inquiries referencing properties will have property_id set to NULL (ON DELETE SET NULL).
+
+-- 1. Clear existing properties (inquiries.property_id will become NULL where they pointed here)
+DELETE FROM lss_properties;
+
+-- 2. Reset identity so new IDs are predictable (optional; remove if you prefer random UUIDs)
+-- Only if your id column is SERIAL; if UUID default gen_random_uuid(), no need.
+-- SELECT setval(pg_get_serial_sequence('lss_properties', 'id'), 1);  -- uncomment if id is serial
+
+-- 3. Insert sample properties with Supabase Storage image paths (no Cloudinary suffix).
+-- First 3 have is_featured = true so the hero carousel shows them.
 INSERT INTO lss_properties (
     title,
     description,
@@ -16,8 +27,9 @@ INSERT INTO lss_properties (
     images,
     primary_image,
     deal_score,
-    is_active
-) VALUES 
+    is_active,
+    is_featured
+) VALUES
 (
     '1,200 sq ft Flex Space Units',
     'Modern flex space units with ample parking and convenient access to major highways. Perfect for small businesses looking for flexible commercial space.',
@@ -34,6 +46,7 @@ INSERT INTO lss_properties (
     '["11450-n-cherokee-st-northglenn.jpg"]',
     '11450-n-cherokee-st-northglenn.jpg',
     'good',
+    true,
     true
 ),
 (
@@ -52,6 +65,7 @@ INSERT INTO lss_properties (
     '["boulder-aerial-facility.jpg"]',
     'boulder-aerial-facility.jpg',
     'great',
+    true,
     true
 ),
 (
@@ -70,6 +84,7 @@ INSERT INTO lss_properties (
     '["lakewood-warehouse.jpg"]',
     'lakewood-warehouse.jpg',
     'excellent',
+    true,
     true
 ),
 (
@@ -88,7 +103,8 @@ INSERT INTO lss_properties (
     '["retail-centennial.jpg"]',
     'retail-centennial.jpg',
     'good',
-    true
+    true,
+    false
 ),
 (
     'Industrial Unit',
@@ -106,7 +122,8 @@ INSERT INTO lss_properties (
     '["brighton-flex-space.jpg"]',
     'brighton-flex-space.jpg',
     'great',
-    true
+    true,
+    false
 ),
 (
     'Flex Space',
@@ -124,13 +141,14 @@ INSERT INTO lss_properties (
     '["broomfield-flex-space.jpg"]',
     'broomfield-flex-space.jpg',
     'good',
-    true
+    true,
+    false
 );
 
--- Create a view for active properties (drop first so column list can change if needed)
+-- 4. Recreate the active properties view (drop first so column list can change)
 DROP VIEW IF EXISTS lss_active_properties;
 CREATE VIEW lss_active_properties AS
-SELECT 
+SELECT
     id,
     title,
     description,
@@ -148,6 +166,6 @@ SELECT
     primary_image,
     deal_score,
     created_at
-FROM lss_properties 
-WHERE is_active = true 
+FROM lss_properties
+WHERE is_active = true
 ORDER BY created_at DESC;

@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog"
 import { getProperties, type Property } from "@/lib/properties"
 import { createInquiry } from "@/lib/leads"
-import { CloudinaryImage } from "@/components/ui/cloudinary-image"
+import { StorageImage } from "@/components/ui/storage-image"
 import Link from "next/link"
 
 export default function PropertiesList() {
@@ -227,7 +227,7 @@ export default function PropertiesList() {
               className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="relative">
-                <CloudinaryImage
+                <StorageImage
                   src={property.primary_image || property.images?.[0] || "/placeholder.svg"}
                   alt={property.title}
                   width={400}

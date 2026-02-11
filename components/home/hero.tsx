@@ -6,7 +6,7 @@ import { ArrowRight, MapPin, CheckCircle, Building, Lightbulb, FileText } from "
 import { RealTimeCounter } from "@/components/ui/real-time-counter"
 import Link from "next/link"
 import { getFeaturedProperties, type Property } from "@/lib/properties"
-import { CloudinaryImage } from "@/components/ui/cloudinary-image"
+import { StorageImage } from "@/components/ui/storage-image"
 
 // Exact space types in order
 const spaceTypes = [
@@ -353,18 +353,28 @@ export default function Hero() {
                 <span className="text-gray-900 text-2xl sm:text-3xl md:text-4xl block mt-2">IN COLORADO</span>
               </h1>
 
-              {/* Animated subheading with clean flip-board effect */}
+              {/* Animated subheading with clean flip-board effect (Tailwind for initial layout to avoid content shift) */}
               <div className="text-xl text-gray-800 mb-8 max-w-lg">
                 <div className="font-medium leading-relaxed">
                   <p className="mb-2">Flexible, Affordable, Move-In Ready:</p>
-                  <div className="flip-board mb-2" aria-live="polite" aria-label={`Flexible Small ${displayedWord}`}>
+                  <div
+                    className="inline-flex gap-0.5 justify-start items-center mb-2"
+                    aria-live="polite"
+                    aria-label={`Flexible Small ${displayedWord}`}
+                  >
                     {displayedWord.split("").map((letter, index) => (
                       <div
                         key={`${currentWordIndex}-${index}`}
-                        className={`flip-letter ${letter === " " ? "space" : ""}`}
+                        className={
+                          letter === " "
+                            ? "w-3 bg-transparent shadow-none flex-shrink-0"
+                            : "bg-[#29CC61] text-white w-6 h-[34px] flex items-center justify-center rounded shadow-sm overflow-hidden relative flex-shrink-0 text-xl font-bold"
+                        }
                       >
                         {letter !== " " && (
-                          <div className={`letter-inner ${isFlipping ? "flipping" : ""}`}>{letter}</div>
+                          <div className={`letter-inner flex items-center justify-center w-full h-full ${isFlipping ? "flipping" : ""}`}>
+                            {letter}
+                          </div>
                         )}
                       </div>
                     ))}
@@ -453,7 +463,7 @@ export default function Hero() {
                           index === currentPropertyIndex ? "opacity-100" : "opacity-0 pointer-events-none"
                         }`}
                       >
-                        <CloudinaryImage
+                        <StorageImage
                           src={property.primary_image || property.images?.[0] || "/placeholder.svg"}
                           alt={property.title}
                           width={800}
@@ -551,19 +561,29 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Train Station Style City Board - Full Width */}
+        {/* Train Station Style City Board - Full Width (Tailwind for initial layout to avoid content shift) */}
         <div className="relative w-full mt-12 py-6 px-4">
-          <div className="city-board">
+          <div className="flex justify-between w-full max-w-5xl mx-auto flex-wrap gap-2 sm:flex-nowrap">
             {cityGroups.map((cities, groupIndex) => (
-              <div key={groupIndex} className="city-slot">
-                <div className="city-flip-board" aria-live="polite">
+              <div
+                key={groupIndex}
+                className="text-gray-700 py-2 px-4 rounded min-w-[120px] sm:min-w-[180px] text-center overflow-hidden flex-shrink-0"
+              >
+                <div
+                  className="inline-flex gap-0.5 justify-center items-center"
+                  aria-live="polite"
+                >
                   {cities[cityIndices[groupIndex]].split("").map((letter, letterIndex) => (
                     <div
                       key={`${groupIndex}-${cityIndices[groupIndex]}-${letterIndex}`}
-                      className={`city-flip-letter ${letter === " " ? "space" : ""}`}
+                      className={
+                        letter === " "
+                          ? "w-2 bg-transparent shadow-none flex-shrink-0"
+                          : "bg-black text-white w-5 h-7 flex items-center justify-center rounded-sm text-base font-bold shadow-sm overflow-hidden relative flex-shrink-0"
+                      }
                     >
                       {letter !== " " && (
-                        <div className={`city-letter-inner ${cityFlipping[groupIndex] ? "flipping" : ""}`}>
+                        <div className={`city-letter-inner flex items-center justify-center w-full h-full ${cityFlipping[groupIndex] ? "flipping" : ""}`}>
                           {letter}
                         </div>
                       )}

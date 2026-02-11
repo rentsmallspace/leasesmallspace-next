@@ -33,8 +33,8 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { CloudinaryImage } from "@/components/ui/cloudinary-image"
-import { getPropertyImage } from "@/lib/cloudinary"
+import { StorageImage } from "@/components/ui/storage-image"
+import { getPropertyImage } from "@/lib/storage"
 import { getPropertyById, getProperties, type Property } from "@/lib/properties"
 import { useToast } from "@/hooks/use-toast"
 
@@ -422,7 +422,7 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
               <CardContent className="p-0">
                 <div className="relative">
                   <div className="aspect-video relative overflow-hidden rounded-t-lg">
-                    <CloudinaryImage
+                    <StorageImage
                       src={propertyData.images[currentImageIndex].url || "/placeholder.svg"}
                       alt={propertyData.images[currentImageIndex].alt}
                       className="object-cover cursor-pointer hover:scale-105 transition-transform duration-300 w-full h-full"
@@ -463,9 +463,9 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
                               : "border-gray-200 hover:border-gray-300"
                           }`}
                         >
-                          <CloudinaryImage 
-                            src={image.url || "/placeholder.svg"} 
-                            alt={image.alt} 
+                          <StorageImage
+                            src={image.url || "/placeholder.svg"}
+                            alt={image.alt}
                             width={200}
                             height={150}
                             className="object-cover w-full h-full"
@@ -754,7 +754,7 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
               ×
             </Button>
             <div className="relative w-full h-full flex items-center justify-center">
-              <CloudinaryImage
+              <StorageImage
                 src={propertyData.images[currentImageIndex].url || "/placeholder.svg"}
                 alt={propertyData.images[currentImageIndex].alt}
                 className="object-contain max-w-full max-h-full rounded-lg"
