@@ -176,7 +176,7 @@ export default function PropertyShowcase() {
                     </div>
                     <div className="flex items-center">
                       <DollarSign className="h-4 w-4 mr-2 text-gray-500" />
-                      <span className="text-sm font-bold">${property.price_monthly.toLocaleString()}/mo</span>
+                      <span className="text-sm font-bold">${property.price_monthly.toLocaleString()}/mo{property.lease_type?.toUpperCase().includes("NNN") ? " NNN" : property.lease_type ? ` ${property.lease_type}` : ""}</span>
                     </div>
                   </div>
 

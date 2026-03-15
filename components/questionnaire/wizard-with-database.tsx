@@ -307,7 +307,7 @@ export default function QuestionnaireWizardWithDatabase() {
       {/* Inactivity popup - only shows when not on the final step */}
       {step < totalSteps && (
         <InactivityPopup
-          inactivityDelay={30000} // 30 seconds
+          inactivityDelay={60000} // 60 seconds
           exitIntentEnabled={true}
         />
       )}

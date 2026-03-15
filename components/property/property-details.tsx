@@ -34,7 +34,6 @@ import {
 import Link from "next/link"
 import Image from "next/image"
 import { StorageImage } from "@/components/ui/storage-image"
-import { getPropertyImage } from "@/lib/storage"
 import { getPropertyById, getProperties, type Property } from "@/lib/properties"
 import { useToast } from "@/hooks/use-toast"
 
@@ -265,17 +264,13 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
     availability: property.available_date ? "Available Now" : "Contact for Availability",
     dealScore: property.deal_score || "good" as const,
 
-    images: property.images && property.images.length > 0 
+    images: property.images && property.images.length > 0
       ? property.images.map((image, index) => ({
           url: image,
           alt: `${property.title} - Image ${index + 1}`,
           caption: `${property.title} - ${index === 0 ? 'Main view' : `View ${index + 1}`}`,
         }))
-      : [{
-          url: getPropertyImage('lakewood-warehouse'), // fallback image
-          alt: property.title,
-          caption: property.title,
-        }],
+      : [],
 
     keyFeatures: property.features || [
       "Professional space",
@@ -401,8 +396,8 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
                 </div>
                 <div className="text-center p-4 bg-white rounded-lg border">
                   <DollarSign className="h-6 w-6 mx-auto mb-2 text-green-600" />
-                  <div className="font-bold text-lg">${propertyData.price.toLocaleString()}</div>
-                  <div className="text-sm text-gray-600">per month</div>
+                  <div className="font-bold text-lg">${propertyData.price.toLocaleString()}/mo{propertyData.lease.type?.toUpperCase().includes("NNN") ? " NNN" : propertyData.lease.type ? ` ${propertyData.lease.type}` : ""}</div>
+                  <div className="text-sm text-gray-600">{propertyData.lease.type?.toUpperCase().includes("NNN") ? "Triple Net" : "per month"}</div>
                 </div>
                 <div className="text-center p-4 bg-white rounded-lg border">
                   <Building className="h-6 w-6 mx-auto mb-2 text-purple-600" />
@@ -417,73 +412,75 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
               </div>
             </div>
 
-            {/* Image Gallery */}
-            <Card>
-              <CardContent className="p-0">
-                <div className="relative">
-                  <div className="aspect-video relative overflow-hidden rounded-t-lg">
-                    <StorageImage
-                      src={propertyData.images[currentImageIndex].url || "/placeholder.svg"}
-                      alt={propertyData.images[currentImageIndex].alt}
-                      className="object-cover cursor-pointer hover:scale-105 transition-transform duration-300 w-full h-full"
-                      onClick={() => handleImageClick(currentImageIndex)}
-                      width={800}
-                      height={600}
-                      quality={85}
-                      format="webp"
-                    />
-                    <div className="absolute top-4 right-4">
-                      <Button
-                        variant="secondary"
-                        size="sm"
+            {/* Image Gallery - only show when property has images */}
+            {propertyData.images.length > 0 && (
+              <Card>
+                <CardContent className="p-0">
+                  <div className="relative">
+                    <div className="aspect-video relative overflow-hidden rounded-t-lg">
+                      <StorageImage
+                        src={propertyData.images[currentImageIndex].url}
+                        alt={propertyData.images[currentImageIndex].alt}
+                        className="object-cover cursor-pointer hover:scale-105 transition-transform duration-300 w-full h-full"
                         onClick={() => handleImageClick(currentImageIndex)}
-                        className="bg-black/50 text-white hover:bg-black/70"
-                      >
-                        <Maximize className="h-4 w-4 mr-2" />
-                        View Full Size
-                      </Button>
+                        width={800}
+                        height={600}
+                        quality={85}
+                        format="webp"
+                      />
+                      <div className="absolute top-4 right-4">
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => handleImageClick(currentImageIndex)}
+                          className="bg-black/50 text-white hover:bg-black/70"
+                        >
+                          <Maximize className="h-4 w-4 mr-2" />
+                          View Full Size
+                        </Button>
+                      </div>
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <div className="bg-black/70 text-white p-3 rounded-lg">
+                          <p className="text-sm">{propertyData.images[currentImageIndex].caption}</p>
+                        </div>
+                      </div>
                     </div>
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <div className="bg-black/70 text-white p-3 rounded-lg">
-                        <p className="text-sm">{propertyData.images[currentImageIndex].caption}</p>
+
+                    {/* Thumbnail Navigation */}
+                    <div className="p-4 bg-white">
+                      <div className="grid grid-cols-4 gap-2">
+                        {propertyData.images.map((image, index) => (
+                          <button
+                            key={index}
+                            onClick={() => setCurrentImageIndex(index)}
+                            className={`aspect-video relative overflow-hidden rounded-lg border-2 transition-all ${
+                              currentImageIndex === index
+                                ? "border-blue-500 ring-2 ring-blue-200"
+                                : "border-gray-200 hover:border-gray-300"
+                            }`}
+                          >
+                            <StorageImage
+                              src={image.url}
+                              alt={image.alt}
+                              width={200}
+                              height={150}
+                              className="object-cover w-full h-full"
+                              quality={70}
+                              format="webp"
+                            />
+                            {index === 0 && (
+                              <div className="absolute top-1 left-1">
+                                <Badge className="text-xs bg-blue-600">Main</Badge>
+                              </div>
+                            )}
+                          </button>
+                        ))}
                       </div>
                     </div>
                   </div>
-
-                  {/* Thumbnail Navigation */}
-                  <div className="p-4 bg-white">
-                    <div className="grid grid-cols-4 gap-2">
-                      {propertyData.images.map((image, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setCurrentImageIndex(index)}
-                          className={`aspect-video relative overflow-hidden rounded-lg border-2 transition-all ${
-                            currentImageIndex === index
-                              ? "border-blue-500 ring-2 ring-blue-200"
-                              : "border-gray-200 hover:border-gray-300"
-                          }`}
-                        >
-                          <StorageImage
-                            src={image.url || "/placeholder.svg"}
-                            alt={image.alt}
-                            width={200}
-                            height={150}
-                            className="object-cover w-full h-full"
-                            quality={70}
-                            format="webp"
-                          />
-                          {index === 0 && (
-                            <div className="absolute top-1 left-1">
-                              <Badge className="text-xs bg-blue-600">Main</Badge>
-                            </div>
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Property Description */}
             <Card>
@@ -629,7 +626,7 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
             <Card>
               <CardContent className="p-6">
                 <div className="text-center mb-6">
-                  <div className="text-3xl font-bold text-blue-600 mb-1">${propertyData.price.toLocaleString()}/mo</div>
+                  <div className="text-3xl font-bold text-blue-600 mb-1">${propertyData.price.toLocaleString()}/mo{propertyData.lease.type?.toUpperCase().includes("NNN") ? " NNN" : propertyData.lease.type ? ` ${propertyData.lease.type}` : ""}</div>
                   <div className="text-gray-600">{propertyData.lease.rate}</div>
                 </div>
 
@@ -713,7 +710,7 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
                         <div className="border rounded-lg p-3 hover:bg-gray-50 cursor-pointer transition-colors">
                           <div className="font-medium text-sm">{similarProperty.title}</div>
                           <div className="text-xs text-gray-600">{similarProperty.size_sqft.toLocaleString()} sq ft • {similarProperty.city}, {similarProperty.state}</div>
-                          <div className="text-sm font-bold text-blue-600 mt-1">${similarProperty.price_monthly.toLocaleString()}/mo</div>
+                          <div className="text-sm font-bold text-blue-600 mt-1">${similarProperty.price_monthly.toLocaleString()}/mo{similarProperty.lease_type?.toUpperCase().includes("NNN") ? " NNN" : similarProperty.lease_type ? ` ${similarProperty.lease_type}` : ""}</div>
                           <div className="flex items-center justify-between mt-2">
                             {similarProperty.deal_score && (
                               <Badge variant="outline" className="text-xs capitalize border-green-200 text-green-700">
@@ -741,8 +738,8 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
         </div>
       </div>
 
-      {/* Image Modal */}
-      {isImageModalOpen && (
+      {/* Image Modal - only when there are images */}
+      {isImageModalOpen && propertyData.images.length > 0 && (
         <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
           <div className="relative max-w-7xl max-h-[90vh] w-full">
             <Button
@@ -755,7 +752,7 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
             </Button>
             <div className="relative w-full h-full flex items-center justify-center">
               <StorageImage
-                src={propertyData.images[currentImageIndex].url || "/placeholder.svg"}
+                src={propertyData.images[currentImageIndex].url}
                 alt={propertyData.images[currentImageIndex].alt}
                 className="object-contain max-w-full max-h-full rounded-lg"
                 width={1200}

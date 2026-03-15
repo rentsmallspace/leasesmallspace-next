@@ -16,27 +16,26 @@ interface InactivityPopupProps {
   exitIntentEnabled?: boolean
 }
 
+const SESSION_KEY = "leadCaptureShown"
+
+function getDismissedFromSession(): boolean {
+  if (typeof window === "undefined") return false
+  return sessionStorage.getItem(SESSION_KEY) === "true"
+}
+
 export function InactivityPopup({
-  inactivityDelay = 30000, // 30 seconds for testing
+  inactivityDelay = 60000, // 60 seconds minimum before showing
   exitIntentEnabled = true,
 }: InactivityPopupProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [hasShown, setHasShown] = useState(false)
+  const [hasShown, setHasShown] = useState(getDismissedFromSession)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
   })
   const { toast } = useToast()
-
-  // Check if popup has been shown in this session
-  useEffect(() => {
-    const popupShown = sessionStorage.getItem("leadCaptureShown")
-    if (popupShown) {
-      setHasShown(true)
-    }
-  }, [])
 
   // Inactivity timer
   useEffect(() => {
@@ -50,7 +49,7 @@ export function InactivityPopup({
         if (!hasShown) {
           setIsOpen(true)
           setHasShown(true)
-          sessionStorage.setItem("leadCaptureShown", "true")
+          sessionStorage.setItem(SESSION_KEY, "true")
         }
       }, inactivityDelay)
     }
@@ -81,7 +80,7 @@ export function InactivityPopup({
       if (e.clientY <= 0 && !hasShown) {
         setIsOpen(true)
         setHasShown(true)
-        sessionStorage.setItem("leadCaptureShown", "true")
+        sessionStorage.setItem(SESSION_KEY, "true")
       }
     }
 
@@ -138,11 +137,18 @@ export function InactivityPopup({
   const handleClose = () => {
     setIsOpen(false)
     setHasShown(true)
-    sessionStorage.setItem("leadCaptureShown", "true")
+    sessionStorage.setItem(SESSION_KEY, "true")
+  }
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      handleClose()
+    }
+    setIsOpen(open)
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-lg bg-white border border-gray-200 shadow-2xl">
         <button
           onClick={handleClose}

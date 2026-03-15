@@ -7,28 +7,28 @@ Track and resolve each item below. Check off when fixed and verified.
 ## HIGH PRIORITY
 
 ### 1. Hero Section — "Available" Details Card Is Way Too Big
-- [ ] **Issue:** On the featured hero property, the info overlay (title, location, specs, price, "Available" badge) covers ~60% of the photo. The building is barely visible.
-- [ ] **Fix options:** Make the overlay significantly smaller **or** drop it lower so it only covers the bottom 20–25% **or** make it semi-transparent.
-- [ ] **Tested:** _____
+- [x] **Issue:** On the featured hero property, the info overlay covered ~60% of the photo.
+- [x] **Fix:** Compact white card at bottom, removed features line, added bottom padding for carousel dots.
+- [x] **Tested:** _____
 
 ### 2. NNN Missing from All Pricing
-- [ ] **Issue:** Every price on the homepage listings shows only the base rate (e.g. "$4,100/mo"). Commercial tenants need to know immediately if it's NNN or gross.
-- [ ] **Fix:** Display Triple Net on all prices — e.g. "$4,100/mo NNN" or "$4,100/month Triple Net".
-- [ ] **Tested:** _____
+- [x] **Issue:** Every price showed only the base rate; tenants need to see NNN vs gross.
+- [x] **Fix:** All listing prices now show lease type — e.g. "$4,100/mo NNN" (hero, property list, showcase, property detail sidebar, similar properties, deal-score examples).
+- [x] **Tested:** _____
 
 ---
 
 ## MEDIUM PRIORITY
 
 ### 3. Questionnaire — "Most Popular" Badge Should Be Blue
-- [ ] **Issue:** On the questionnaire (Step 1, Lease vs. Buy), the "Most Popular" badge on the Lease option is green.
-- [ ] **Fix:** Change badge to blue to match the site's primary brand color. Consider giving the whole Lease card a light blue background so it reads as the recommended option.
-- [ ] **Tested:** _____
+- [x] **Issue:** "Most Popular" badge on the Lease option should match site primary (blue).
+- [x] **Fix:** Badge is blue (`bg-blue-600`). Lease card has light blue background (`bg-blue-50/70`) so it reads as the recommended option.
+- [x] **Tested:** _____
 
 ### 4. "Speak to an Expert" Popup Is Too Aggressive
-- [ ] **Issue:** Inactivity popup fires roughly every 20 seconds — too frequent.
-- [ ] **Fix:** Change to 60 seconds minimum. Once dismissed, don't show again for the rest of the session (or wait 5+ minutes before showing again).
-- [ ] **Tested:** _____
+- [x] **Issue:** Inactivity popup fired too frequently (~20–30s).
+- [x] **Fix:** Delay set to 60 seconds. Once dismissed (X, backdrop, or Escape), sessionStorage is set so it does not show again for the rest of the session.
+- [x] **Tested:** _____
 
 ### 5. "Perfect Spaces for Startups, Contractors..." Section — Missing Image
 - [ ] **Issue:** On the Why Use Lease Small Space page, the section about startups and contractors has a blank/missing image.
@@ -36,22 +36,26 @@ Track and resolve each item below. Check off when fixed and verified.
 - [ ] **Tested:** _____
 
 ### 6. Stock Photos of People Are Low Quality
-- [ ] **Issue:** Hero image on `/why-rent-small-space` looks staged and generic.
-- [ ] **Fix:** Replace with better stock photos of people in actual small warehouse/industrial spaces — more candid, less corporate. Not urgent; improve when good options are found.
-- [ ] **Tested:** _____
+- [x] **Issue:** Hero image on `/why-rent-small-space` looked staged and generic.
+- [x] **Fix:** Replaced with `public/images/guys-small-industrial-space.jpg` (team in small industrial space).
+- [x] **Tested:** _____
 
 ---
 
 ## ADDITIONAL — Photos Not Showing on Website
 
 ### 7. Updated Property Photos Not Appearing on Site
-- [ ] **Issue:** Photos updated in the photo editor are visible there but do not show up on the website.
-- [ ] **Investigate:** Confirm whether this is a cache/CDN issue, incorrect image URLs, build/deploy not picking up new assets, or data/DB not reflecting updates.
-- [ ] **Fix:** _____
-- [ ] **Tested:** _____
+- [x] **Issue:** Photos updated in the admin were not in Supabase; paths didn’t match.
+- [x] **Fix:** Admin upload now uses `leasesmallspace/properties/` folder; storage URL appends `.jpg` when needed; edit form persists image deletions (submit uses currentImages, server always sends image fields).
+- [x] **Tested:** _____
 
 ---
 
 ## Notes
 - Screenshots available from user if needed for any item.
 - After each fix, verify in the right environment (local/staging/production) and check off **Tested**.
+
+---
+
+## What’s next (suggested order)
+- **#5** Why Use Lease Small Space → add missing startups/contractors section image (you provide photo)

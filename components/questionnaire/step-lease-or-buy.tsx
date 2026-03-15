@@ -53,7 +53,9 @@ export default function LeaseOrBuyStep({ value, onChange, onSelectionMade }: Lea
             className={`cursor-pointer transition-all hover:shadow-lg relative ${
               value === option.id
                 ? "ring-2 ring-blue-600 shadow-lg dark:ring-blue-500 bg-blue-50 dark:bg-slate-800"
-                : "hover:shadow-md dark:bg-slate-800 dark:hover:bg-slate-700"
+                : option.popular
+                  ? "bg-blue-50/70 dark:bg-blue-950/30 hover:shadow-md dark:bg-slate-800 dark:hover:bg-slate-700"
+                  : "hover:shadow-md dark:bg-slate-800 dark:hover:bg-slate-700"
             }`}
             onClick={() => handleSelect(option.id)}
             tabIndex={0}

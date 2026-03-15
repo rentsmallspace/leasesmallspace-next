@@ -79,8 +79,8 @@ export default function WhyRentSmallSpacesView() {
             <div className="w-full lg:w-1/2 lg:pl-12">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl h-80">
                 <img
-                  src="/images/warehouse-meeting.png"
-                  alt="Business professionals meeting in warehouse - contractors, business owners, and property experts discussing commercial space solutions"
+                  src="/images/guys-small-industrial-space.jpg"
+                  alt="Team in small industrial space - contractors and business owners discussing in a warehouse"
                   className="w-full h-full object-cover"
                 />
               </div>

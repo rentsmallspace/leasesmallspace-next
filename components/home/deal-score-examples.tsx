@@ -66,7 +66,7 @@ export default function DealScoreExamples() {
                 <p className="text-gray-600 text-sm">{property.location}</p>
                 <div className="flex justify-between items-center mt-2">
                   <span className="text-gray-700">{property.size.toLocaleString()} sq ft</span>
-                  <span className="font-medium">${property.price.toLocaleString()}/mo</span>
+                  <span className="font-medium">${property.price.toLocaleString()}/mo NNN</span>
                 </div>
               </div>
             </div>
