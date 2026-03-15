@@ -31,9 +31,9 @@ Track and resolve each item below. Check off when fixed and verified.
 - [x] **Tested:** _____
 
 ### 5. "Perfect Spaces for Startups, Contractors..." Section — Missing Image
-- [ ] **Issue:** On the Why Use Lease Small Space page, the section about startups and contractors has a blank/missing image.
-- [ ] **Fix:** Add the correct photo (user will provide).
-- [ ] **Tested:** _____
+- [x] **Issue:** On the Why Use Lease Small Space page, the section had a placeholder image.
+- [x] **Fix:** Using `/images/1531-W-Bayaud-Ave_bay-door_01.jpg` (professional handshake in industrial space).
+- [x] **Tested:** _____
 
 ### 6. Stock Photos of People Are Low Quality
 - [x] **Issue:** Hero image on `/why-rent-small-space` looked staged and generic.

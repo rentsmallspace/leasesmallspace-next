@@ -124,13 +124,18 @@ export function sendQuestionnaireConfirmation(user: { email: string; name: strin
   })
 }
 
+const ADMIN_EMAIL =
+  process.env.LEAD_NOTIFICATION_EMAIL ||
+  process.env.ADMIN_EMAIL ||
+  "nate@secureassetmg.com"
+
 export function sendLeadNotification(lead: {
   name: string
   email: string
   phone?: string
 }) {
   return sendEmail({
-    to: "admin@rentsmallspace.com",
+    to: ADMIN_EMAIL,
     subject: `New Lead – ${lead.name}`,
     template: "new-lead-notification",
     data: lead,

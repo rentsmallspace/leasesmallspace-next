@@ -332,8 +332,8 @@ export default function WhyRentSmallSpacesView() {
           <div className="flex flex-col md:flex-row items-center bg-blue-50 rounded-2xl overflow-hidden shadow-lg">
             <div className="w-full md:w-1/2">
               <img
-                src="/placeholder.svg?height=600&width=800"
-                alt="Small business owner in retail space"
+                src="/images/1531-W-Bayaud-Ave_bay-door_01.jpg"
+                alt="Professional handshake in industrial space - partnership and trust"
                 className="w-full h-full object-cover"
               />
             </div>

@@ -62,7 +62,8 @@ export async function sendQuestionnaireConfirmationClient(user: { email: string;
 }
 
 /**
- * Send lead notification to admin
+ * Send lead notification to admin.
+ * Recipient is set server-side via LEAD_NOTIFICATION_EMAIL or ADMIN_EMAIL (default: nate@secureassetmg.com).
  */
 export async function sendLeadNotificationClient(lead: {
   name: string
@@ -70,7 +71,7 @@ export async function sendLeadNotificationClient(lead: {
   phone?: string
 }): Promise<{ success: boolean; id?: string; error?: string }> {
   return sendEmailClient({
-    to: "admin@rentsmallspace.com",
+    to: "admin", // API resolves to LEAD_NOTIFICATION_EMAIL / ADMIN_EMAIL
     subject: `New Lead – ${lead.name}`,
     template: "new-lead-notification",
     data: lead,
