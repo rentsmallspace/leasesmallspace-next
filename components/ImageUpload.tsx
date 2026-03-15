@@ -3,6 +3,8 @@
 import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { StorageUploadResult } from '@/lib/storage';
+import { createClient } from '@/utils/supabase/client';
+import { storageConfig } from '@/lib/storage';
 
 interface ImageUploadProps {
   onImagesChange: (images: StorageUploadResult[]) => void;
@@ -40,26 +42,34 @@ export default function ImageUpload({
           throw new Error(`${file.name} is too large (max 10MB)`);
         }
 
-        const formData = new FormData();
-        formData.append('file', file);
-
-        const response = await fetch('/api/upload-property-image', {
+        // Get a signed upload URL (small request) so we upload directly to Supabase and avoid 413 on Vercel (4.5MB limit)
+        const urlRes = await fetch('/api/property-image-upload-url', {
           method: 'POST',
-          body: formData,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename: file.name, contentType: file.type }),
         });
+        if (!urlRes.ok) {
+          const errData = await urlRes.json().catch(() => ({}));
+          throw new Error(errData.error || 'Failed to get upload URL');
+        }
+        const { path, token, publicUrl } = await urlRes.json();
 
-        if (!response.ok) {
-          const errData = await response.json().catch(() => ({}));
-          throw new Error(errData.error || `Failed to upload ${file.name}`);
+        const supabase = createClient();
+        const { error } = await supabase.storage
+          .from(storageConfig.bucket)
+          .uploadToSignedUrl(path, token, file, { contentType: file.type });
+
+        if (error) {
+          throw new Error(error.message || `Failed to upload ${file.name}`);
         }
 
-        const result = await response.json();
+        const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
         const newImage: StorageUploadResult = {
-          path: result.path,
-          publicUrl: result.publicUrl,
-          width: result.width,
-          height: result.height,
-          format: result.format,
+          path,
+          publicUrl,
+          width: undefined,
+          height: undefined,
+          format: ext,
         };
 
         const updatedImages = [...initialImages, newImage];
