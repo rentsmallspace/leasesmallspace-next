@@ -1,18 +1,16 @@
-"use client";
+import type { Metadata } from "next";
+import { AdminLayoutClient } from "./admin-layout-client";
 
-import { usePathname } from 'next/navigation';
+export const metadata: Metadata = {
+  title: "Admin | LeaseSmallSpace.com",
+  description: "LeaseSmallSpace admin dashboard",
+  robots: { index: false, follow: false },
+};
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  const isLoginPage = pathname === '/admin/login';
-
-  return (
-    <div className={`min-h-screen ${isLoginPage ? 'bg-gray-50' : ''}`}>
-      {children}
-    </div>
-  );
-} 
+  return <AdminLayoutClient>{children}</AdminLayoutClient>;
+}

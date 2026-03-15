@@ -79,6 +79,13 @@ export default function DashboardLayout({
       {/* Mobile menu */}
       <div className={`md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
         <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-b border-gray-200">
+          <Link
+            href="/"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="flex items-center justify-center w-full py-2.5 px-3 text-sm font-medium border-2 border-black text-gray-900 hover:bg-gray-50"
+          >
+            Back to site
+          </Link>
           {navigation.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -187,6 +194,12 @@ export default function DashboardLayout({
               <span className="ml-2 text-xl font-semibold">Admin Panel</span>
             </div>
             <nav className="mt-5 flex-1 space-y-6 bg-white px-2">
+              <Link
+                href="/"
+                className="flex items-center justify-center w-full py-2.5 px-3 text-sm font-medium border-2 border-black text-gray-900 hover:bg-gray-50"
+              >
+                Back to site
+              </Link>
               {/* Main Section */}
               <div>
                 <h3 className="px-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">

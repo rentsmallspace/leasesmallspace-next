@@ -11,6 +11,10 @@ export function Navigation() {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
+  if (pathname?.startsWith("/admin")) {
+    return null
+  }
+
   const navItems = [
     { href: "/", label: "Home", icon: Home },
     { href: "/questionnaire", label: "See Availability", icon: Search },
