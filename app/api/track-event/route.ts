@@ -1,4 +1,4 @@
-import { supabaseAdmin } from "@/lib/supabase"
+import { supabaseAdmin } from "@/utils/supabase/admin"
 import { NextResponse } from "next/server"
 
 export async function POST(request: Request) {
@@ -9,6 +9,10 @@ export async function POST(request: Request) {
     // Validate required fields
     if (!eventName) {
       return NextResponse.json({ error: "Event name is required" }, { status: 400 })
+    }
+
+    if (!supabaseAdmin) {
+      return NextResponse.json({ error: "Analytics not configured" }, { status: 503 })
     }
 
     // Insert event using admin client (bypasses RLS)

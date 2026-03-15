@@ -85,3 +85,12 @@ export function getStorageImageUrl(src: string): string {
 export const storageConfig = {
   bucket: STORAGE_BUCKET,
 };
+
+/** Result shape for admin image uploads (Supabase Storage). Stored in DB as path. */
+export interface StorageUploadResult {
+  path: string
+  publicUrl: string
+  width?: number
+  height?: number
+  format?: string
+}

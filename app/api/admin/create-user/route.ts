@@ -1,8 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { supabaseAdmin } from "@/lib/supabase"
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs"
-import { cookies } from "next/headers"
-import type { Database } from "@/lib/supabase"
+import { supabaseAdmin } from "@/utils/supabase/admin"
+import { createClient } from "@/utils/supabase/server"
 
 // Check if admin client is available
 if (!supabaseAdmin) {
@@ -21,7 +19,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
     }
 
-    const supabase = createRouteHandlerClient<Database>({ cookies })
+    const supabase = await createClient()
 
     // Check if the current user is an admin
     const {
