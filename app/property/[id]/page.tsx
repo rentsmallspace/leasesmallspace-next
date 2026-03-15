@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PropertyPageProps): Promise<M
 
   return {
     title: `${property.size_sqft.toLocaleString()} sq ft ${property.property_type} - ${property.city}, ${property.state} | LeaseSmallSpace.com`,
-    description: `${property.description}. Available now for $${property.price_monthly.toLocaleString()}/month.`,
+    description: `${property.description}. Available now for $${property.price_monthly.toLocaleString()}/mo${property.lease_type?.toUpperCase().includes("NNN") ? " NNN" : property.lease_type ? ` ${property.lease_type}` : " NNN"}.`,
     keywords: `${property.property_type.toLowerCase()} space ${property.city.toLowerCase()} ${property.state.toLowerCase()}, commercial real estate, ${property.size_sqft} sqft property`,
   }
 }

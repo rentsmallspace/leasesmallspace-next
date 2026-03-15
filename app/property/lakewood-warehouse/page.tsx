@@ -5,7 +5,7 @@ import { getPropertyBySlug } from "@/lib/properties"
 export const metadata: Metadata = {
   title: "1,850 sq ft Industrial Warehouse - Lakewood, CO | LeaseSmallSpace.com",
   description:
-    "Premium 1,850 sq ft warehouse space in Lakewood, Colorado. Features driving door, 200 amp 3-phase power, outdoor storage. Available now for $3,000/month.",
+    "Premium 1,850 sq ft warehouse space in Lakewood, Colorado. Features driving door, 200 amp 3-phase power, outdoor storage. Available now for $3,000/mo NNN.",
   keywords:
     "warehouse space lakewood colorado, industrial space rental, 1850 sqft warehouse, colorado commercial real estate",
 }
