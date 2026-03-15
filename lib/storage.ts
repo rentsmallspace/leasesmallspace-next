@@ -14,14 +14,22 @@ function getSupabaseUrl(): string {
   return url.replace(/\/$/, "");
 }
 
+/** True if the path has a common image file extension. */
+function hasImageExtension(path: string): boolean {
+  const lastSegment = path.split("/").pop() ?? "";
+  return /\.(jpg|jpeg|png|gif|webp|avif)(\?.*)?$/i.test(lastSegment);
+}
+
 /**
  * Returns the public URL for a file in the property-images bucket.
  * Path should be relative to bucket root (e.g. "lakewood-warehouse.jpg").
+ * If path has no extension (e.g. Cloudinary-style "folder/id_xxx"), we append .jpg so the URL matches typical Supabase uploads.
  */
 export function getStoragePublicUrl(path: string): string {
   const base = getSupabaseUrl();
   if (!base) return "";
-  const encoded = path.split("/").map(encodeURIComponent).join("/");
+  const pathWithExt = hasImageExtension(path) ? path : `${path}.jpg`;
+  const encoded = pathWithExt.split("/").map(encodeURIComponent).join("/");
   return `${base}/storage/v1/object/public/${STORAGE_BUCKET}/${encoded}`;
 }
 

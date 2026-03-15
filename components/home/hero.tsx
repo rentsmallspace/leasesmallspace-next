@@ -473,26 +473,25 @@ export default function Hero() {
                           format="webp"
                           priority={true}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" aria-hidden />
 
-                        {/* Property highlight overlay */}
+                        {/* Compact white card — same look as before, just tighter so it stays in lower ~25% */}
                         <div className="absolute bottom-6 left-6 right-6">
                           <Link
                             href={`/property/${property.id}`}
-                            className="block hover:scale-105 transition-transform duration-200"
+                            className="block hover:bg-white transition-colors duration-200"
                           >
-                            <div className="bg-white/95 backdrop-blur-sm rounded-lg p-4 hover:bg-white transition-colors duration-200">
-                              <div className="flex justify-between items-start">
-                                <div>
-                                  <h3 className="font-bold text-lg">{property.title}</h3>
-                                  <p className="text-gray-600">{property.city}, {property.state} • Available Now</p>
-                                  {property.features && property.features.length > 0 && (
-                                    <p className="text-sm text-gray-700 mt-1">{property.features.slice(0, 3).join(" • ")}</p>
-                                  )}
-                                  <p className="text-blue-600 font-bold text-xl mt-2">${property.price_monthly.toLocaleString()}/month</p>
-                                  <p className="text-sm text-blue-600 font-medium mt-1">Click to view details →</p>
+                            <div className="bg-white/95 backdrop-blur-sm rounded-lg p-3">
+                              <div className="flex justify-between items-start gap-3">
+                                <div className="min-w-0 flex-1">
+                                  <h3 className="font-bold text-gray-900 text-base line-clamp-2 leading-snug">
+                                    {property.title}
+                                  </h3>
+                                  <p className="text-gray-600 text-sm mt-0.5">{property.city}, {property.state} • Available Now</p>
+                                  <p className="text-blue-600 font-bold text-lg mt-1">${property.price_monthly.toLocaleString()}/month</p>
+                                  <p className="text-sm text-blue-600 font-medium mt-0.5">Click to view details →</p>
                                 </div>
-                                <div className="bg-green-500 text-white text-sm font-bold px-3 py-1 rounded-full">
+                                <div className="bg-green-500 text-white text-sm font-bold px-3 py-1 rounded-full flex-shrink-0">
                                   Available
                                 </div>
                               </div>
