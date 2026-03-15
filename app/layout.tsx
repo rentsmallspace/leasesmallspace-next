@@ -1,5 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
+import { headers } from "next/headers"
 import "./globals.css"
 import { Navigation } from "@/components/navigation/navigation"
 import { Footer } from "@/components/footer/footer"
@@ -56,11 +57,15 @@ export const metadata: Metadata = {
 // Define the paths where the inactivity popup should be active
 const popupEnabledPaths = ["/questionnaire", "/nnn-lease-guide", "/why-rent-small-space", "/faq"]
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const headersList = await headers()
+  const pathname = headersList.get("x-pathname") ?? ""
+  const isAdminRoute = pathname.startsWith("/admin")
+
   return (
     <html lang="en">
       <head>
@@ -95,9 +100,9 @@ export default function RootLayout({
       <body className="min-h-screen bg-background font-sans antialiased">
         {/* This is the original structure that includes Navigation and Footer */}
         <div className="relative flex min-h-screen flex-col">
-          <Navigation />
+          {!isAdminRoute && <Navigation />}
           <main className="flex-1">{children}</main>
-          <Footer />
+          {!isAdminRoute && <Footer />}
         </div>
         {/* Use the new client component here, passing the enabled paths */}
         <ConditionalPopup enabledPaths={popupEnabledPaths} />
