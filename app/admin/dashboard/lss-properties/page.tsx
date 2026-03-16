@@ -80,6 +80,11 @@ export default function PropertiesPage() {
       cell: ({ row }) => `$${row.original.price_monthly.toLocaleString()}`,
     },
     {
+      accessorKey: 'nnn_monthly',
+      header: 'NNN/mo',
+      cell: ({ row }) => row.original.nnn_monthly != null && row.original.nnn_monthly > 0 ? `$${Number(row.original.nnn_monthly).toLocaleString()}` : '-',
+    },
+    {
       accessorKey: 'clear_height',
       header: 'Clear Height',
       cell: ({ row }) => row.original.clear_height ? `${row.original.clear_height}'` : '-',

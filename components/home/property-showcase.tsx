@@ -179,6 +179,9 @@ export default function PropertyShowcase() {
                       <span className="text-sm font-bold">${property.price_monthly.toLocaleString()}/mo{property.lease_type?.toUpperCase().includes("NNN") ? " NNN" : property.lease_type ? ` ${property.lease_type}` : ""}</span>
                     </div>
                   </div>
+                  {property.nnn_monthly != null && property.nnn_monthly > 0 && (
+                    <div className="text-sm text-gray-600 mb-2">Monthly NNN: ${Number(property.nnn_monthly).toLocaleString()}</div>
+                  )}
 
                   <div className="mb-4">
                     <div className="flex flex-wrap gap-2">

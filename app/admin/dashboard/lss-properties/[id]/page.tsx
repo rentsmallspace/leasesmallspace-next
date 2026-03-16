@@ -264,6 +264,13 @@ export default function PropertyDetailPage() {
               </div>
             )}
 
+            {property.nnn_monthly != null && property.nnn_monthly > 0 && (
+              <div>
+                <dt className="text-sm font-medium text-gray-500">Monthly NNN</dt>
+                <dd className="mt-1 text-sm text-gray-900">${Number(property.nnn_monthly).toLocaleString()}</dd>
+              </div>
+            )}
+
             {property.lease_term && (
               <div>
                 <dt className="text-sm font-medium text-gray-500">Lease Term</dt>

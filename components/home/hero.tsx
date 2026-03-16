@@ -489,6 +489,9 @@ export default function Hero() {
                                   </h3>
                                   <p className="text-gray-600 text-sm mt-0.5">{property.city}, {property.state} • Available Now</p>
                                   <p className="text-blue-600 font-bold text-lg mt-1">${property.price_monthly.toLocaleString()}/mo{property.lease_type?.toUpperCase().includes("NNN") ? " NNN" : property.lease_type ? ` ${property.lease_type}` : ""}</p>
+                                  {property.nnn_monthly != null && property.nnn_monthly > 0 && (
+                                    <p className="text-sm text-gray-600 mt-0.5">Monthly NNN: ${Number(property.nnn_monthly).toLocaleString()}</p>
+                                  )}
                                   <p className="text-sm text-blue-600 font-medium mt-0.5">Click to view details →</p>
                                 </div>
                                 <div className="bg-green-500 text-white text-sm font-bold px-3 py-1 rounded-full flex-shrink-0">

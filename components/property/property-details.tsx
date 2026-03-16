@@ -721,6 +721,9 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
                           <div className="font-medium text-sm">{similarProperty.title}</div>
                           <div className="text-xs text-gray-600">{similarProperty.size_sqft.toLocaleString()} sq ft • {similarProperty.city}, {similarProperty.state}</div>
                           <div className="text-sm font-bold text-blue-600 mt-1">${similarProperty.price_monthly.toLocaleString()}/mo{similarProperty.lease_type?.toUpperCase().includes("NNN") ? " NNN" : similarProperty.lease_type ? ` ${similarProperty.lease_type}` : ""}</div>
+                          {similarProperty.nnn_monthly != null && similarProperty.nnn_monthly > 0 && (
+                            <div className="text-xs text-gray-600 mt-0.5">Monthly NNN: ${Number(similarProperty.nnn_monthly).toLocaleString()}</div>
+                          )}
                           <div className="flex items-center justify-between mt-2">
                             {similarProperty.deal_score && (
                               <Badge variant="outline" className="text-xs capitalize border-green-200 text-green-700">
