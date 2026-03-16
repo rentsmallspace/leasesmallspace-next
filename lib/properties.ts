@@ -15,6 +15,7 @@ export interface Property {
   price_monthly: number
   price_sqft: number
   lease_type?: string
+  nnn_monthly?: number
   available_date?: string
   features: string[]
   images: string[]

@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { Suspense } from "react"
 import PropertiesList from "@/components/properties/properties-list"
+import { ArrowLeft } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "All Available Properties | LeaseSmallSpace.com",
@@ -11,6 +13,18 @@ export const metadata: Metadata = {
 export default function PropertiesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Top bar: back to home so page is never without nav */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Link
+            href="/"
+            className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 py-3"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Home
+          </Link>
+        </div>
+      </div>
       {/* Header */}
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

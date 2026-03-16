@@ -51,6 +51,25 @@ Track and resolve each item below. Check off when fixed and verified.
 
 ---
 
+## ADDITIONAL — Property Details & Admin
+
+### 8. Clear Height Not Adjusting with Property Details
+- [x] **Issue:** Clear height was hardcoded as 16 ft on the property details page; it did not reflect the value from the database.
+- [x] **Fix:** Summary card and specs now use `propertyData.specifications.clearHeight` (from `property.clear_height`). Format as "X ft" when present; "Not specified" otherwise.
+- [ ] **Tested:** _____
+
+### 9. Monthly NNN Expenses as Separate Line Item
+- [x] **Issue:** Listed price is base rent; user wanted to show monthly Triple Net (NNN) expenses as a separate line item on the property page.
+- [x] **Fix:** Added `nnn_monthly` (numeric) to DB (migration `sql/13_add_nnn_monthly.sql`), property types, admin create/edit forms ("Monthly NNN ($)"), and property detail page. Sidebar and lease section show "Monthly NNN: $X" when set. No total calculated; display only.
+- [ ] **Tested:** _____
+
+### 10. Remove Admin Portal from rentsmallspace-next
+- [x] **Issue:** Admin is now in leasesmallspace-next (leasesmallspace.com/admin); rentsmallspace.com is no longer deployed. Remove admin from rentsmallspace-next to avoid confusion.
+- [x] **Fix:** Admin app routes, login, and related code removed from rentsmallspace-next.
+- [ ] **Tested:** _____
+
+---
+
 ## Notes
 - Screenshots available from user if needed for any item.
 - After each fix, verify in the right environment (local/staging/production) and check off **Tested**.

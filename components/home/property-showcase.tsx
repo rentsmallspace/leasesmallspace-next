@@ -224,9 +224,11 @@ export default function PropertyShowcase() {
                 View All Properties
               </Button>
             </Link>
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-              Find My Perfect Space <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <Link href="/questionnaire">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+                Find My Perfect Space <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

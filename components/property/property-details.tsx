@@ -282,7 +282,7 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
       totalSize: `${property.size_sqft.toLocaleString()} sq ft`,
       warehouseSize: `${Math.floor(property.size_sqft * 0.9).toLocaleString()} sq ft`,
       officeSize: `${Math.floor(property.size_sqft * 0.1).toLocaleString()} sq ft`,
-      clearHeight: property.clear_height || "Not specified",
+      clearHeight: property.clear_height ? `${String(property.clear_height).replace(/\s*ft\.?\s*$/i, "")} ft` : "Not specified",
       loadingDoors: property.loading_doors || "Not specified",
       power: property.power_service || "Not specified",
       flooring: property.flooring_type || "Not specified",
@@ -306,6 +306,7 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
       rate: `$${(property.price_monthly / property.size_sqft).toFixed(2)}/sq ft/month`,
       term: property.lease_term || "Flexible terms available",
       type: property.lease_type || "NNN (Triple Net)",
+      nnnMonthly: property.nnn_monthly,
       deposit: property.deposit_requirements || "First month + security deposit",
       utilities: property.utilities_responsibility || "Tenant responsible",
       maintenance: property.maintenance_responsibility || "Tenant responsible for interior",
@@ -401,7 +402,7 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
                 </div>
                 <div className="text-center p-4 bg-white rounded-lg border">
                   <Building className="h-6 w-6 mx-auto mb-2 text-purple-600" />
-                  <div className="font-bold text-lg">16 ft</div>
+                  <div className="font-bold text-lg">{propertyData.specifications.clearHeight}</div>
                   <div className="text-sm text-gray-600">clear height</div>
                 </div>
                 <div className="text-center p-4 bg-white rounded-lg border">
@@ -628,6 +629,9 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
                 <div className="text-center mb-6">
                   <div className="text-3xl font-bold text-blue-600 mb-1">${propertyData.price.toLocaleString()}/mo{propertyData.lease.type?.toUpperCase().includes("NNN") ? " NNN" : propertyData.lease.type ? ` ${propertyData.lease.type}` : ""}</div>
                   <div className="text-gray-600">{propertyData.lease.rate}</div>
+                  {propertyData.lease.nnnMonthly != null && propertyData.lease.nnnMonthly > 0 && (
+                    <div className="text-gray-600 mt-1">Monthly NNN: ${Number(propertyData.lease.nnnMonthly).toLocaleString()}</div>
+                  )}
                 </div>
 
                 <div className="space-y-4 mb-6">
@@ -663,6 +667,12 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
                     <span className="text-gray-600">Lease Type:</span>
                     <span className="font-medium">{propertyData.lease.type}</span>
                   </div>
+                  {propertyData.lease.nnnMonthly != null && propertyData.lease.nnnMonthly > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Monthly NNN:</span>
+                      <span className="font-medium">${Number(propertyData.lease.nnnMonthly).toLocaleString()}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
                     <span className="text-gray-600">Term:</span>
                     <span className="font-medium">{propertyData.lease.term}</span>

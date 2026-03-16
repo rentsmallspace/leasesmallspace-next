@@ -16,6 +16,7 @@ export interface Property {
   size_sqft: number
   price_monthly: number
   lease_type?: string
+  nnn_monthly?: number
   available_date?: string
   features?: string[]
   images?: string[]
@@ -58,6 +59,7 @@ export interface CreatePropertyData {
   size_sqft: number
   price_monthly: number
   lease_type?: string
+  nnn_monthly?: number
   available_date?: string
   features?: string[]
   images?: string[]

@@ -8,3 +8,8 @@ export function middleware(request: NextRequest) {
     request: { headers: requestHeaders },
   })
 }
+
+// Run for all routes so layout always receives x-pathname (nav/footer visibility)
+export const config = {
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|images).*)"],
+}

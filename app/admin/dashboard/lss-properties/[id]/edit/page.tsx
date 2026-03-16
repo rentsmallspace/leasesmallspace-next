@@ -35,6 +35,7 @@ export default function EditPropertyPage() {
     size_sqft: 0,
     price_monthly: 0,
     lease_type: '',
+    nnn_monthly: undefined,
     available_date: '',
     features: [],
     images: [],
@@ -112,6 +113,7 @@ export default function EditPropertyPage() {
           size_sqft: result.data.size_sqft,
           price_monthly: result.data.price_monthly,
           lease_type: result.data.lease_type || '',
+          nnn_monthly: result.data.nnn_monthly ?? undefined,
           available_date: result.data.available_date || '',
           features: result.data.features || [],
           images: imageIds,
@@ -533,6 +535,25 @@ export default function EditPropertyPage() {
                 onChange={handleInputChange}
                 className={inputClass}
               />
+            </div>
+
+            <div>
+              <label htmlFor="nnn_monthly" className="block text-sm font-medium text-gray-700">
+                Monthly NNN ($)
+              </label>
+              <input
+                type="number"
+                name="nnn_monthly"
+                id="nnn_monthly"
+                min="0"
+                max="999999.99"
+                step="0.01"
+                placeholder="Triple Net expenses"
+                value={formData.nnn_monthly ?? ''}
+                onChange={handleInputChange}
+                className={inputClass}
+              />
+              <p className="mt-1 text-xs text-gray-500">Shown as a separate line item on the property page.</p>
             </div>
 
             <div>
