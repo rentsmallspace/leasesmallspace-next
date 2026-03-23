@@ -188,7 +188,7 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
   const handleEmailClick = () => {
     const subject = encodeURIComponent(`Inquiry about ${property?.title || 'Property'}`)
     const body = encodeURIComponent(`Hi,\n\nI'm interested in learning more about the property: ${property?.title || 'Property'} located at ${property?.address || ''}.\n\nPlease contact me to schedule a viewing or discuss details.\n\nThank you!`)
-    window.location.href = `mailto:hello@rentsmallspace.com?subject=${subject}&body=${body}`
+    window.location.href = `mailto:hello@leasesmallspace.com?subject=${subject}&body=${body}`
   }
 
   const handleShareClick = () => {

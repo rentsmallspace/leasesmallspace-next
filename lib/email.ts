@@ -29,7 +29,7 @@ export const emailTemplates = {
     <html>
       <head><meta charset="utf-8" /></head>
       <body style="font-family: Arial, sans-serif">
-        <h1 style="color:#2563eb">Welcome to RentSmallSpace, ${data.name ?? "there"}!</h1>
+        <h1 style="color:#2563eb">Welcome to LeaseSmallSpace, ${data.name ?? "there"}!</h1>
         <p>Thank you for your interest in our industrial properties.</p>
         <p>We'll be in touch shortly to match you with the perfect space.</p>
       </body>
@@ -77,7 +77,7 @@ export async function sendEmail({
   template,
   html,
   data = {},
-  from = "RentSmallSpace <noreply@updates.rentsmallspace.com>",
+  from = "LeaseSmallSpace <noreply@updates.leasesmallspace.com>",
 }: EmailData) {
   if (!process.env.RESEND_API_KEY) {
     console.error("RESEND_API_KEY missing – cannot send email")
@@ -109,7 +109,7 @@ export async function sendEmail({
 export function sendWelcomeEmail(user: { email: string; name: string }) {
   return sendEmail({
     to: user.email,
-    subject: "Welcome to RentSmallSpace – Let's find your perfect space!",
+    subject: "Welcome to LeaseSmallSpace – Let's find your perfect space!",
     template: "welcome-lead",
     data: user,
   })
@@ -159,7 +159,7 @@ export async function sendTestEmail(
     default:
       return sendEmail({
         to: email,
-        subject: "Test Email from RentSmallSpace",
+        subject: "Test Email from LeaseSmallSpace",
         html: `<p>Hello ${name}! This is a plain test email.</p>`,
       })
   }

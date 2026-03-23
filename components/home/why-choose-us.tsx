@@ -5,7 +5,7 @@ export default function WhyChooseUs() {
     <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose RentSmallSpace</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose LeaseSmallSpace</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             We've helped 200+ businesses find their perfect space. Here's why they trust us.
           </p>
