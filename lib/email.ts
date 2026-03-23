@@ -77,7 +77,7 @@ export async function sendEmail({
   template,
   html,
   data = {},
-  from = "LeaseSmallSpace <noreply@updates.leasesmallspace.com>",
+  from = "LeaseSmallSpace <noreply@updates.rentsmallspace.com>",
 }: EmailData) {
   if (!process.env.RESEND_API_KEY) {
     console.error("RESEND_API_KEY missing – cannot send email")

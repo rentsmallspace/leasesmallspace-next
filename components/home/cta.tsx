@@ -31,8 +31,8 @@ export default function CTA() {
 
         <div className="text-center">
           <p className="text-blue-100 text-sm mb-2">Or email us directly:</p>
-          <a href="mailto:hello@leasesmallspace.com" className="text-white hover:text-blue-200 font-medium">
-            hello@leasesmallspace.com
+          <a href="mailto:hello@rentsmallspace.com" className="text-white hover:text-blue-200 font-medium">
+            hello@rentsmallspace.com
           </a>
         </div>
       </div>
