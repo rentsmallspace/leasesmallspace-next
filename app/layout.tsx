@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://leasesmallspace.com/og-image.jpg",
+        url: "https://leasesmallspace.com/og-image.png",
         width: 1200,
         height: 630,
         alt: "LeaseSmallSpace - Colorado Warehouse Inventory",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Warehouse Specialist | View Warehouse Inventory",
     description: "Find your perfect small commercial space in Colorado",
-    images: ["https://leasesmallspace.com/og-image.jpg"],
+    images: ["https://leasesmallspace.com/og-image.png"],
   },
   robots: {
     index: true,
