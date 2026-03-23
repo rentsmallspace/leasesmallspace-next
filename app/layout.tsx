@@ -9,12 +9,12 @@ import { Toaster } from "@/components/ui/toaster"
 
 // This metadata remains unchanged and is correctly exported from a Server Component
 export const metadata: Metadata = {
-  title: "RentSmallSpace.com | Colorado's Premier Small Commercial Properties",
+  title: "LeaseSmallSpace.com | Colorado's Premier Small Commercial Properties",
   description:
     "Find your perfect small commercial space in Colorado. Warehouses, shops, and flex spaces available now. Quick approval, flexible terms.",
-  generator: "RentSmallSpace.com",
-  keywords: "commercial real estate, warehouse rental, office space, flex space, Colorado commercial property",
-  authors: [{ name: "RentSmallSpace Team" }],
+  generator: "LeaseSmallSpace.com",
+  keywords: "commercial real estate, warehouse rental, office space, flex space, Colorado commercial property, warehouse specialist",
+  authors: [{ name: "LeaseSmallSpace Team" }],
   icons: {
     icon: [
       {
@@ -30,16 +30,25 @@ export const metadata: Metadata = {
     apple: "/favicon.png",
   },
   openGraph: {
-    title: "RentSmallSpace.com | Colorado Commercial Properties",
-    description: "Find your perfect small commercial space in Colorado",
-    url: "https://rentsmallspace.com",
-    siteName: "RentSmallSpace",
+    title: "Warehouse Specialist | View Warehouse Inventory",
+    description: "Find your perfect small commercial space in Colorado. Warehouses, shops, and flex spaces available now.",
+    url: "https://leasesmallspace.com",
+    siteName: "LeaseSmallSpace",
     type: "website",
+    images: [
+      {
+        url: "https://leasesmallspace.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "LeaseSmallSpace - Colorado Warehouse Inventory",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "RentSmallSpace.com | Colorado Commercial Properties",
+    title: "Warehouse Specialist | View Warehouse Inventory",
     description: "Find your perfect small commercial space in Colorado",
+    images: ["https://leasesmallspace.com/og-image.jpg"],
   },
   robots: {
     index: true,
