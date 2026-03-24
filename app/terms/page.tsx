@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Terms of Use | RentSmallSpace.com",
-  description: "Terms of Use for RentSmallSpace.com - Colorado Commercial Properties",
+  title: "Terms of Use | LeaseSmallSpace.com",
+  description: "Terms of Use for LeaseSmallSpace.com - Colorado Commercial Properties",
 }
 
 export default function TermsPage() {
@@ -16,13 +16,13 @@ export default function TermsPage() {
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. Acceptance of Terms</h2>
           <p className="text-gray-700 mb-6">
-            By accessing and using RentSmallSpace ("we," "us," or "our"), you accept and agree to be bound by these
+            By accessing and using LeaseSmallSpace ("we," "us," or "our"), you accept and agree to be bound by these
             Terms of Use and our Privacy Policy. If you do not agree to these terms, you must not use our service.
           </p>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. Description of Service</h2>
           <p className="text-gray-700 mb-6">
-            RentSmallSpace provides an online platform connecting businesses seeking commercial space with property
+            LeaseSmallSpace provides an online platform connecting businesses seeking commercial space with property
             owners and managers. We do not own, operate, or manage any properties listed on our platform.
           </p>
 
@@ -38,7 +38,7 @@ export default function TermsPage() {
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">4. Intellectual Property</h2>
           <p className="text-gray-700 mb-6">
-            All content, features, and functionality of our service are owned by RentSmallSpace and are protected by
+            All content, features, and functionality of our service are owned by LeaseSmallSpace and are protected by
             international copyright, trademark, and other intellectual property laws.
           </p>
 
@@ -56,7 +56,7 @@ export default function TermsPage() {
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">6. Limitation of Liability</h2>
           <p className="text-gray-700 mb-4">
-            To the maximum extent permitted by law, RentSmallSpace shall not be liable for any indirect, incidental,
+            To the maximum extent permitted by law, LeaseSmallSpace shall not be liable for any indirect, incidental,
             special, consequential, or punitive damages, including but not limited to:
           </p>
           <ul className="list-disc pl-6 text-gray-700 mb-6 space-y-2">
@@ -68,7 +68,7 @@ export default function TermsPage() {
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">7. Indemnification</h2>
           <p className="text-gray-700 mb-6">
-            You agree to indemnify and hold harmless RentSmallSpace, its officers, directors, employees, and agents from
+            You agree to indemnify and hold harmless LeaseSmallSpace, its officers, directors, employees, and agents from
             any claims, damages, or expenses arising from your use of the service or violation of these terms.
           </p>
 

@@ -43,7 +43,7 @@ export async function sendEmailClient(emailData: EmailData): Promise<{ success: 
 export async function sendWelcomeEmailClient(user: { email: string; name: string }): Promise<{ success: boolean; id?: string; error?: string }> {
   return sendEmailClient({
     to: user.email,
-    subject: "Welcome to RentSmallSpace – Let's find your perfect space!",
+    subject: "Welcome to LeaseSmallSpace – Let's find your perfect space!",
     template: "welcome-lead",
     data: user,
   })

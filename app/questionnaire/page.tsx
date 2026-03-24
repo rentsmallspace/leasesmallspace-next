@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import QuestionnaireWizardWithDatabase from "@/components/questionnaire/wizard-with-database"
 
 export const metadata: Metadata = {
-  title: "Find Your Space | RentSmallSpace.com",
+  title: "Find Your Space | LeaseSmallSpace.com",
   description: "Answer a few quick questions to find your perfect Colorado commercial space",
 }
 

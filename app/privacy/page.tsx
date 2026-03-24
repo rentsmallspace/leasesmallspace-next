@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | RentSmallSpace.com",
-  description: "Privacy Policy for RentSmallSpace.com - Colorado Commercial Properties",
+  title: "Privacy Policy | LeaseSmallSpace.com",
+  description: "Privacy Policy for LeaseSmallSpace.com - Colorado Commercial Properties",
 }
 
 export default function PrivacyPage() {
