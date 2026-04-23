@@ -24,7 +24,7 @@ function getDismissedFromSession(): boolean {
 }
 
 export function InactivityPopup({
-  inactivityDelay = 60000, // 60 seconds minimum before showing
+  inactivityDelay = 120000, // 2 minutes of inactivity before showing
   exitIntentEnabled = true,
 }: InactivityPopupProps) {
   const [isOpen, setIsOpen] = useState(false)

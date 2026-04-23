@@ -26,7 +26,8 @@ export type QuestionnaireData = {
   name: string
   email: string
   phone: string
-  smsConsent: boolean
+  smsTransactional: boolean
+  smsMarketing: boolean
 }
 
 export default function QuestionnaireWizardWithDatabase() {
@@ -43,7 +44,8 @@ export default function QuestionnaireWizardWithDatabase() {
     name: "",
     email: "",
     phone: "",
-    smsConsent: true,
+    smsTransactional: false,
+    smsMarketing: false,
   })
   const [showCheckmark, setShowCheckmark] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -125,12 +127,16 @@ export default function QuestionnaireWizardWithDatabase() {
           location: data.location,
           budget: data.budget,
           timeline: data.timeline,
+          sms_transactional_consent: data.smsTransactional,
+          sms_marketing_consent: data.smsMarketing,
+          sms_consent_captured_at: new Date().toISOString(),
         },
         userInfo: {
           name: data.name,
           email: data.email,
           phone: data.phone,
-          smsConsent: data.smsConsent,
+          smsTransactional: data.smsTransactional,
+          smsMarketing: data.smsMarketing,
         },
       })
 
@@ -278,11 +284,13 @@ export default function QuestionnaireWizardWithDatabase() {
               name={data.name}
               email={data.email}
               phone={data.phone}
-              smsConsent={data.smsConsent}
+              smsTransactional={data.smsTransactional}
+              smsMarketing={data.smsMarketing}
               onNameChange={(value) => updateData("name", value)}
               onEmailChange={(value) => updateData("email", value)}
               onPhoneChange={(value) => updateData("phone", value)}
-              onSmsConsentChange={(value) => updateData("smsConsent", value)}
+              onSmsTransactionalChange={(value) => updateData("smsTransactional", value)}
+              onSmsMarketingChange={(value) => updateData("smsMarketing", value)}
             />
           )}
         </div>
@@ -307,7 +315,7 @@ export default function QuestionnaireWizardWithDatabase() {
       {/* Inactivity popup - only shows when not on the final step */}
       {step < totalSteps && (
         <InactivityPopup
-          inactivityDelay={60000} // 60 seconds
+          inactivityDelay={120000} // 2 minutes
           exitIntentEnabled={true}
         />
       )}

@@ -1,4 +1,5 @@
 "use client"
+import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { PhoneInput } from "@/components/ui/phone-input"
@@ -10,20 +11,24 @@ export default function ContactStep({
   name,
   email,
   phone,
-  smsConsent,
+  smsTransactional,
+  smsMarketing,
   onNameChange,
   onEmailChange,
   onPhoneChange,
-  onSmsConsentChange,
+  onSmsTransactionalChange,
+  onSmsMarketingChange,
 }: {
   name: string
   email: string
   phone: string
-  smsConsent: boolean
+  smsTransactional: boolean
+  smsMarketing: boolean
   onNameChange: (value: string) => void
   onEmailChange: (value: string) => void
   onPhoneChange: (value: string) => void
-  onSmsConsentChange: (value: boolean) => void
+  onSmsTransactionalChange: (value: boolean) => void
+  onSmsMarketingChange: (value: boolean) => void
 }) {
   // OAuth handlers - Hidden until OAuth is implemented
   /*
@@ -166,15 +171,42 @@ export default function ContactStep({
           />
         </div>
 
-        <div className="flex items-start space-x-3">
-          <Checkbox
-            id="sms-consent"
-            checked={smsConsent}
-            onCheckedChange={(checked) => onSmsConsentChange(checked as boolean)}
-          />
-          <Label htmlFor="sms-consent" className="text-sm leading-tight">
-            Yes, text me property updates and tour reminders. Standard rates apply.
-          </Label>
+        <div className="space-y-4">
+          <div className="flex items-start space-x-3">
+            <Checkbox
+              id="sms-transactional"
+              checked={smsTransactional}
+              onCheckedChange={(checked) => onSmsTransactionalChange(checked as boolean)}
+              className="mt-0.5"
+            />
+            <Label htmlFor="sms-transactional" className="text-sm leading-tight font-normal">
+              I agree to receive updates, alerts, and transactional notifications via SMS from
+              LeaseSmallSpace.com and SAMG LLC. Msg &amp; data rates may apply. Reply STOP to
+              unsubscribe, HELP for help.{" "}
+              <Link href="/terms" className="underline text-blue-600 hover:text-blue-700">
+                Terms
+              </Link>
+              {" & "}
+              <Link href="/privacy" className="underline text-blue-600 hover:text-blue-700">
+                Privacy
+              </Link>
+              .
+            </Label>
+          </div>
+
+          <div className="flex items-start space-x-3">
+            <Checkbox
+              id="sms-marketing"
+              checked={smsMarketing}
+              onCheckedChange={(checked) => onSmsMarketingChange(checked as boolean)}
+              className="mt-0.5"
+            />
+            <Label htmlFor="sms-marketing" className="text-sm leading-tight font-normal">
+              I would like to receive exclusive offers and promotional updates via SMS from
+              LeaseSmallSpace.com and SAMG LLC (max 4 msgs/month). Consent is not a condition of
+              purchase. Reply STOP to cancel.
+            </Label>
+          </div>
         </div>
 
         <div className="bg-gray-50 p-4 rounded-lg">

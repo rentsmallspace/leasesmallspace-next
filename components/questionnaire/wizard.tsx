@@ -21,7 +21,8 @@ export type QuestionnaireData = {
   name: string
   email: string
   phone: string
-  smsConsent: boolean
+  smsTransactional: boolean
+  smsMarketing: boolean
 }
 
 export default function QuestionnaireWizard() {
@@ -36,7 +37,8 @@ export default function QuestionnaireWizard() {
     name: "",
     email: "",
     phone: "",
-    smsConsent: true,
+    smsTransactional: false,
+    smsMarketing: false,
   })
   const [showCheckmark, setShowCheckmark] = useState(false)
 
@@ -153,11 +155,13 @@ export default function QuestionnaireWizard() {
             name={data.name}
             email={data.email}
             phone={data.phone}
-            smsConsent={data.smsConsent}
+            smsTransactional={data.smsTransactional}
+            smsMarketing={data.smsMarketing}
             onNameChange={(value) => updateData("name", value)}
             onEmailChange={(value) => updateData("email", value)}
             onPhoneChange={(value) => updateData("phone", value)}
-            onSmsConsentChange={(value) => updateData("smsConsent", value)}
+            onSmsTransactionalChange={(value) => updateData("smsTransactional", value)}
+            onSmsMarketingChange={(value) => updateData("smsMarketing", value)}
           />
         )}
       </div>

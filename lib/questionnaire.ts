@@ -17,7 +17,8 @@ export interface CreateQuestionnaireData {
     name: string
     email: string
     phone: string
-    smsConsent?: boolean
+    smsTransactional?: boolean
+    smsMarketing?: boolean
   }
 }
 
@@ -113,7 +114,8 @@ export async function saveQuestionnaireResponse(data: CreateQuestionnaireData): 
           location: data.responses.location,
           budget: data.responses.budget,
           timeline: data.responses.timeline,
-          sms_consent: data.userInfo.smsConsent,
+          sms_transactional_consent: data.userInfo.smsTransactional,
+          sms_marketing_consent: data.userInfo.smsMarketing,
         },
         user_id: user.id,
         page_url: "/questionnaire",
