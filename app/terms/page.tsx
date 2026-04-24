@@ -89,8 +89,8 @@ export default function TermsPage() {
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
             <p className="text-gray-700 mb-0">
               <strong>Email:</strong>{" "}
-              <a href="mailto:legal@rentsmallspace.com" className="text-blue-600 hover:text-blue-800">
-                legal@rentsmallspace.com
+              <a href="mailto:legal@leasesmallspace.com" className="text-blue-600 hover:text-blue-800">
+                legal@leasesmallspace.com
               </a>
             </p>
           </div>

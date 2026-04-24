@@ -213,7 +213,7 @@ export default function NNNLeaseGuideView() {
 
           {/* Comparison Table */}
           <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-2xl p-8 mb-12">
-            <h3 className="text-2xl font-bold mb-8 text-center">Traditional vs. Rent Small Spaces</h3>
+            <h3 className="text-2xl font-bold mb-8 text-center">Traditional vs. Lease Small Space</h3>
 
             <div className="grid md:grid-cols-2 gap-8">
               {/* Traditional Column */}

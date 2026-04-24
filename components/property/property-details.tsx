@@ -36,6 +36,7 @@ import Image from "next/image"
 import { StorageImage } from "@/components/ui/storage-image"
 import { getPropertyById, getProperties, type Property } from "@/lib/properties"
 import { useToast } from "@/hooks/use-toast"
+import { BUSINESS_EMAIL, BUSINESS_PHONE } from "@/lib/seo"
 
 // Helper functions for default location values
 function getDefaultHighways(city: string): string[] {
@@ -182,17 +183,16 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
   }
 
   const handleCallClick = () => {
-    window.location.href = "tel:+17205756611"
+    window.location.href = `tel:${BUSINESS_PHONE}`
   }
 
   const handleEmailClick = () => {
     const subject = encodeURIComponent(`Inquiry about ${property?.title || 'Property'}`)
     const body = encodeURIComponent(`Hi,\n\nI'm interested in learning more about the property: ${property?.title || 'Property'} located at ${property?.address || ''}.\n\nPlease contact me to schedule a viewing or discuss details.\n\nThank you!`)
-    window.location.href = `mailto:hello@rentsmallspace.com?subject=${subject}&body=${body}`
+    window.location.href = `mailto:${BUSINESS_EMAIL}?subject=${subject}&body=${body}`
   }
 
   const handleShareClick = () => {
-    // Use the correct domain for sharing
     const currentUrl = window.location.href.replace('rentsmallspace.com', 'leasesmallspace.com')
     
     // Simple clipboard copy with fallback

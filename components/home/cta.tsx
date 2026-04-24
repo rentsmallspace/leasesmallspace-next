@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Phone } from "lucide-react"
 import Link from "next/link"
+import { BUSINESS_EMAIL, BUSINESS_PHONE, BUSINESS_PHONE_DISPLAY } from "@/lib/seo"
 
 export default function CTA() {
   return (
@@ -18,21 +19,21 @@ export default function CTA() {
             </Button>
           </Link>
 
-          <a href="tel:+17209898838">
+          <a href={`tel:${BUSINESS_PHONE}`}>
             <Button
               size="lg"
               className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-4"
             >
               <Phone className="mr-2 h-5 w-5" />
-              Call (720) 989-8838
+              Call {BUSINESS_PHONE_DISPLAY}
             </Button>
           </a>
         </div>
 
         <div className="text-center">
           <p className="text-blue-100 text-sm mb-2">Or email us directly:</p>
-          <a href="mailto:hello@rentsmallspace.com" className="text-white hover:text-blue-200 font-medium">
-            hello@rentsmallspace.com
+          <a href={`mailto:${BUSINESS_EMAIL}`} className="text-white hover:text-blue-200 font-medium">
+            {BUSINESS_EMAIL}
           </a>
         </div>
       </div>
