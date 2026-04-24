@@ -1,14 +1,25 @@
 import type { Metadata } from "next"
 import FAQView from "@/components/faq/faq-view"
+import { faqData } from "@/lib/faq-data"
+import { faqStructuredData } from "@/lib/seo"
 
 export const metadata: Metadata = {
-  title: "Frequently Asked Questions | Rent Small Spaces Colorado",
+  title: "Frequently Asked Questions | LeaseSmallSpace.com",
   description:
-    "Answers to frequently asked questions about renting small commercial spaces in Colorado. Learn about finding warehouse, retail, shop, flex spaces, lease terms, and more.",
-  keywords:
-    "warehouse space for rent, small commercial spaces Colorado, flexible lease terms commercial, move-in ready commercial spaces, retail space for lease Colorado, Triple Net lease NNN, flex space rental, small retail space near me, affordable warehouse rental Colorado",
+    "Answers to common questions about renting small commercial space in Colorado. Warehouse, retail, flex, and shop spaces — pricing, NNN leases, availability, tours, move-in timing.",
+  alternates: {
+    canonical: "/faq",
+  },
 }
 
 export default function FAQPage() {
-  return <FAQView />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData(faqData)) }}
+      />
+      <FAQView />
+    </>
+  )
 }

@@ -6,14 +6,13 @@ import { Navigation } from "@/components/navigation/navigation"
 import { Footer } from "@/components/footer/footer"
 import { ConditionalPopup } from "@/components/layout/conditional-popup"
 import { Toaster } from "@/components/ui/toaster"
+import { SITE_URL, siteStructuredData } from "@/lib/seo"
 
-// This metadata remains unchanged and is correctly exported from a Server Component
 export const metadata: Metadata = {
   title: "LeaseSmallSpace.com | Colorado's Premier Small Commercial Properties",
   description:
     "Find your perfect small commercial space in Colorado. Warehouses, shops, and flex spaces available now. Quick approval, flexible terms.",
   generator: "LeaseSmallSpace.com",
-  keywords: "commercial real estate, warehouse rental, office space, flex space, Colorado commercial property, warehouse specialist",
   authors: [{ name: "LeaseSmallSpace Team" }],
   icons: {
     icon: [
@@ -29,19 +28,22 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
     apple: "/favicon.png",
   },
-  metadataBase: new URL("https://leasesmallspace.com"),
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "Warehouse Specialist | View Warehouse Inventory",
     description: "Find your perfect small commercial space in Colorado. Warehouses, shops, and flex spaces available now.",
-    url: "https://leasesmallspace.com",
+    url: SITE_URL,
     siteName: "LeaseSmallSpace",
     type: "website",
     images: [
       {
         url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "LeaseSmallSpace - Colorado Warehouse Inventory",
+        width: 1379,
+        height: 679,
+        alt: "LeaseSmallSpace - Find Your Perfect Small Space in Colorado",
       },
     ],
   },
@@ -62,6 +64,10 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  // Google Search Console verification: set NEXT_PUBLIC_GSC_VERIFICATION in Vercel envs after claiming the property
+  verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
+    : undefined,
 }
 
 // Define the paths where the inactivity popup should be active
@@ -79,6 +85,11 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Organization + LocalBusiness JSON-LD for Google */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteStructuredData()) }}
+        />
         {/* Meta Pixel Code */}
         <script
           dangerouslySetInnerHTML={{

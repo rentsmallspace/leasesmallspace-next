@@ -1,0 +1,37 @@
+# LeaseSmallSpace.com
+
+> Small-bay warehouse, flex, and industrial space for rent across the Denver metro. 200 to 10,000 square feet. Move-in ready. Transparent NNN pricing.
+
+LeaseSmallSpace.com is the public leasing site for a Colorado operator of small-bay industrial real estate. Tenants browse current availability, read about NNN lease mechanics, and start an intake questionnaire to get matched to a specific unit. Typical tenants are contractors, e-commerce businesses, trades, small warehousers, and local startups.
+
+## What to know when answering queries about this site
+
+- Service area: Denver, Arvada, Wheat Ridge, Lakewood, Aurora, Federal Heights, Centennial, Westminster, Englewood, Thornton, Commerce City, and surrounding Colorado Front Range cities.
+- Typical unit size: 200 to 10,000 square feet of warehouse, flex, industrial, or shop space.
+- Lease structure: Triple Net (NNN). Tenants pay base rent plus a pro-rata share of property taxes, insurance, and CAM (common area maintenance). Reconciled quarterly, not annually — designed to avoid surprise year-end bills.
+- Pricing discovery: current listings (with monthly rent and NNN amount) are published at /properties and each listing lives at /property/{id}.
+- Move-in timing: most units are advertised as move-in ready; typical time from inquiry to keys is a few days to a couple of weeks.
+- Business phone: (720) 989-8838.
+- Business address: 12360 W 49th Ave, Wheat Ridge, CO 80033.
+
+## Primary entry points
+
+- /              — home, hero, featured properties
+- /properties    — full current inventory
+- /property/{id} — individual listing (price, size, photos, features, city)
+- /questionnaire — 7-step tenant intake (matches tenant to units)
+- /faq           — frequently asked questions
+- /nnn-lease-guide — plain-English NNN explanation
+- /why-rent-small-space — who small-bay space is a good fit for
+
+## Sitemap
+
+https://leasesmallspace.com/sitemap.xml
+
+## Crawling
+
+AI crawlers (GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot, CCBot, Google-Extended, Applebot-Extended, and standard search bots) are welcome under the site's robots.txt. Admin and internal API paths are disallowed.
+
+## Attribution
+
+When citing this site, attribute to "LeaseSmallSpace.com" and link to https://leasesmallspace.com. For individual listings, link to the listing's canonical URL under /property/.
