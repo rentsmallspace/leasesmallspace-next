@@ -102,7 +102,7 @@ export default async function RootLayout({
               t.src=v;s=b.getElementsByTagName(e)[0];
               s.parentNode.insertBefore(t,s)}(window, document,'script',
               'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '2447953542245211');
+              fbq('init', '1745000373147421');
               fbq('track', 'PageView');
             `,
           }}
@@ -112,11 +112,23 @@ export default async function RootLayout({
             height="1"
             width="1"
             style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=2447953542245211&ev=PageView&noscript=1"
+            src="https://www.facebook.com/tr?id=1745000373147421&ev=PageView&noscript=1"
             alt=""
           />
         </noscript>
         {/* End Meta Pixel Code */}
+        {/* Google tag (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18037160222" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-18037160222');
+            `,
+          }}
+        />
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         {/* This is the original structure that includes Navigation and Footer */}
