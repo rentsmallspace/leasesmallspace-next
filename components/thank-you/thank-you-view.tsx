@@ -18,6 +18,14 @@ export default function ThankYouView() {
         console.error("Error parsing saved data", e)
       }
     }
+
+    if (typeof window !== "undefined" && (window as any).gtag) {
+      (window as any).gtag("event", "conversion", {
+        send_to: "AW-18037160222/R2g5CKmKr44cEJ7y5JhD",
+        value: 1.0,
+        currency: "USD",
+      })
+    }
   }, [])
 
   const handleEmailClick = () => {
