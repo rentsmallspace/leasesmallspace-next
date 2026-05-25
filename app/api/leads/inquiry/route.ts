@@ -112,12 +112,6 @@ export async function POST(req: NextRequest) {
     event_id,
     user: inquiryResult.user,
     inquiry: inquiryResult.inquiry,
-    capi: {
-      ok: capi.ok,
-      status: capi.status,
-      error: capi.error,
-      body: capi.body,
-      debug: capi.debug,
-    },
+    capi: { ok: capi.ok, status: capi.status },
   })
 }
