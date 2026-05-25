@@ -26,6 +26,13 @@ export interface PostCapiLeadResult {
   ok: boolean
   status: number | null
   error?: string
+  body?: string
+  debug?: {
+    key_prefix: string
+    key_length: number
+    key_role: string | null
+    url: string
+  }
 }
 
 const FETCH_TIMEOUT_MS = 5_000
@@ -64,14 +71,43 @@ export async function postCapiLead(
       body: JSON.stringify(payload),
       signal: controller.signal,
     })
+    // Diagnostic: parse the JWT payload to extract its 'role' and 'ref' claims.
+    // Helps spot mis-pasted env vars (e.g. service_role key vs anon key, or
+    // a JWT signed by the wrong Supabase project).
+    let keyRole: string | null = null
+    try {
+      const middle = anonKey.split(".")[1]
+      if (middle) {
+        const padded = middle + "=".repeat((4 - (middle.length % 4)) % 4)
+        const decoded = JSON.parse(
+          Buffer.from(padded, "base64").toString("utf-8"),
+        )
+        keyRole = `role=${decoded.role ?? "?"} ref=${decoded.ref ?? "?"}`
+      }
+    } catch {
+      keyRole = "parse_error"
+    }
+    const debug = {
+      key_prefix: anonKey.slice(0, 24),
+      key_length: anonKey.length,
+      key_role: keyRole,
+      url,
+    }
+
     if (!resp.ok) {
       const body = await resp.text().catch(() => "")
       console.warn(
         `[capi-client] capi-handler returned ${resp.status}: ${body.slice(0, 300)}`,
       )
-      return { ok: false, status: resp.status, error: `http_${resp.status}` }
+      return {
+        ok: false,
+        status: resp.status,
+        error: `http_${resp.status}`,
+        body: body.slice(0, 300),
+        debug,
+      }
     }
-    return { ok: true, status: resp.status }
+    return { ok: true, status: resp.status, debug }
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
     console.warn(`[capi-client] CAPI POST failed: ${message}`)
