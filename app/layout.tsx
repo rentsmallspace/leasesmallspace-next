@@ -14,20 +14,8 @@ export const metadata: Metadata = {
     "Find your perfect small commercial space in Colorado. Warehouses, shops, and flex spaces available now. Quick approval, flexible terms.",
   generator: "LeaseSmallSpace.com",
   authors: [{ name: "LeaseSmallSpace Team" }],
-  icons: {
-    icon: [
-      {
-        url: "/favicon.ico",
-        type: "image/x-icon",
-      },
-      {
-        url: "/favicon.png",
-        type: "image/png",
-      },
-    ],
-    shortcut: "/favicon.ico",
-    apple: "/favicon.png",
-  },
+  // Icons are auto-detected from app/favicon.ico, app/icon.png, app/apple-icon.png.
+  // Source of truth: scripts/generate-favicons.mjs (regenerates from public/images/logo-green-pin-warehouse.png).
   metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: "/",
