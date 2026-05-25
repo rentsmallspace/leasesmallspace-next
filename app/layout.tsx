@@ -20,9 +20,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  // Pages set their own title/description; Next.js propagates those to og:title and og:description.
+  // Only site-wide defaults (url, siteName, type, image) live here.
   openGraph: {
-    title: "Warehouse Specialist | View Warehouse Inventory",
-    description: "Find your perfect small commercial space in Colorado. Warehouses, shops, and flex spaces available now.",
     url: SITE_URL,
     siteName: "LeaseSmallSpace",
     type: "website",
@@ -37,8 +37,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Warehouse Specialist | View Warehouse Inventory",
-    description: "Find your perfect small commercial space in Colorado",
     images: ["/og-image.png"],
   },
   robots: {

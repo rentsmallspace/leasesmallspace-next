@@ -1,4 +1,4 @@
-export const SITE_URL = "https://leasesmallspace.com"
+export const SITE_URL = "https://www.leasesmallspace.com"
 export const SITE_NAME = "LeaseSmallSpace"
 export const BUSINESS_PHONE = "+1-720-989-8838"
 export const BUSINESS_PHONE_DISPLAY = "(720) 989-8838"
