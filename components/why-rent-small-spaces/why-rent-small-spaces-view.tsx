@@ -19,7 +19,7 @@ import {
   MapPin,
   ArrowRight,
 } from "lucide-react"
-import { createInquiry } from "@/lib/leads"
+import { submitInquiry } from "@/lib/inquiry-client"
 import Link from "next/link"
 
 export default function WhyRentSmallSpacesView() {
@@ -32,14 +32,13 @@ export default function WhyRentSmallSpacesView() {
     try {
       const formData = new FormData(e.currentTarget as HTMLFormElement)
       
-      await createInquiry({
+      await submitInquiry({
         name: formData.get("name") as string,
         email: formData.get("email") as string,
         phone: formData.get("phone") as string,
         message: formData.get("message") as string,
         inquiry_type: "why_rent_small_spaces",
         source: "why_rent_small_spaces",
-        page_captured: window.location.pathname,
       })
       
       setFormSubmitted(true)
