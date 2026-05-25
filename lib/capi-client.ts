@@ -40,10 +40,14 @@ export async function postCapiLead(
     return { ok: false, status: null, error: "url_not_set" }
   }
 
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  // The capi-handler lives on a different Supabase project (lss-ad-ops) for
+  // isolation, so the site's NEXT_PUBLIC_SUPABASE_ANON_KEY won't authenticate.
+  // LSS_CAPI_HANDLER_ANON_KEY is the lss-ad-ops project's anon key.
+  // Anon keys are public by design (RLS gates everything), safe in env.
+  const anonKey = process.env.LSS_CAPI_HANDLER_ANON_KEY
   if (!anonKey) {
     console.warn(
-      "[capi-client] NEXT_PUBLIC_SUPABASE_ANON_KEY not set; CAPI Lead skipped (function requires JWT)",
+      "[capi-client] LSS_CAPI_HANDLER_ANON_KEY not set; CAPI Lead skipped (function requires JWT)",
     )
     return { ok: false, status: null, error: "anon_key_not_set" }
   }
