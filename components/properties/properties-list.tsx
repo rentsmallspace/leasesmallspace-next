@@ -15,7 +15,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { getProperties, type Property } from "@/lib/properties"
-import { createInquiry } from "@/lib/leads"
+import { submitInquiry } from "@/lib/inquiry-client"
 import { StorageImage } from "@/components/ui/storage-image"
 import Link from "next/link"
 
@@ -108,13 +108,12 @@ export default function PropertiesList() {
         property: selectedProperty
       })
 
-      const result = await createInquiry({
+      const result = await submitInquiry({
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         inquiry_type: "property_inquiry",
         source: "properties_page",
-        page_captured: window.location.pathname,
         message: `Property inquiry for: ${selectedProperty}`,
       })
       

@@ -22,7 +22,7 @@ import {
   Eye,
   ArrowRight,
 } from "lucide-react"
-import { createInquiry } from "@/lib/leads"
+import { submitInquiry } from "@/lib/inquiry-client"
 
 export default function NNNLeaseGuideView() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -34,14 +34,13 @@ export default function NNNLeaseGuideView() {
     try {
       const formData = new FormData(e.currentTarget as HTMLFormElement)
       
-      await createInquiry({
+      await submitInquiry({
         name: formData.get("name") as string,
         email: formData.get("email") as string,
         phone: formData.get("phone") as string,
         message: formData.get("message") as string,
         inquiry_type: "nnn_lease_guide",
         source: "nnn_lease_guide",
-        page_captured: window.location.pathname,
       })
       
       setFormSubmitted(true)

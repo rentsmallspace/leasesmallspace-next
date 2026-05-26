@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { PhoneInput } from "@/components/ui/phone-input"
 import { ArrowRight, Phone } from "lucide-react"
-import { createInquiry } from "@/lib/leads"
+import { submitInquiry } from "@/lib/inquiry-client"
 import { faqData } from "@/lib/faq-data"
 
 export default function FAQView() {
@@ -26,13 +26,12 @@ export default function FAQView() {
     e.preventDefault()
     
     try {
-      await createInquiry({
+      await submitInquiry({
         name: formData.fullName,
         email: formData.email,
         phone: formData.phone,
         inquiry_type: "faq_contact",
         source: "faq_page",
-        page_captured: window.location.pathname,
         message: "Contact form submission from FAQ page",
       })
       

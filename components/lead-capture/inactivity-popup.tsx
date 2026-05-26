@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { PhoneInput } from "@/components/ui/phone-input"
 import { Phone, Mail, User, MessageSquare, X } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { createInquiry } from "@/lib/leads"
+import { submitInquiry } from "@/lib/inquiry-client"
 
 interface InactivityPopupProps {
   inactivityDelay?: number // milliseconds
@@ -93,14 +93,12 @@ export function InactivityPopup({
     setIsSubmitting(true)
 
     try {
-      // Use the leads lib to create the inquiry
-      await createInquiry({
+      await submitInquiry({
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         inquiry_type: "inactivity_popup",
         source: "inactivity_popup",
-        page_captured: window.location.pathname,
         message: "Lead captured from inactivity popup",
       })
 
