@@ -127,7 +127,7 @@ export default function PrivateWarehouseVsCoworkingView() {
 
       {/* Real-use photo band */}
       <figure className="relative bg-white">
-        <figcaption className="absolute top-0 left-0 right-0 z-10 px-5 py-5 sm:px-10 sm:py-7">
+        <figcaption className="absolute bottom-0 left-0 right-0 z-10 px-5 py-5 sm:px-10 sm:py-7">
           <div className="inline-block bg-white/85 backdrop-blur-sm rounded-xl px-5 py-3 shadow-sm max-w-2xl">
             <p className="text-blue-700 font-bold text-lg sm:text-2xl leading-tight">
               A real tenant in their own private bay
