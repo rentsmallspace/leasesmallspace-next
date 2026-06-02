@@ -339,7 +339,7 @@ export default function Hero() {
         onMouseLeave={() => setIsPaused(false)}
       >
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center">
+          <div className="flex flex-col lg:flex-row items-center lg:items-stretch">
             <div className="w-full lg:w-1/2 mb-12 lg:mb-0">
               {/* Trust badge */}
               <div className="inline-flex items-center bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium mb-6">
@@ -451,9 +451,9 @@ export default function Hero() {
             </div>
 
             <div className="w-full lg:w-1/2 lg:pl-12">
-              <div className="relative">
+              <div className="relative lg:h-full">
                 {/* Main property image carousel */}
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl h-96">
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl h-96 lg:h-full lg:min-h-[32rem]">
                   
                   {properties.length > 0 ? (
                     properties.map((property, index) => (
