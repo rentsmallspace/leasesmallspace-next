@@ -23,6 +23,7 @@ LeaseSmallSpace.com is the public leasing site for a Colorado operator of small-
 - /faq           — frequently asked questions
 - /nnn-lease-guide — plain-English NNN explanation
 - /why-rent-small-space — who small-bay space is a good fit for
+- /private-warehouse-vs-coworking — private warehouse vs co-warehousing (WareSpace, Saltbox, ReadySpaces); why a private leased bay beats shared space on cost per sq ft, loading, business address, and lease stability
 
 ## Sitemap
 
