@@ -47,7 +47,7 @@ export default function Hero() {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const data = await getFeaturedProperties(3) // Get 3 properties for carousel
+        const data = await getFeaturedProperties(100) // Show all featured properties in the carousel
         setProperties(data)
       } catch (error) {
         console.error("Error fetching properties:", error)
