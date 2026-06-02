@@ -94,21 +94,32 @@ const competitors = [
 export default function PrivateWarehouseVsCoworkingView() {
   return (
     <div className="w-full bg-white text-gray-900">
-      {/* Hero */}
-      <section className="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      {/* Hero over the photo */}
+      <section className="relative isolate overflow-hidden">
+        <img
+          src="/images/private-bay-brewery.jpg"
+          alt="A Denver brewery operating from its own private warehouse bay with its own roll-up drive-in door"
+          className="absolute inset-0 -z-10 w-full h-full object-cover object-center"
+        />
+        <div
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-blue-950/85 via-blue-900/70 to-blue-900/40"
+          aria-hidden
+        />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
           <span className="inline-flex items-center bg-blue-500/30 border border-blue-300/40 text-blue-50 px-3 py-1 rounded-full text-sm font-medium mb-6">
             Private warehouse vs co-warehousing in Denver
           </span>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 max-w-4xl leading-tight">
-            Your own private warehouse. Lower cost per square foot. Guaranteed.
-          </h1>
-          <p className="text-xl text-blue-100 mb-8 max-w-3xl">
-            WareSpace, Saltbox, and ReadySpaces rent you a unit inside a shared building. LeaseSmallSpace
-            leases you your own standalone bay across the Denver metro: your door, your address, your meter,
-            your lease. And we beat any co-warehousing or shared-warehousing price per square foot.
+          <div className="bg-blue-600 rounded-2xl px-6 py-5 sm:px-8 sm:py-7 shadow-2xl max-w-3xl">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight">
+              Your own private warehouse. Lower cost per square foot. Guaranteed.
+            </h1>
+          </div>
+          <p className="text-lg sm:text-xl text-blue-50 mt-6 max-w-2xl [text-shadow:_0_1px_8px_rgb(0_0_0_/_45%)]">
+            WareSpace, Saltbox, and ReadySpaces rent you a unit inside a shared building. LeaseSmallSpace leases
+            you your own standalone bay across the Denver metro: your door, your address, your meter, your lease.
+            And we beat any co-warehousing or shared-warehousing price per square foot.
           </p>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4 mt-8">
             <Link
               href="/properties"
               className="bg-white text-blue-700 hover:bg-blue-50 text-lg font-semibold px-8 py-4 rounded-lg transition-colors"
@@ -117,34 +128,16 @@ export default function PrivateWarehouseVsCoworkingView() {
             </Link>
             <Link
               href="/questionnaire"
-              className="bg-blue-500/30 border border-white/60 text-white hover:bg-blue-500/50 text-lg font-semibold px-8 py-4 rounded-lg transition-colors"
+              className="bg-blue-600 border border-white/70 text-white hover:bg-blue-700 text-lg font-semibold px-8 py-4 rounded-lg transition-colors"
             >
               Get matched to a space
             </Link>
           </div>
+          <p className="mt-10 text-sm text-blue-100/90 [text-shadow:_0_1px_6px_rgb(0_0_0_/_55%)]">
+            Pictured: Copper Hill Brewing Co., a real tenant running its whole operation from its own private bay.
+          </p>
         </div>
       </section>
-
-      {/* Real-use photo band */}
-      <figure className="relative bg-white">
-        <figcaption className="absolute bottom-0 left-0 right-0 z-10 px-5 py-5 sm:px-10 sm:py-7">
-          <div className="inline-block bg-blue-600 rounded-xl px-6 py-4 shadow-lg max-w-2xl">
-            <p className="text-white font-bold text-lg sm:text-2xl leading-tight">
-              A real tenant in their own private bay
-            </p>
-            <p className="text-blue-50 text-sm sm:text-base mt-1">
-              Copper Hill Brewing Co. runs its whole operation behind its own roll-up door, with its own address
-              and signage. Not a unit inside someone else&apos;s shared building.
-            </p>
-          </div>
-        </figcaption>
-        <img
-          src="/images/private-bay-brewery.jpg"
-          alt="A Denver brewery operating from its own private warehouse bay with its own roll-up drive-in door"
-          className="w-full h-auto"
-          loading="lazy"
-        />
-      </figure>
 
       {/* Answer-first summary */}
       <section className="py-12 px-4 sm:px-6 lg:px-8 bg-blue-50/60 border-b border-blue-100">
