@@ -68,10 +68,11 @@ export default function Hero() {
   // Rotating testimonials shown on the hero photos. Cycles across all featured properties.
   const propertyTestimonials = [
     { quote: "Found our space in just 2 days.", name: "Sarah M.", detail: "Boulder" },
-    { quote: "Straightforward and easy.", name: "Tanner F.", detail: "" },
+    { quote: "Straightforward and easy.", name: "Tanner F.", detail: "Denver" },
     { quote: "Perfect for our growing business.", name: "Mike R.", detail: "Colorado Springs" },
-    { quote: "My own private space, no shared loading. Exactly what I wanted.", name: "George F.", detail: "" },
+    { quote: "My own private space, no shared loading. Exactly what I wanted.", name: "George F.", detail: "Arvada" },
     { quote: "Showings went great. Easy, convenient, and I could help my client right away.", name: "Nick Y.", detail: "CRE Broker" },
+    { quote: "Perfect for my HVAC company.", name: "Sergio A.", detail: "Aurora" },
   ]
   const activeTestimonial = propertyTestimonials[currentPropertyIndex % propertyTestimonials.length]
 
