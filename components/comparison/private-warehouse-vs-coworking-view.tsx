@@ -128,11 +128,11 @@ export default function PrivateWarehouseVsCoworkingView() {
       {/* Real-use photo band */}
       <figure className="relative bg-white">
         <figcaption className="absolute bottom-0 left-0 right-0 z-10 px-5 py-5 sm:px-10 sm:py-7">
-          <div className="inline-block bg-white/85 backdrop-blur-sm rounded-xl px-5 py-3 shadow-sm max-w-2xl">
-            <p className="text-blue-700 font-bold text-lg sm:text-2xl leading-tight">
+          <div className="inline-block bg-blue-600 rounded-xl px-6 py-4 shadow-lg max-w-2xl">
+            <p className="text-white font-bold text-lg sm:text-2xl leading-tight">
               A real tenant in their own private bay
             </p>
-            <p className="text-blue-900/80 text-sm sm:text-base mt-1">
+            <p className="text-blue-50 text-sm sm:text-base mt-1">
               Copper Hill Brewing Co. runs its whole operation behind its own roll-up door, with its own address
               and signage. Not a unit inside someone else&apos;s shared building.
             </p>
