@@ -94,27 +94,31 @@ const competitors = [
 export default function PrivateWarehouseVsCoworkingView() {
   return (
     <div className="w-full bg-white text-gray-900">
-      {/* Hero over the photo */}
-      <section className="relative isolate overflow-hidden">
+      {/* Hero photo with headline button (no tint over the building) */}
+      <section className="relative">
         <img
           src="/images/private-bay-brewery.jpg"
           alt="A Denver brewery operating from its own private warehouse bay with its own roll-up drive-in door"
-          className="absolute inset-0 -z-10 w-full h-full object-cover object-center"
+          className="w-full h-[60vh] min-h-[460px] sm:h-[74vh] sm:min-h-[680px] object-cover object-center"
         />
-        <div
-          className="absolute inset-0 -z-10 bg-gradient-to-r from-blue-950/85 via-blue-900/70 to-blue-900/40"
-          aria-hidden
-        />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-          <span className="inline-flex items-center bg-blue-500/30 border border-blue-300/40 text-blue-50 px-3 py-1 rounded-full text-sm font-medium mb-6">
-            Private warehouse vs co-warehousing in Denver
-          </span>
-          <div className="bg-blue-600 rounded-2xl px-6 py-5 sm:px-8 sm:py-7 shadow-2xl max-w-3xl">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight">
-              Your own private warehouse. Lower cost per square foot. Guaranteed.
-            </h1>
+        <div className="absolute inset-x-0 top-0 px-4 sm:px-10 pt-6 sm:pt-10">
+          <div className="max-w-7xl mx-auto">
+            <span className="inline-flex items-center bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium shadow mb-4">
+              Private warehouse vs co-warehousing in Denver
+            </span>
+            <div className="bg-blue-600 rounded-2xl px-6 py-5 sm:px-8 sm:py-7 shadow-2xl max-w-3xl">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight">
+                Your own private warehouse. Lower cost per square foot. Guaranteed.
+              </h1>
+            </div>
           </div>
-          <p className="text-lg sm:text-xl text-blue-50 mt-6 max-w-2xl [text-shadow:_0_1px_8px_rgb(0_0_0_/_45%)]">
+        </div>
+      </section>
+
+      {/* Hero supporting copy + CTAs */}
+      <section className="bg-white py-12 px-4 sm:px-6 lg:px-8 border-b border-gray-100">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-700 max-w-3xl">
             WareSpace, Saltbox, and ReadySpaces rent you a unit inside a shared building. LeaseSmallSpace leases
             you your own standalone bay across the Denver metro: your door, your address, your meter, your lease.
             And we beat any co-warehousing or shared-warehousing price per square foot.
@@ -122,18 +126,18 @@ export default function PrivateWarehouseVsCoworkingView() {
           <div className="flex flex-wrap gap-4 mt-8">
             <Link
               href="/properties"
-              className="bg-white text-blue-700 hover:bg-blue-50 text-lg font-semibold px-8 py-4 rounded-lg transition-colors"
+              className="bg-blue-600 text-white hover:bg-blue-700 text-lg font-semibold px-8 py-4 rounded-lg transition-colors"
             >
               See available units
             </Link>
             <Link
               href="/questionnaire"
-              className="bg-blue-600 border border-white/70 text-white hover:bg-blue-700 text-lg font-semibold px-8 py-4 rounded-lg transition-colors"
+              className="border border-blue-600 text-blue-700 hover:bg-blue-50 text-lg font-semibold px-8 py-4 rounded-lg transition-colors"
             >
               Get matched to a space
             </Link>
           </div>
-          <p className="mt-10 text-sm text-blue-100/90 [text-shadow:_0_1px_6px_rgb(0_0_0_/_55%)]">
+          <p className="mt-6 text-sm text-gray-500">
             Pictured: Copper Hill Brewing Co., a real tenant running its whole operation from its own private bay.
           </p>
         </div>
