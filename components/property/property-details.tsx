@@ -487,25 +487,16 @@ export default function PropertyDetails({ propertyId }: PropertyDetailsProps) {
             <Card>
               <CardContent className="p-6">
                 <h2 className="text-2xl font-bold mb-4">Property Description</h2>
-                <div className="prose max-w-none text-gray-700">
-                  <p className="mb-4">
-                    This premium 1,850 square foot industrial warehouse space offers the perfect combination of
-                    functionality and location in Lakewood's thriving industrial district. The property features a
-                    spacious warehouse area with 16-foot clear height ceilings, ideal for storage, light manufacturing,
-                    or distribution operations.
-                  </p>
-                  <p className="mb-4">
-                    The space includes a grade-level loading dock with a 12x14 overhead door, making it easy to load and
-                    unload trucks efficiently. Heavy electrical service (200 amp, 3-phase) supports industrial equipment
-                    and operations. The built-in office area provides a professional space for administrative functions
-                    with dedicated HVAC for year-round comfort.
-                  </p>
-                  <p>
-                    Located in West Lakewood's established industrial corridor, this property offers excellent access to
-                    major highways including US-6, C-470, and I-70, providing convenient connections throughout the
-                    Denver metro area. The fenced outdoor storage area and dedicated parking spaces add significant
-                    value for businesses requiring secure exterior storage and employee parking.
-                  </p>
+                <div className="prose max-w-none text-gray-700 whitespace-pre-line">
+                  {property.description
+                    ? property.description
+                        .split(/\n{2,}/)
+                        .map((paragraph, index) => (
+                          <p key={index} className="mb-4">
+                            {paragraph.trim()}
+                          </p>
+                        ))
+                    : <p className="text-gray-500">No description available yet.</p>}
                 </div>
               </CardContent>
             </Card>
