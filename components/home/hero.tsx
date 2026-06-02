@@ -350,7 +350,7 @@ export default function Hero() {
         onMouseLeave={() => setIsPaused(false)}
       >
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center">
+          <div className="flex flex-col lg:flex-row lg:items-start">
             <div className="w-full lg:w-1/2 mb-12 lg:mb-0">
               {/* Trust badge */}
               <div className="inline-flex items-center bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium mb-6">
