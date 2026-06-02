@@ -126,20 +126,24 @@ export default function PrivateWarehouseVsCoworkingView() {
       </section>
 
       {/* Real-use photo band */}
-      <figure className="relative">
+      <figure className="relative bg-white">
+        <figcaption className="absolute top-0 left-0 right-0 z-10 px-5 py-5 sm:px-10 sm:py-7">
+          <div className="inline-block bg-white/85 backdrop-blur-sm rounded-xl px-5 py-3 shadow-sm max-w-2xl">
+            <p className="text-blue-700 font-bold text-lg sm:text-2xl leading-tight">
+              A real tenant in their own private bay
+            </p>
+            <p className="text-blue-900/80 text-sm sm:text-base mt-1">
+              Copper Hill Brewing Co. runs its whole operation behind its own roll-up door, with its own address
+              and signage. Not a unit inside someone else&apos;s shared building.
+            </p>
+          </div>
+        </figcaption>
         <img
           src="/images/private-bay-brewery.jpg"
           alt="A Denver brewery operating from its own private warehouse bay with its own roll-up drive-in door"
-          className="w-full h-[320px] sm:h-[440px] lg:h-[540px] object-cover"
+          className="w-full h-auto"
           loading="lazy"
         />
-        <figcaption className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/75 to-transparent text-white px-6 py-5 sm:px-10 sm:py-6">
-          <span className="block max-w-3xl text-sm sm:text-base">
-            A real tenant in their own private bay. Copper Hill Brewing Co. runs its whole operation behind its
-            own roll-up door, with its own address and signage. That is what leasing your own space looks like,
-            not a unit inside someone else&apos;s shared building.
-          </span>
-        </figcaption>
       </figure>
 
       {/* Answer-first summary */}
