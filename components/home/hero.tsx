@@ -65,6 +65,16 @@ export default function Hero() {
     router.push("/questionnaire")
   }
 
+  // Rotating testimonials shown on the hero photos. Cycles across all featured properties.
+  const propertyTestimonials = [
+    { quote: "Found our space in just 2 days.", name: "Sarah M.", detail: "Boulder" },
+    { quote: "Straightforward and easy.", name: "Tanner F.", detail: "" },
+    { quote: "Perfect for our growing business.", name: "Mike R.", detail: "Colorado Springs" },
+    { quote: "My own private space, no shared loading. Exactly what I wanted.", name: "George F.", detail: "" },
+    { quote: "Showings went great. Easy, convenient, and I could help my client right away.", name: "Nick Y.", detail: "CRE Broker" },
+  ]
+  const activeTestimonial = propertyTestimonials[currentPropertyIndex % propertyTestimonials.length]
+
   useEffect(() => {
     if (!isPaused && properties.length > 0) {
       const intervalId = setInterval(() => {
@@ -521,24 +531,8 @@ export default function Hero() {
                       <CheckCircle className="h-5 w-5 text-blue-600" />
                     </div>
                     <div>
-                      {currentPropertyIndex === 0 && (
-                        <>
-                          <p className="text-sm font-medium">"Found our space in 2 days!"</p>
-                          <p className="text-xs text-gray-500">- Sarah M., Boulder</p>
-                        </>
-                      )}
-                      {currentPropertyIndex === 1 && (
-                        <>
-                          <p className="text-sm font-medium">"Easy, convenient, straightforward"</p>
-                          <p className="text-xs text-gray-500">- David F., Fort Collins</p>
-                        </>
-                      )}
-                      {currentPropertyIndex === 2 && (
-                        <>
-                          <p className="text-sm font-medium">"Perfect for our growing business"</p>
-                          <p className="text-xs text-gray-500">- Mike R., Colorado Springs</p>
-                        </>
-                      )}
+                      <p className="text-sm font-medium">"{activeTestimonial.quote}"</p>
+                      <p className="text-xs text-gray-500">- {activeTestimonial.name}{activeTestimonial.detail ? `, ${activeTestimonial.detail}` : ""}</p>
                     </div>
                   </div>
                 </div>
