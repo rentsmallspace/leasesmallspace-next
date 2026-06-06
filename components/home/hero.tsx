@@ -47,7 +47,7 @@ export default function Hero() {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const data = await getFeaturedProperties(3) // Get 3 properties for carousel
+        const data = await getFeaturedProperties(100) // Show all featured properties in the carousel
         setProperties(data)
       } catch (error) {
         console.error("Error fetching properties:", error)
@@ -64,6 +64,17 @@ export default function Hero() {
   const handleGetStarted = () => {
     router.push("/questionnaire")
   }
+
+  // Rotating testimonials shown on the hero photos. Cycles across all featured properties.
+  const propertyTestimonials = [
+    { quote: "Found our space in just 2 days.", name: "Sarah M.", detail: "Boulder" },
+    { quote: "Straightforward and easy.", name: "Tanner F.", detail: "Denver" },
+    { quote: "Perfect for our growing business.", name: "Mike R.", detail: "Colorado Springs" },
+    { quote: "My own private space, no shared loading. Exactly what I wanted.", name: "George F.", detail: "Arvada" },
+    { quote: "Showings went great. Easy, convenient, and I could help my client right away.", name: "Nick Y.", detail: "CRE Broker" },
+    { quote: "Perfect for my HVAC company.", name: "Sergio A.", detail: "Aurora" },
+  ]
+  const activeTestimonial = propertyTestimonials[currentPropertyIndex % propertyTestimonials.length]
 
   useEffect(() => {
     if (!isPaused && properties.length > 0) {
@@ -339,7 +350,7 @@ export default function Hero() {
         onMouseLeave={() => setIsPaused(false)}
       >
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center">
+          <div className="flex flex-col lg:flex-row lg:items-start">
             <div className="w-full lg:w-1/2 mb-12 lg:mb-0">
               {/* Trust badge */}
               <div className="inline-flex items-center bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium mb-6">
@@ -444,6 +455,17 @@ export default function Hero() {
                         NNN Lease Guide
                       </Button>
                     </Link>
+                    <Link href="/private-warehouse-vs-coworking">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 hover:shadow-sm transition-all duration-200 text-sm px-4 py-2 h-auto font-medium group bg-transparent"
+                      >
+                        <Building className="mr-2 h-4 w-4 text-green-600 group-hover:text-green-700 transition-colors duration-200" />
+                        Private Warehouse vs Co-Warehousing
+                      </Button>
+                    </Link>
+
                     {/* Future buttons will go here */}
                   </div>
                 </div>
@@ -453,7 +475,7 @@ export default function Hero() {
             <div className="w-full lg:w-1/2 lg:pl-12">
               <div className="relative">
                 {/* Main property image carousel */}
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl h-96">
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl h-96 lg:h-[30rem]">
                   
                   {properties.length > 0 ? (
                     properties.map((property, index) => (
@@ -521,24 +543,8 @@ export default function Hero() {
                       <CheckCircle className="h-5 w-5 text-blue-600" />
                     </div>
                     <div>
-                      {currentPropertyIndex === 0 && (
-                        <>
-                          <p className="text-sm font-medium">"Found our space in 2 days!"</p>
-                          <p className="text-xs text-gray-500">- Sarah M., Boulder</p>
-                        </>
-                      )}
-                      {currentPropertyIndex === 1 && (
-                        <>
-                          <p className="text-sm font-medium">"Easy, convenient, straightforward"</p>
-                          <p className="text-xs text-gray-500">- David F., Fort Collins</p>
-                        </>
-                      )}
-                      {currentPropertyIndex === 2 && (
-                        <>
-                          <p className="text-sm font-medium">"Perfect for our growing business"</p>
-                          <p className="text-xs text-gray-500">- Mike R., Colorado Springs</p>
-                        </>
-                      )}
+                      <p className="text-sm font-medium">"{activeTestimonial.quote}"</p>
+                      <p className="text-xs text-gray-500">- {activeTestimonial.name}{activeTestimonial.detail ? `, ${activeTestimonial.detail}` : ""}</p>
                     </div>
                   </div>
                 </div>

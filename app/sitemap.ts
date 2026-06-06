@@ -10,6 +10,7 @@ const staticPages: Array<{ path: string; priority: number; changeFrequency: Meta
   { path: "/faq", priority: 0.7, changeFrequency: "monthly" },
   { path: "/nnn-lease-guide", priority: 0.7, changeFrequency: "monthly" },
   { path: "/why-rent-small-space", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/private-warehouse-vs-coworking", priority: 0.8, changeFrequency: "monthly" },
   { path: "/results", priority: 0.5, changeFrequency: "weekly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
