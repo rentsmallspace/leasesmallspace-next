@@ -26,7 +26,7 @@ export const PARENT_ORG = {
 // (still compliant) disclosure; fill it in to show "License #...".
 export const BROKERAGE = {
   name: "Dock and Bay LLC",
-  license: "",
+  license: "IR.100065250",
 } as const
 
 export const SERVICE_AREA_CITIES = [

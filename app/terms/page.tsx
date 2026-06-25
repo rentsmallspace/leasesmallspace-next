@@ -88,9 +88,9 @@ export default function TermsPage() {
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">10. Real Estate Brokerage Disclosure</h2>
           <p className="text-gray-700 mb-6">
-            LeaseSmallSpace.com is operated by Dock and Bay LLC, a licensed Colorado real estate brokerage. All real
-            estate activity conducted through this site is subject to Colorado law and the rules of the Colorado Real
-            Estate Commission.
+            LeaseSmallSpace.com is operated by Dock and Bay LLC, a licensed Colorado real estate brokerage (Colorado
+            License #IR.100065250). All real estate activity conducted through this site is subject to Colorado law and
+            the rules of the Colorado Real Estate Commission.
           </p>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">11. Contact Information</h2>
