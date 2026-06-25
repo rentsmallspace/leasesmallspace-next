@@ -5,7 +5,7 @@ export const BUSINESS_PHONE_DISPLAY = "(720) 989-8838"
 export const BUSINESS_EMAIL = "info@leasesmallspace.com"
 
 export const BUSINESS_ADDRESS = {
-  street: "12360 W 49th Ave",
+  street: "12360 West 49th Place, Unit 2",
   locality: "Wheat Ridge",
   region: "CO",
   postalCode: "80033",
@@ -18,6 +18,15 @@ export const BUSINESS_ADDRESS = {
 export const PARENT_ORG = {
   name: "SAMG LLC",
   alternateName: "Secure Asset Management Group",
+} as const
+
+// The licensed Colorado real estate brokerage that operates LeaseSmallSpace.com.
+// Required for the Colorado Real Estate Commission advertising disclosure (Rule E-39 / 6.10).
+// `license` is the Colorado DRE brokerage license number — leave "" to render the name-only
+// (still compliant) disclosure; fill it in to show "License #...".
+export const BROKERAGE = {
+  name: "Dock and Bay LLC",
+  license: "IR.100065250",
 } as const
 
 export const SERVICE_AREA_CITIES = [

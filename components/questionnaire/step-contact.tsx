@@ -210,9 +210,16 @@ export default function ContactStep({
         </div>
 
         <div className="bg-gray-50 p-4 rounded-lg">
-          <div className="flex items-center text-sm text-gray-600">
-            <Shield className="h-4 w-4 mr-2" />
-            <span>Your information is secure and never shared with third parties</span>
+          <div className="flex items-start text-sm text-gray-600">
+            <Shield className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0" />
+            <span>
+              Your information is kept secure and is never sold to brokers. We use trusted advertising and analytics
+              partners (Meta, Google) to run our ads &mdash; see our{" "}
+              <Link href="/privacy" className="underline text-blue-600 hover:text-blue-700">
+                Privacy Policy
+              </Link>
+              .
+            </span>
           </div>
         </div>
       </div>

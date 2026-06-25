@@ -5,6 +5,7 @@ import "./globals.css"
 import { Navigation } from "@/components/navigation/navigation"
 import { Footer } from "@/components/footer/footer"
 import { ConditionalPopup } from "@/components/layout/conditional-popup"
+import { ContactLinkTracking } from "@/components/analytics/contact-link-tracking"
 import { Toaster } from "@/components/ui/toaster"
 import { SITE_URL, siteStructuredData } from "@/lib/seo"
 
@@ -126,6 +127,8 @@ export default async function RootLayout({
         </div>
         {/* Use the new client component here, passing the enabled paths */}
         <ConditionalPopup enabledPaths={popupEnabledPaths} />
+        {/* Fires GA4 phone_click / email_click events on tel: and mailto: clicks */}
+        <ContactLinkTracking />
         <Toaster />
       </body>
     </html>

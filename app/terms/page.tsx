@@ -12,7 +12,7 @@ export default function TermsPage() {
         <div className="prose prose-lg max-w-none">
           <h1 className="text-4xl font-bold text-gray-900 mb-8">Terms of Use</h1>
 
-          <p className="text-gray-600 mb-8">Last updated: 6/1/2025</p>
+          <p className="text-gray-600 mb-8">Last updated: 6/25/2026</p>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. Acceptance of Terms</h2>
           <p className="text-gray-700 mb-6">
@@ -22,8 +22,10 @@ export default function TermsPage() {
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. Description of Service</h2>
           <p className="text-gray-700 mb-6">
-            LeaseSmallSpace provides an online platform connecting businesses seeking commercial space with property
-            owners and managers. We do not own, operate, or manage any properties listed on our platform.
+            LeaseSmallSpace.com is operated by Dock and Bay LLC, a licensed Colorado real estate brokerage. Through this
+            site we advertise and lease commercial, warehouse, and industrial spaces owned by Dock and Bay LLC and its
+            affiliated entities. Listings, availability, pricing, and lease terms are subject to change and to a fully
+            executed written lease.
           </p>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">3. User Obligations</h2>
@@ -84,7 +86,14 @@ export default function TermsPage() {
             regard to its conflict of law provisions.
           </p>
 
-          <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">10. Contact Information</h2>
+          <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">10. Real Estate Brokerage Disclosure</h2>
+          <p className="text-gray-700 mb-6">
+            LeaseSmallSpace.com is operated by Dock and Bay LLC, a licensed Colorado real estate brokerage (Colorado
+            License #IR.100065250). All real estate activity conducted through this site is subject to Colorado law and
+            the rules of the Colorado Real Estate Commission.
+          </p>
+
+          <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">11. Contact Information</h2>
           <p className="text-gray-700 mb-4">For questions about these Terms of Use, please contact us at:</p>
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
             <p className="text-gray-700 mb-0">

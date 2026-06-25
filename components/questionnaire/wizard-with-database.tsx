@@ -103,6 +103,13 @@ export default function QuestionnaireWizardWithDatabase() {
       setShowCheckmark(false)
 
       if (step < totalSteps) {
+        // GA4: mark the step the visitor just completed before advancing
+        if (typeof window !== "undefined" && (window as any).gtag) {
+          (window as any).gtag("event", "questionnaire_step_complete", {
+            step: step,
+            step_name: getStepName(step),
+          })
+        }
         setStep(step + 1)
         window.scrollTo(0, 0)
       } else {
@@ -145,13 +152,22 @@ export default function QuestionnaireWizardWithDatabase() {
       // Log success message
       console.log("Questionnaire submitted successfully, redirecting to thank you page...")
 
-      // Track successful submission
+      // Track successful submission (internal analytics -> Supabase)
       track("lead_generated", {
         source: "questionnaire",
         user_id: result.user.id,
         inquiry_id: result.inquiry.id,
         conversion_type: "questionnaire_completion",
       })
+
+      // GA4: critical lead conversion event on final submit
+      if (typeof window !== "undefined" && (window as any).gtag) {
+        (window as any).gtag("event", "close_convert_lead", {
+          event_category: "lead",
+          source: "questionnaire",
+          inquiry_id: result.inquiry.id,
+        })
+      }
 
       // Clear localStorage
       localStorage.removeItem("leaseSmallSpace_questionnaire")
