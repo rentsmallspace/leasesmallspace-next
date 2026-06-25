@@ -20,6 +20,15 @@ export const PARENT_ORG = {
   alternateName: "Secure Asset Management Group",
 } as const
 
+// The licensed Colorado real estate brokerage that operates LeaseSmallSpace.com.
+// Required for the Colorado Real Estate Commission advertising disclosure (Rule E-39 / 6.10).
+// `license` is the Colorado DRE brokerage license number — leave "" to render the name-only
+// (still compliant) disclosure; fill it in to show "License #...".
+export const BROKERAGE = {
+  name: "Dock and Bay LLC",
+  license: "",
+} as const
+
 export const SERVICE_AREA_CITIES = [
   "Denver",
   "Arvada",

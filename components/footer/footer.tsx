@@ -5,6 +5,7 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { MapPin, Phone, Mail, Clock } from "lucide-react"
 import {
+  BROKERAGE,
   BUSINESS_ADDRESS,
   BUSINESS_EMAIL,
   BUSINESS_PHONE,
@@ -125,7 +126,11 @@ export function Footer() {
           </p>
         </div>
 
-        <div className="mt-6 pt-6 border-t border-gray-200">
+        <div className="mt-6 pt-6 border-t border-gray-200 space-y-2">
+          <p className="text-center text-gray-500 text-sm">
+            Brokered by {BROKERAGE.name} — a licensed Colorado real estate brokerage
+            {BROKERAGE.license ? `. License #${BROKERAGE.license}` : ""}.
+          </p>
           <p className="text-center text-gray-500 text-sm">
             © {new Date().getFullYear()} LeaseSmallSpace.com. All rights reserved.
           </p>
