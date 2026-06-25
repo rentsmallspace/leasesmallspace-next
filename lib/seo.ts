@@ -5,7 +5,7 @@ export const BUSINESS_PHONE_DISPLAY = "(720) 989-8838"
 export const BUSINESS_EMAIL = "info@leasesmallspace.com"
 
 export const BUSINESS_ADDRESS = {
-  street: "12360 W 49th Ave",
+  street: "12360 West 49th Place, Unit 2",
   locality: "Wheat Ridge",
   region: "CO",
   postalCode: "80033",
