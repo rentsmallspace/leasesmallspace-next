@@ -6,12 +6,13 @@ export const revalidate = 3600 // regenerate hourly
 
 const staticPages: Array<{ path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"] }> = [
   { path: "/", priority: 1.0, changeFrequency: "daily" },
+  { path: "/properties", priority: 0.95, changeFrequency: "daily" },
   { path: "/questionnaire", priority: 0.9, changeFrequency: "monthly" },
+  { path: "/property/lakewood-warehouse", priority: 0.85, changeFrequency: "weekly" },
+  { path: "/private-warehouse-vs-coworking", priority: 0.8, changeFrequency: "monthly" },
   { path: "/faq", priority: 0.7, changeFrequency: "monthly" },
   { path: "/nnn-lease-guide", priority: 0.7, changeFrequency: "monthly" },
   { path: "/why-rent-small-space", priority: 0.7, changeFrequency: "monthly" },
-  { path: "/private-warehouse-vs-coworking", priority: 0.8, changeFrequency: "monthly" },
-  { path: "/results", priority: 0.5, changeFrequency: "weekly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
 ]

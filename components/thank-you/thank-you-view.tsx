@@ -19,13 +19,9 @@ export default function ThankYouView() {
       }
     }
 
-    if (typeof window !== "undefined" && (window as any).gtag) {
-      (window as any).gtag("event", "conversion", {
-        send_to: "AW-18037160222/R2g5CKmKr44cEJ7y5JhD",
-        value: 1.0,
-        currency: "USD",
-      })
-    }
+    // Google Ads conversion now fires on actual questionnaire submit (see wizard-with-database.tsx)
+    // instead of on this page load — that prevents counting bouncers / refreshes / direct nav
+    // to /thank-you as conversions, which was polluting Smart Bidding's signal.
   }, [])
 
   const handleEmailClick = () => {

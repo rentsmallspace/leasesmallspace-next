@@ -167,6 +167,25 @@ export default function QuestionnaireWizardWithDatabase() {
           source: "questionnaire",
           inquiry_id: result.inquiry.id,
         })
+
+        // Google Ads conversion: fires on actual form submission (replaces page-view trigger on /thank-you).
+        // user_data enables Enhanced Conversions for Leads — gtag hashes email/phone in the browser
+        // before sending to Google. Requires Enhanced Conversions to be enabled in the Google Ads
+        // conversion action settings + Customer Data Terms accepted.
+        (window as any).gtag("event", "conversion", {
+          send_to: "AW-18037160222/R2g5CKmKr44cEJ7y5JhD",
+          value: 1.0,
+          currency: "USD",
+          transaction_id: result.inquiry.id,
+          user_data: {
+            email: data.email,
+            phone_number: data.phone,
+            address: {
+              first_name: data.name?.split(" ")[0] || undefined,
+              last_name: data.name?.split(" ").slice(1).join(" ") || undefined,
+            },
+          },
+        })
       }
 
       // Clear localStorage
